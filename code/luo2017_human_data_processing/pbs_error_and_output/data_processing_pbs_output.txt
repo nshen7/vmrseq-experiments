@@ -1,0 +1,8 @@
+Total 173 cells are in subtype hNdnf 
+[1] "Finished combining cells."
+[1] "Finished creating SummarizedExperiment object."
+[1] "Finished writing HDF5 file."
+Total 163 cells are in subtype hSst-2 
+[1] "Finished combining cells."
+[1] "Finished creating SummarizedExperiment object."
+[1] "Finished writing HDF5 file."

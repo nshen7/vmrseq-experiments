@@ -1,0 +1,5 @@
+data/
+.RData
+.Rhistory
+.Rproj.user
+vmrseq-experiments.Rproj

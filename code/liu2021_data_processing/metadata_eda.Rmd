@@ -1,0 +1,84 @@
+---
+title: "metadata_eda"
+output: html_document
+---
+
+```{r setup, message=FALSE, warning=FALSE}
+library(data.table)
+library(readxl)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
+
+## import metadata and GSM number mapping file
+metadata <- fread("data/metadata/metadata_liu2021/Liu2021_cell_full_metadata_processed.csv")
+
+sum(is.na(metadata$GEO_accession))
+# metadata[is.na(GEO_accession), .(CellID, Sample, GEO_accession)] %>%
+#   kable() %>%
+#   kable_styling("striped", full_width = F) %>% 
+#   scroll_box(width = "900px", height = "200px")
+```
+
+Each region have two replicates (a few have three):
+```{r}
+metadata %>%
+  group_by(RegionName) %>%
+  count(Sample) %>%
+  kable() %>%
+  kable_styling("striped", full_width = F) %>% 
+  scroll_box(width = "900px", height = "300px")
+```
+
+```{r, message=FALSE, warning=FALSE}
+# table(metadata$Sample)
+sum(is.na(metadata$Sample))
+
+# table(metadata$SubType)
+sum(is.na(metadata$SubType))
+# metadata[is.na(SubType),
+#          .(CellID, Sample, RegionName, MajorRegion, SubRegion, CellClass, MajorType, SubType, GEO_accession, CEMBA_ID)] %>%
+#   kable() %>%
+#   kable_styling("striped", full_width = F) %>%
+#   scroll_box(width = "900px", height = "200px")
+
+cell_counts <- metadata[, .(.N), by = .(Sample, CellClass, SubType, GEO_accession)]
+cell_counts %>% 
+  filter(CellClass=="Exc") %>%
+  arrange(desc(N)) %>% 
+  filter(!is.na(SubType)) %>%
+  kable() %>%
+  kable_styling("striped", full_width = F) %>% 
+  scroll_box(width = "900px", height = "300px")
+
+cell_counts %>% 
+  filter(CellClass=="Inh") %>%
+  arrange(desc(N)) %>% 
+  filter(!is.na(SubType)) %>%
+  kable() %>%
+  kable_styling("striped", full_width = F) %>% 
+  scroll_box(width = "900px", height = "400px")
+
+
+# metadata_sub <- metadata[SubType=="IT-L23 Cux1",]
+# table(metadata_sub$Sample)
+
+# table(metadata$SubType, metadata$Sample)
+```
+
+```{r, fig.height = 4, fig.width = 10, fig.align = "center"}
+metadata %>%
+  ggplot(aes(Sample, MappingRate)) +
+  geom_boxplot() +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+metadata %>%
+  ggplot(aes(Sample, FinalReads/1e6)) +
+  geom_boxplot() +
+  theme_bw() + ylim(0,5) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+```
+

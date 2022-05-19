@@ -1,0 +1,19 @@
+--2022-04-20 14:28:27--  https://ftp.ncbi.nih.gov/geo/series/GSE158nnn/GSE158066/suppl/GSE158066_RAW.tar
+Resolving ftp.ncbi.nih.gov (ftp.ncbi.nih.gov)... 130.14.250.7, 165.112.9.229, 2607:f220:41e:250::13, ...
+Connecting to ftp.ncbi.nih.gov (ftp.ncbi.nih.gov)|130.14.250.7|:443... failed: Connection timed out.
+Connecting to ftp.ncbi.nih.gov (ftp.ncbi.nih.gov)|165.112.9.229|:443... failed: Connection timed out.
+Connecting to ftp.ncbi.nih.gov (ftp.ncbi.nih.gov)|2607:f220:41e:250::13|:443... failed: Network is unreachable.
+Connecting to ftp.ncbi.nih.gov (ftp.ncbi.nih.gov)|2607:f220:41e:250::12|:443... failed: Network is unreachable.
+tar: GSE158066_RAW.tar: Cannot open: No such file or directory
+tar: Error is not recoverable: exiting now
+--2022-04-20 14:32:42--  https://ftp.ncbi.nih.gov/geo/series/GSE158nnn/GSE158066/suppl/filelist.txt
+Resolving ftp.ncbi.nih.gov (ftp.ncbi.nih.gov)... 130.14.250.10, 130.14.250.11, 2607:f220:41e:250::11, ...
+Connecting to ftp.ncbi.nih.gov (ftp.ncbi.nih.gov)|130.14.250.10|:443... failed: Connection timed out.
+Connecting to ftp.ncbi.nih.gov (ftp.ncbi.nih.gov)|130.14.250.11|:443... failed: Connection timed out.
+Connecting to ftp.ncbi.nih.gov (ftp.ncbi.nih.gov)|2607:f220:41e:250::11|:443... failed: Network is unreachable.
+Connecting to ftp.ncbi.nih.gov (ftp.ncbi.nih.gov)|2607:f220:41f:250::229|:443... failed: Network is unreachable.
+rm: cannot remove ‘GSE158066_RAW.tar’: No such file or directory
+--2022-04-20 14:36:57--  https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/GSE134773/suppl/GSE134773_RAW.tar
+Resolving ftp.ncbi.nih.gov (ftp.ncbi.nih.gov)... 130.14.250.11, 130.14.250.7, 2607:f220:41f:250::229, ...
+Connecting to ftp.ncbi.nih.gov (ftp.ncbi.nih.gov)|130.14.250.11|:443... failed: Connection timed out.
+Connecting to ftp.ncbi.nih.gov (ftp.ncbi.nih.gov)|130.14.250.7|:443... 

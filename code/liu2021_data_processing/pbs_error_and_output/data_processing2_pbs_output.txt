@@ -1,0 +1,14 @@
+[1] "Checking if file names are successfully matched to metadata entries."
+1223 cells out of 1223 from sample 5F_181220 are matched to metadata.
+Total 123 cells are in sample 5F_181220 subtype MSN-D1 Plxnc1 
+[1] "Finished combining cells."
+[1] "Finished creating SummarizedExperiment object."
+[1] "Finished writing HDF5 file."
+[1] "\n"
+[1] "Checking if file names are successfully matched to metadata entries."
+1343 cells out of 1345 from sample 4F_180329 are matched to metadata.
+Total 117 cells are in sample 4F_180329 subtype D1L-Fstl4 Sipa1l2 
+[1] "Finished combining cells."
+[1] "Finished creating SummarizedExperiment object."
+[1] "Finished writing HDF5 file."
+[1] "\n"

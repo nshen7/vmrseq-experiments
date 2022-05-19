@@ -1,0 +1,16 @@
+Total 369 cells are in sample 1B_180213 subtype IT-L23 Ptprt 
+[1] "Finished combining cells."
+[1] "Finished creating SummarizedExperiment object."
+[1] "Finished writing HDF5 file."
+Total 267 cells are in sample 6A_190108 subtype IT-L23 Tenm2 
+[1] "Finished combining cells."
+[1] "Finished creating SummarizedExperiment object."
+[1] "Finished writing HDF5 file."
+Total 237 cells are in sample 11E_190214 subtype CA1 Ptprg 
+[1] "Finished combining cells."
+[1] "Finished creating SummarizedExperiment object."
+[1] "Finished writing HDF5 file."
+Total 237 cells are in sample 5B_180529 subtype IT-L4 Astn2 
+[1] "Finished combining cells."
+[1] "Finished creating SummarizedExperiment object."
+[1] "Finished writing HDF5 file."
