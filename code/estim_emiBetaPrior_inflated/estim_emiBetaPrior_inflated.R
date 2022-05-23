@@ -143,129 +143,150 @@ fwrite(smr, "data/interim/estim_emiBetaPrior_inflated/emiBetaPrior_subtype_summa
 
 smr <- fread("data/interim/estim_emiBetaPrior_inflated/emiBetaPrior_subtype_summary.csv")
 
-#### Add in 2 sample-combined subtypes
-# dirs <- c("data/processed/processed_liu2021/summary_subtype_CA1_Chrm3_1359cells_combined_qced.rds",
-#           "data/processed/processed_liu2021/summary_subtype_DG_dg-all_1462cells_combined_qced.rds")
-# for (i in 1:2) {
-#   df <- readRDS(dirs[i])
-#   mf_u <- df$cell_MF[df$cell_MF < 0.5]
-#   w_u <- sum(mf_u == 0) / length(mf_u)
-#   mean_u <- mean(mf_u[mf_u>0]); var_u <- var(mf_u[mf_u>0])
-#   
-#   mf_m <- df$cell_MF[df$cell_MF > 0.5]
-#   w_m <- sum(mf_m == 1) / length(mf_m)
-#   mean_m <- mean(mf_m[mf_m>0]); var_m <- var(mf_m[mf_m>0])
-#   
-#   if(i==1) {
-#     CellClass = "Exc"; SubType = "CA1 Chrm3"; N_cell = 1359
-#   } else {
-#     CellClass = "Exc"; SubType = "DG dg-all"; N_cell = 1462
-#   }
-#   summary  <- data.table(CellClass = CellClass,
-#                          SubType = SubType, 
-#                          N_cell = N_cell,
-#                          w_u = w_u,
-#                          mean_u = mean_u,
-#                          var_u = var_u,
-#                          alpha_u = (mean_u*(1-mean_u)/var_u - 1) * mean_u,
-#                          beta_u = (mean_u*(1-mean_u)/var_u - 1) * (1-mean_u),
-#                          w_m = w_m,
-#                          mean_m = mean_m,
-#                          var_m = var_m,
-#                          alpha_m = (mean_m*(1-mean_m)/var_m - 1) * mean_m,
-#                          beta_m = (mean_m*(1-mean_m)/var_m - 1) * (1-mean_m),
-#                          DataSource = "Combined_liu"
-#   )
-#   summary
-#   smr <- rbind(smr, summary)
-# }
+#### Optional: Add in 2 sample-combined subtypes
+dirs <- c("data/processed/processed_liu2021/summary_subtype_CA1_Chrm3_1359cells_combined_qced.rds",
+          "data/processed/processed_liu2021/summary_subtype_DG_dg-all_1462cells_combined_qced.rds")
+for (i in 1:2) {
+  df <- readRDS(dirs[i])
+  mf_u <- df$cell_MF[df$cell_MF < 0.5]
+  w_u <- sum(mf_u == 0) / length(mf_u)
+  mean_u <- mean(mf_u[mf_u>0]); var_u <- var(mf_u[mf_u>0])
+
+  mf_m <- df$cell_MF[df$cell_MF > 0.5]
+  w_m <- sum(mf_m == 1) / length(mf_m)
+  mean_m <- mean(mf_m[mf_m>0]); var_m <- var(mf_m[mf_m>0])
+
+  if(i==1) {
+    CellClass = "Exc"; SubType = "CA1 Chrm3"; N_cell = 1359
+  } else {
+    CellClass = "Exc"; SubType = "DG dg-all"; N_cell = 1462
+  }
+  summary  <- data.table(CellClass = CellClass,
+                         SubType = SubType,
+                         N_cell = N_cell,
+                         w_u = w_u,
+                         mean_u = mean_u,
+                         var_u = var_u,
+                         alpha_u = (mean_u*(1-mean_u)/var_u - 1) * mean_u,
+                         beta_u = (mean_u*(1-mean_u)/var_u - 1) * (1-mean_u),
+                         w_m = w_m,
+                         mean_m = mean_m,
+                         var_m = var_m,
+                         alpha_m = (mean_m*(1-mean_m)/var_m - 1) * mean_m,
+                         beta_m = (mean_m*(1-mean_m)/var_m - 1) * (1-mean_m),
+                         DataSource = "Comb_liu"
+  )
+  summary
+  smr <- rbind(smr, summary)
+}
+
+## plotting parameter
+annot_x <- ifelse(nrow(smr)==27, 330, 400) 
 
 ## fitted parameters for unmeth subpop vs. N cells
 (loglm <- summary(lm(w_u ~ log(N_cell), data = smr)))
+(invlm <- summary(lm(w_u ~ I(1/N_cell), data = smr)))
 (lm <- summary(lm(w_u ~ N_cell, data = smr)))
 smr %>%
   ggplot(aes(N_cell, w_u)) +
-  geom_smooth(method = "lm", formula = y~log(x), se = F, size = 0.7, color = "skyblue3") +
-  geom_smooth(method = "lm", se = F, linetype = "dashed", size = 0.7, color = "orange") +
+  geom_smooth(method = "lm", formula = y~log(x), se = F, size = 0.7, color = "skyblue4") +
+  geom_smooth(method = "lm", se = F, linetype = 2, size = 0.7, color = "sienna2") +
+  geom_smooth(method = "lm", formula = y~I(1/x), linetype = 4, se = F, size = 0.7, color = "pink3") +
   geom_point(aes(color = DataSource, shape = CellClass), size = 2) +
-  annotate("text", x = 350, y = 0.02, label = paste0('Log-linear: R^2 = ', round(loglm$r.squared, 3)), color = "skyblue3") +
-  annotate('text', x = 350, y = 0.06, fontface = 2, label = paste0("Linear: R^2 = ", round(lm$r.squared, 3)), color = "orange") +
+  annotate("text", x = annot_x, y = 0.02, label = paste0('y~log(x): R^2 = ', round(loglm$r.squared, 3)), color = "skyblue4") +
+  annotate('text', x = annot_x, y = 0.06, fontface = 2, label = paste0("y~x: R^2 = ", round(lm$r.squared, 3)), color = "sienna2") +
+  annotate("text", x = annot_x, y = 0.10, label = paste0('y~1/x: R^2 = ', round(invlm$r.squared, 3)), color = "pink3") +
   ylab("Prob mass at 0") + xlab("N cells") + ylim(0,1)
 ggsave(paste0("plots/estim_emiBetaPrior_inflated/point_fittedPrior_unmethPop_w_vs_Ncell_",nrow(smr),"subtypes.png"), width = 6, height = 5)
 
 (loglm <- summary(lm(alpha_u ~ log(N_cell), data = smr)))
+(invlm <- summary(lm(alpha_u ~ I(1/N_cell), data = smr)))
 (lm <- summary(lm(alpha_u ~ N_cell, data = smr)))
 smr %>%
   ggplot(aes(N_cell, alpha_u)) +
-  geom_smooth(method = "lm", formula = y~log(x), se = F, size = 0.7, color = "skyblue3") +
-  geom_smooth(method = "lm", se = F, linetype = "dashed", size = 0.7, color = "orange") +
+  geom_smooth(method = "lm", formula = y~log(x), se = F, size = 0.7, color = "skyblue4") +
+  geom_smooth(method = "lm", se = F, linetype = 2, size = 0.7, color = "sienna2") +
+  geom_smooth(method = "lm", formula = y~I(1/x), linetype = 4, se = F, size = 0.7, color = "pink3") +
   geom_point(aes(color = DataSource, shape = CellClass), size = 2) +
-  annotate("text", x = 350, y = 0.15, fontface = 2, label = paste0('Log-linear model: R^2 = ', round(loglm$r.squared, 3)), color = "skyblue3") +
-  annotate('text', x = 350, y = 0.3, label = paste0("Linear model: R^2 = ", round(lm$r.squared, 3)), color = "orange") +
+  annotate("text", x = annot_x, y = 0.15, label = paste0('y~log(x): R^2 = ', round(loglm$r.squared, 3)), color = "skyblue4") +
+  annotate('text', x = annot_x, y = 0.3, label = paste0("y~x: R^2 = ", round(lm$r.squared, 3)), color = "sienna2") +
+  annotate("text", x = annot_x, y = 0.45, fontface = 2, label = paste0('y~1/x: R^2 = ', round(invlm$r.squared, 3)), color = "pink3") +
   ylab("Alpha") + xlab("N cells") + ylim(0, 3)
 ggsave(paste0("plots/estim_emiBetaPrior_inflated/point_fittedPrior_unmethPop_alpha_vs_Ncell_",nrow(smr),"subtypes.png"), width = 6, height = 5)
 
 (loglm <- summary(lm(beta_u ~ log(N_cell), data = smr)))
+(invlm <- summary(lm(beta_u ~ I(1/N_cell), data = smr)))
 (lm <- summary(lm(beta_u ~ N_cell, data = smr)))
 smr %>%
   ggplot(aes(N_cell, beta_u)) +
-  geom_smooth(method = "lm", formula = y~log(x), se = F, size = 0.7, color = "skyblue3") +
-  geom_smooth(method = "lm", se = F, linetype = "dashed", size = 0.7, color = "orange") +
+  geom_smooth(method = "lm", formula = y~log(x), se = F, size = 0.7, color = "skyblue4") +
+  geom_smooth(method = "lm", se = F, linetype = "dashed", size = 0.7, color = "sienna2") +
+  geom_smooth(method = "lm", formula = y~I(1/x), linetype = 4, se = F, size = 0.7, color = "pink3") +
   geom_point(aes(color = DataSource, shape = CellClass), size = 2) +
-  annotate("text", x = 350, y = 3, fontface = 2, label = paste0('Log-linear model: R^2 = ', round(loglm$r.squared, 3)), color = "skyblue3") +
-  annotate('text', x = 350, y = 3.3, label = paste0("Linear model: R^2 = ", round(lm$r.squared, 3)), color = "orange") +
+  annotate("text", x = annot_x, y = 3, label = paste0('y~log(x): R^2 = ', round(loglm$r.squared, 3)), color = "skyblue4") +
+  annotate('text', x = annot_x, y = 3.3, label = paste0("y~x: R^2 = ", round(lm$r.squared, 3)), color = "sienna2") +
+  annotate("text", x = annot_x, y = 3.6, fontface = 2, label = paste0('y~1/x: R^2 = ', round(invlm$r.squared, 3)), color = "pink3") +
   ylab("Beta") + xlab("N cells") + ylim(3, 9)
 ggsave(paste0("plots/estim_emiBetaPrior_inflated/point_fittedPrior_unmethPop_beta_vs_Ncell_",nrow(smr),"subtypes.png"), width = 6, height = 5)
 
 ## fitted parameters for meth subpop vs. N cells
 (loglm <- summary(lm(w_m ~ log(N_cell), data = smr)))
+(invlm <- summary(lm(w_m ~ I(1/N_cell), data = smr)))
 (lm <- summary(lm(w_m ~ N_cell, data = smr)))
 smr %>%
   ggplot(aes(N_cell, w_m)) +
-  geom_smooth(method = "lm", formula = y~log(x), se = F, size = 0.7, color = "skyblue3") +
-  geom_smooth(method = "lm", se = F, linetype = "dashed", size = 0.7, color = "orange") +
+  geom_smooth(method = "lm", formula = y~log(x), se = F, size = 0.7, color = "skyblue4") +
+  geom_smooth(method = "lm", se = F, linetype = "dashed", size = 0.7, color = "sienna2") +
+  geom_smooth(method = "lm", formula = y~I(1/x), linetype = 4, se = F, size = 0.7, color = "pink3") +
   geom_point(aes(color = DataSource, shape = CellClass), size = 2) +
-  annotate("text", x = 300, y = 0.02, fontface = 2, label = paste0('Log-linear: R^2 = ', round(loglm$r.squared, 3)), color = "skyblue3") +
-  annotate('text', x = 300, y = 0.06, label = paste0("Linear: R^2 = ", round(lm$r.squared, 3)), color = "orange") +
+  annotate("text", x = annot_x, y = 0.02, fontface = 2, label = paste0('y~log(x): R^2 = ', round(loglm$r.squared, 3)), color = "skyblue4") +
+  annotate('text', x = annot_x, y = 0.06, label = paste0("y~x: R^2 = ", round(lm$r.squared, 3)), color = "sienna2") +
+  annotate("text", x = annot_x, y = 0.10, label = paste0('y~1/x: R^2 = ', round(invlm$r.squared, 3)), color = "pink3") +
   ylab("Prob mass at 1") + xlab("N cells") + ylim(0, 1)
 ggsave(paste0("plots/estim_emiBetaPrior_inflated/point_fittedPrior_methPop_w_vs_Ncell_",nrow(smr),"subtypes.png"), width = 6, height = 5)
 
 (loglm <- summary(lm(alpha_m ~ log(N_cell), data = smr)))
+(invlm <- summary(lm(alpha_m ~ I(1/N_cell), data = smr)))
 (lm <- summary(lm(alpha_m ~ N_cell, data = smr)))
 smr %>%
   ggplot(aes(N_cell, alpha_m)) +
-  geom_smooth(method = "lm", formula = y~log(x), se = F, size = 0.7, color = "skyblue3") +
-  geom_smooth(method = "lm", se = F, linetype = "dashed", size = 0.7, color = "orange") +
+  geom_smooth(method = "lm", formula = y~log(x), se = F, size = 0.7, color = "skyblue4") +
+  geom_smooth(method = "lm", se = F, linetype = "dashed", size = 0.7, color = "sienna2") +
+  geom_smooth(method = "lm", formula = y~I(1/x), linetype = 4, se = F, size = 0.7, color = "pink3") +
   geom_point(aes(color = DataSource, shape = CellClass), size = 2) +
-  annotate("text", x = 350, y = 7, fontface = 2, label = paste0('Log-linear model: R^2 = ', round(loglm$r.squared, 3)), color = "skyblue3") +
-  annotate('text', x = 350, y = 7.2, label = paste0("Linear model: R^2 = ", round(lm$r.squared, 3)), color = "orange") +
+  annotate("text", x = annot_x, y = 6.8, fontface = 2, label = paste0('y~log(x): R^2 = ', round(loglm$r.squared, 3)), color = "skyblue4") +
+  annotate('text', x = annot_x, y = 7, label = paste0("y~x: R^2 = ", round(lm$r.squared, 3)), color = "sienna2") +
+  annotate("text", x = annot_x, y = 7.2, label = paste0('y~1/x: R^2 = ', round(invlm$r.squared, 3)), color = "pink3") +
   ylab("Alpha") + xlab("N cells") + ylim(3.8, 7.2)
 ggsave(paste0("plots/estim_emiBetaPrior_inflated/point_fittedPrior_methPop_alpha_vs_Ncell_",nrow(smr),"subtypes.png"), width = 6, height = 5)
 
 (loglm <- summary(lm(beta_m ~ log(N_cell), data = smr)))
+(invlm <- summary(lm(beta_m ~ I(1/N_cell), data = smr)))
 (lm <- summary(lm(beta_m ~ N_cell, data = smr)))
 smr %>%
   ggplot(aes(N_cell, beta_m)) +
-  geom_smooth(method = "lm", formula = y~log(x), se = F, size = 0.7, color = "skyblue3") +
-  geom_smooth(method = "lm", se = F, linetype = "dashed", size = 0.7, color = "orange") +
+  geom_smooth(method = "lm", formula = y~log(x), se = F, size = 0.7, color = "skyblue4") +
+  geom_smooth(method = "lm", se = F, linetype = "dashed", size = 0.7, color = "sienna2") +
+  geom_smooth(method = "lm", formula = y~I(1/x), linetype = 4, se = F, size = 0.7, color = "pink3") +
   geom_point(aes(color = DataSource, shape = CellClass), size = 2) +
-  annotate("text", x = 350, y = 0.7, fontface = 2, label = paste0('Log-linear model: R^2 = ', round(loglm$r.squared, 3)), color = "skyblue3") +
-  annotate('text', x = 350, y = 0.73, label = paste0("Linear model: R^2 = ", round(lm$r.squared, 3)), color = "orange") +
+  annotate("text", x = annot_x, y = 0.68, fontface = 2, label = paste0('y~log(x): R^2 = ', round(loglm$r.squared, 3)), color = "skyblue4") +
+  annotate('text', x = annot_x, y = 0.71, label = paste0("y~x: R^2 = ", round(lm$r.squared, 3)), color = "sienna2") +
+  annotate("text", x = annot_x, y = 0.74, label = paste0('y~1/x: R^2 = ', round(invlm$r.squared, 3)), color = "pink3") +
   ylab("Beta") + xlab("N cells") + ylim(0.25,0.75)
 ggsave(paste0("plots/estim_emiBetaPrior_inflated/point_fittedPrior_methPop_beta_vs_Ncell_",nrow(smr),"subtypes.png"), width = 6, height = 5)
 
 smr %>%
-  ggplot(aes(N_cell, alpha_u/(alpha_u+beta_u))) +
+  ggplot(aes(N_cell, mean_u)) +
   geom_point(aes(color = DataSource, shape = CellClass), size = 2) 
 smr %>%
-  ggplot(aes(N_cell, alpha_m/(alpha_m+beta_m))) +
+  ggplot(aes(N_cell, mean_m)) +
   geom_point(aes(color = DataSource, shape = CellClass), size = 2) 
 smr %>%
-  ggplot(aes(N_cell, alpha_u*beta_u/(alpha_u+beta_u)^2/(alpha_u+beta_u+1))) +
+  ggplot(aes(N_cell, var_u)) +
   geom_point(aes(color = DataSource, shape = CellClass), size = 2) 
 smr %>%
-  ggplot(aes(N_cell, alpha_m/(alpha_m+beta_m))) +
-  geom_point(aes(color = DataSource, shape = CellClass), size = 2)
+  ggplot(aes(N_cell, var_m)) +
+  geom_point(aes(color = DataSource, shape = CellClass), size = 2) 
 
 
 ########################
@@ -274,13 +295,13 @@ smr %>%
 
 ## unmeth subpop:
 smr <- fread("data/interim/estim_emiBetaPrior_inflated/emiBetaPrior_subtype_summary.csv")
-# lm(w1_u ~ N_cell, data = smr) # w
-# lm(alpha_u ~ N_cell, data = smr) # beta_1 (stops changing once w1_u hits 1)
-# lm(beta_u ~ 1, data = smr) # beta_2
+lm(w_u ~ log(N_cell), data = smr) 
+lm(alpha_u ~ log(N_cell), data = smr) 
+lm(beta_u ~ log(N_cell), data = smr)
 
 ## meth subpop:
 smr <- fread("data/interim/estim_emiBetaPrior_inflated/emiBetaPrior_subtype_summary.csv")
-# lm(w1_m ~ N_cell, data = smr) # w
-# lm(alpha_m ~ N_cell, data = smr) # beta_1 (stops changing once w1_u hits 1)
-# lm(beta_m ~ 1, data = smr) # beta_2
+lm(w_m ~ log(N_cell), data = smr)
+lm(alpha_m ~ log(N_cell), data = smr)
+lm(beta_m ~ log(N_cell), data = smr)
 
