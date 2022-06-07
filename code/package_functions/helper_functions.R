@@ -35,93 +35,27 @@ suppressPackageStartupMessages(library(TailRank)) ## to load beta-binomial densi
 
 
 
-# ==== Deprecated ====
-# .logBeta <- function(a, b, REFARRAY) ### compute log of Beta function (not density)
-#   .logFactorial(a - 1, REFARRAY) + .logFactorial(b - 1, REFARRAY) - .logFactorial(a + b - 1, REFARRAY)
-# 
-# .logBetaBinom <- function(n, k, a, b, REFARRAY) # compute log of beta-binomial density function
-#   .logChoose(n, k, REFARRAY) + .logBeta(k + a, n - k + b, REFARRAY) - .logBeta(a, b, REFARRAY)
-# 
-# .priorParams <- function(N, type){
-#   ### Estimates parameters in beta-mixture priors based on number of cells.
-#   ### `N` is the number of cells in the grouping.
-#   ### `type` should be 'u' or 'm' indicating grouping type.
-#   ### NOTE: Only recommended when N are small (say <1000); if N
-#   ###       is large, either re-estimate by user or use DXM prior
-# 
-#   stopifnot("`type` should be either 'u' or 'm'." = type %in% c('u','m'))
-#   stopifnot("`N` should be positive." = N > 0)
-#   smr <- fread(here::here("data/interim/estim_emiBetaPrior/emiBetaPrior_subtype_summary_without_subtypePDF.csv"))
-# 
-#   if(type == 'u'){
-#     model_w1 <- lm(w1_u ~ N_cell, data = smr)
-#     w1 <- model_w1 %>% predict(newdata = data.frame(N_cell = N)) %>% min(0.99)
-#     maxN <- (0.99 - model_w1$coef[1]) / model_w1$coef[2] # critical N_cell that reaches w1 == 0.99
-# 
-#     param1 <- lm(param1_u ~ N_cell, data = smr) %>% predict(newdata = data.frame(N_cell = min(maxN, N)))
-#     param2 <- lm(param2_u ~ 1, data = smr) %>% predict(newdata = data.frame(N_cell = N))
-#   } else {
-#     model_w1 <- lm(w1_m ~ N_cell, data = smr)
-#     w1 <- model_w1 %>% predict(newdata = data.frame(N_cell = N)) %>% min(0.99)
-#     maxN <- (0.99 - model_w1$coef[1]) / model_w1$coef[2] # critical N_cell that reaches w1 == 0.99
-# 
-#     param1 <- lm(param1_m ~ N_cell, data = smr) %>% predict(newdata = data.frame(N_cell = min(maxN, N)))
-#     param2 <- lm(param2_m ~ 1, data = smr) %>% predict(newdata = data.frame(N_cell = N))
-#   }
-# 
-#   return(c(w1, round(param1), round(param2)) %>% unname())
-#   # return(c(w1, max(round(param1), 4), round(param2)) %>% unname())
-# }
-# 
-# 
-# .calMethArray <- function(par_u, par_m, REFARRAY){
-#   ### To store the values when n or k equals 0, we add one dimension for both row and column
-#   ### thus the betaBinom(n, k) - i.e. k methylated from n reads - is METHARRAY[n+1, k+1] or UNMETHARRAY[n+1, k+1] 
-#   ### `par_u` should be 3 parameters in beta-mixture prior (unmethylated): c(w_1, beta_1, beta_2), where the mixture is w_1*dbeta(1, beta_1) + (1-w_1)*dbeta(1, beta_2)
-#   ### `par_m` should be 3 parameters in beta-mixture prior (methylated): c(w_1, alpha_1, alpha_2), where the mixture is w_1*dbeta(alpha_1, 1) + (1-w_1)*dbeta(alpha_2, 1)
-#   
-#   max_size <- length(REFARRAY)
-# 
-#   METHARRAY <- matrix(data = 0, nrow = max_size+1, ncol = max_size+1)
-#   UNMETHARRAY <- matrix(data = 0, nrow = max_size+1, ncol = max_size+1)
-#   for (n in 1:(max_size+1)) {
-#     for (k in 1:n) {
-#       UNMETHARRAY[n, k] <- par_u[1] * exp(.logBetaBinom(n-1, k-1, 1, par_u[2], REFARRAY)) +
-#         (1-par_u[1]) * exp(.logBetaBinom(n-1, k-1, 1, par_u[3], REFARRAY))
-#       METHARRAY[n, k] <- par_m[1] * exp(.logBetaBinom(n-1, k-1, par_m[2], 1, REFARRAY)) +
-#         (1-par_m[1]) * exp(.logBetaBinom(n-1, k-1, par_m[3], 1, REFARRAY))
-#     }
-#   }
-#   rownames(METHARRAY) <- colnames(METHARRAY) <- 0:max_size
-#   rownames(UNMETHARRAY) <- colnames(UNMETHARRAY) <- 0:max_size
-#   
-#   return(list(METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY))
-# } 
-
-
-.priorParams <- function(N, type){
+.priorParams <- function(med_cov, type){
   ### Estimates parameters in beta-mixture priors based on number of cells.
-  ### `N` is the number of cells in the grouping.
+  ### `med_cov` is the median across-cell coverage in the input dataset.
   ### `type` should be 'u' or 'm' indicating grouping type.
-  ### NOTE: Only recommended interpolation, say when N are small (say <1000); if N
-  ###       is large, either re-estimate by user or use DXM prior
 
   stopifnot("`type` should be either 'u' or 'm'." = type %in% c('u','m'))
-  stopifnot("`N` should be positive." = N > 0)
+  stopifnot("`med_cov` should be positive." = med_cov > 0)
   smr <- fread(here::here("data/interim/estim_emiBetaPrior_inflated/emiBetaPrior_subtype_summary.csv"))
 
   if(type == 'u'){
-    model_w <- lm(w_u ~ N_cell, data = smr)
-    w <- model_w %>% predict(newdata = data.frame(N_cell = N)) %>% max(0)
+    model_w <- lm(w_u ~ log(med_cov), data = smr)
+    w <- model_w %>% predict(newdata = data.frame(med_cov = med_cov)) %>% max(0) %>% min(1)
 
-    alpha <- lm(alpha_u ~ I(1/N_cell), data = smr) %>% predict(newdata = data.frame(N_cell = N)) #%>% max(0.5)
-    beta <- lm(beta_u ~ I(1/N_cell), data = smr) %>% predict(newdata = data.frame(N_cell = N)) #%>% max(3)
+    alpha <- lm(alpha_u ~ I(1/med_cov), data = smr) %>% predict(newdata = data.frame(med_cov = med_cov)) #%>% max(0.5)
+    beta <- lm(beta_u ~ I(1/med_cov), data = smr) %>% predict(newdata = data.frame(med_cov = med_cov)) #%>% max(3)
   } else {
-    model_w <- lm(w_m ~ log(N_cell), data = smr)
-    w <- model_w %>% predict(newdata = data.frame(N_cell = N)) %>% max(0)
+    model_w <- lm(w_m ~ log(med_cov), data = smr)
+    w <- model_w %>% predict(newdata = data.frame(med_cov = med_cov)) %>% max(0) %>% min(1)
 
-    alpha <- lm(alpha_m ~ log(N_cell), data = smr) %>% predict(newdata = data.frame(N_cell = N)) %>% max(1)
-    beta <- lm(beta_m ~ log(N_cell), data = smr) %>% predict(newdata = data.frame(N_cell = N)) %>% max(0.01)
+    alpha <- lm(alpha_m ~ I(1/med_cov), data = smr) %>% predict(newdata = data.frame(med_cov = med_cov)) %>% max(1)
+    beta <- lm(beta_m ~ I(1/med_cov), data = smr) %>% predict(newdata = data.frame(med_cov = med_cov)) %>% max(0.01)
   }
 
   return(c(w, alpha, beta) %>% unname())
@@ -136,7 +70,7 @@ suppressPackageStartupMessages(library(TailRank)) ## to load beta-binomial densi
   ### `par_m` should be 3 parameters in beta-mixture prior (methylated): c(w_1, alpha_1, alpha_2), where the mixture is w_1*dbeta(alpha_1, 1) + (1-w_1)*dbeta(alpha_2, 1)
   
   # max_size <- length(REFARRAY)
-  print(par_u); print(par_m)
+  # print(par_u); print(par_m)
   METHARRAY <- matrix(data = 0, nrow = max_size+1, ncol = max_size+1)
   UNMETHARRAY <- matrix(data = 0, nrow = max_size+1, ncol = max_size+1)
   for (n in 1:(max_size+1)) {
@@ -238,7 +172,8 @@ tp0 <- read_rds(here::here("code/package_functions/transitProbs_27subtypes_1350c
 
 ### `probs` should be a data.frame of 4 columns [P(0|0),P(0|1),P(1|0),P(1|1)], while row number represents CpG-CpG distance
 ### `pos` is an atomic vector of genomic positions which shall be used to compute CpG-CpG distances and load transition probs
-.loadTransitProbs <- function(pos, all_probs = tp0@transit_probs) all_probs[pmin(nrow(all_probs), diff(pos)), ]
+.loadTransitProbs <- function(pos, all_probs = tp0@transit_probs) 
+  all_probs[pmin(nrow(all_probs), diff(pos)), ]
 
 
 
@@ -310,15 +245,16 @@ tp0 <- read_rds(here::here("code/package_functions/transitProbs_27subtypes_1350c
 
 
 .Viterbi2Grp <- function(total_reads, meth_reads, trans_probs, pi1, 
-                         REFARRAY, CHOICEARRAY, METHARRAY, UNMETHARRAY){ # should be applied on region data
-  ### trans_probs should have four columns:  [P(0|0), P(0|1), P(1|0), P(1|1)]
+                         REFARRAY, CHOICEARRAY, METHARRAY, UNMETHARRAY){ 
+  ### should be applied on 1 region
+  ### `trans_probs` should have four columns:  [P(0|0), P(0|1), P(1|0), P(1|1)]
   
   if (any(c(length(total_reads), length(meth_reads)) != nrow(trans_probs)+1))
     stop("Wrong dimensions of input data.")
   
   ### Three states are encoded as: `0`->(0,0), `1`->(1,0), `2`->(1,1)
   state_nums <- 0:2 # only allow three states 
-  num_group <- 2 # assuming 2 subgroupings
+  num_group <- 2 # assuming 2 groupings
   num_CpG <- length(total_reads)
   
   ### Memory used during Viterbi computation and for storing results
@@ -340,6 +276,7 @@ tp0 <- read_rds(here::here("code/package_functions/transitProbs_27subtypes_1350c
             j_prior_bin <- .translateState2Grp(j_prior-1)[k]
             j_bin <- .translateState2Grp(j-1)[k]
             log_tr_prob <- log_tr_prob + log(trans_probs[i-1, j_prior_bin+2*j_bin+1])
+            # cat("k = ", k, "; log_tr_prob = ", log_tr_prob, "\n")
           }
           # cat(i, j, j_prior, log_em_prob, log_tr_prob, V[i-1, j_prior], "\n") # for debug
           oldVal <- V[i,j]
@@ -502,7 +439,7 @@ tp0 <- read_rds(here::here("code/package_functions/transitProbs_27subtypes_1350c
 
 .prevOptimMultiInit <- function(pos, total_reads, meth_reads, inits, tp = NULL, 
                                 epsilon = 1e-4, backtrack = T, eta = ifelse(backtrack, 0.05, 0.005), max_iter = 200, 
-                                CHOICEARRAY, METHLIST, UNMETHLIST){
+                                CHOICEARRAY, METHARRAY, UNMETHARRAY){
   loglik <- -Inf; optim_pi_1 <- -1
   for (i in 1:length(inits)) { 
     
@@ -510,8 +447,6 @@ tp0 <- read_rds(here::here("code/package_functions/transitProbs_27subtypes_1350c
     # if (i < length(inits) & optim_pi_1 >= inits[i]) next 
     
     pi1_init <- inits[i]
-    METHARRAY <- METHLIST[[i]]
-    UNMETHARRAY <- UNMETHLIST[[i]]
     res_temp <- .prevOptimSnglInit(pos, total_reads, meth_reads, pi1_init, tp, 
                                    epsilon, backtrack, eta, max_iter, 
                                    CHOICEARRAY, METHARRAY, UNMETHARRAY)
@@ -525,21 +460,21 @@ tp0 <- read_rds(here::here("code/package_functions/transitProbs_27subtypes_1350c
   return(res)
 }
 ### Tests:
-# ## Pre-computation
+## Pre-computation
 # N = 300; inits = seq(0.25,0.75,0.25)
-# list <- map(inits, ~ .calMethArray(par_u = .priorParams(round(N*(1-.x)), type = "u"),
-#                                    par_m = .priorParams(round(N*.x), type = "m"),
-#                                    max_size = N)
-# )
-# METHLIST <- map(list, ~.x$METHARRAY); UNMETHLIST <- map(list, ~.x$UNMETHARRAY) # to store the beta-binomial prob matrix (no log)
 # pos = cumsum(sample(100:2000, 10))
 # total_reads = sample(30:100, 10)
 # meth_reads = round(total_reads*runif(length(pos), 0.3, 0.8))
-# system.time(res <- .prevOptimMultiInit(pos, total_reads, meth_reads, inits = c(0.25,0.5,0.75), 
-#                                 backtrack = T, 
-#                                 CHOICEARRAY = CHOICEARRAY, METHLIST = METHLIST, UNMETHLIST = UNMETHLIST)
+# round(meth_reads / total_reads, 2)
+# list <- .calMethArray(par_u = .priorParams(median(total_reads), type = "u"),
+#                       par_m = .priorParams(median(total_reads), type = "m"),
+#                       max_size = max(total_reads))
+# METHARRAY <- list$METHARRAY; UNMETHARRAY <- list$UNMETHARRAY
+# system.time(res <- .prevOptimMultiInit(pos, total_reads, meth_reads, inits = c(0.25,0.5,0.75),
+#                                        backtrack = T,
+#                                        CHOICEARRAY = CHOICEARRAY, METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY)
 # ); res ### Seems backtrack=T helps with faster convergence when data is noisy
-# system.time(res <- .prevOptimMultiInit(pos, total_reads, meth_reads, inits = c(0.25,0.5,0.75), 
-#                                 backtrack = F, 
-#                                 CHOICEARRAY = CHOICEARRAY, METHLIST = METHLIST, UNMETHLIST = UNMETHLIST)
+# system.time(res <- .prevOptimMultiInit(pos, total_reads, meth_reads, inits = c(0.25,0.5,0.75),
+#                                 backtrack = F,
+#                                 CHOICEARRAY = CHOICEARRAY, METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY)
 # ); res
