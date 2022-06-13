@@ -1,0 +1,14 @@
+#!/bin/bash
+ 
+#PBS -l walltime=5:00:00,select=1:ncpus=4:mem=16gb
+#PBS -N ZIBB_unmeth
+#PBS -A st-kdkortha-1
+#PBS -m abe
+#PBS -M nshen7@stat.ubc.ca
+#PBS -o pbs_error_and_output/ZIBB_unmeth_pbs_output.txt
+#PBS -e pbs_error_and_output/ZIBB_unmeth_pbs_error.txt
+ 
+################################################################################
+ 
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/code/estim_emiBetaPrior_ZIBBregression/
+Rscript 2-1estim_emiBetaPrior_ZIBBregression_unmethClust.R

@@ -33,34 +33,69 @@ suppressPackageStartupMessages(library(TailRank)) ## to load beta-binomial densi
   return(CHOICEARRAY)
 }
 
+mod0_u <- readRDS("code/estim_emiBetaPrior_ZIBBregression/model_unmeth_ZIBBregression.rds")
+mod0_m <- readRDS("code/estim_emiBetaPrior_ZIBBregression/model_meth_BBregression.rds")
+data0_u <- readRDS("data/interim/estim_emiBetaPrior_ZIBBregression/emiBetaPrior_subtype_subsample_unmethClust.rds")
+data0_m <- readRDS("data/interim/estim_emiBetaPrior_ZIBBregression/emiBetaPrior_subtype_subsample_methClust.rds")
 
-
-.priorParams <- function(med_cov, type){
+.priorParams <- function(med_cov, type, 
+                         mod_u = mod0_u, mod_m = mod0_m, 
+                         data_u = data0_u, data_m = data0_m){
   ### Estimates parameters in beta-mixture priors based on number of cells.
   ### `med_cov` is the median across-cell coverage in the input dataset.
   ### `type` should be 'u' or 'm' indicating grouping type.
-
+  
   stopifnot("`type` should be either 'u' or 'm'." = type %in% c('u','m'))
   stopifnot("`med_cov` should be positive." = med_cov > 0)
-  smr <- fread(here::here("data/interim/estim_emiBetaPrior_inflated/emiBetaPrior_subtype_summary.csv"))
-
+  
   if(type == 'u'){
-    model_w <- lm(w_u ~ log(med_cov), data = smr)
-    w <- model_w %>% predict(newdata = data.frame(med_cov = med_cov)) %>% max(0) %>% min(1)
-
-    alpha <- lm(alpha_u ~ I(1/med_cov), data = smr) %>% predict(newdata = data.frame(med_cov = med_cov)) #%>% max(0.5)
-    beta <- lm(beta_u ~ I(1/med_cov), data = smr) %>% predict(newdata = data.frame(med_cov = med_cov)) #%>% max(3)
+    nu <- mod_u %>% predict(what = "nu", type = "response", 
+                            newdata = data.frame(med_cov = med_cov),
+                            data = data_u)
+    mu <- mod_u %>% predict(what = "mu", type = "response", 
+                            newdata = data.frame(med_cov = med_cov),
+                            data = data_u)
+    sigma <- mod_u %>% predict(what = "sigma", type = "response", 
+                               newdata = data.frame(med_cov = med_cov),
+                               data = data_u)
+    return(c(nu = nu, mu = mu, sigma = sigma))
   } else {
-    model_w <- lm(w_m ~ log(med_cov), data = smr)
-    w <- model_w %>% predict(newdata = data.frame(med_cov = med_cov)) %>% max(0) %>% min(1)
-
-    alpha <- lm(alpha_m ~ I(1/med_cov), data = smr) %>% predict(newdata = data.frame(med_cov = med_cov)) %>% max(1)
-    beta <- lm(beta_m ~ I(1/med_cov), data = smr) %>% predict(newdata = data.frame(med_cov = med_cov)) %>% max(0.01)
+    mu <- mod_m %>% predict(what = "mu", type = "response", 
+                            newdata = data.frame(med_cov = med_cov),
+                            data = data_m)
+    sigma <- mod_m %>% predict(what = "sigma", type = "response", 
+                               newdata = data.frame(med_cov = med_cov),
+                               data = data_m)
+    return(c(mu = mu, sigma = sigma))
   }
-
-  return(c(w, alpha, beta) %>% unname())
 }
 
+# .priorParams <- function(med_cov, type){
+#   ### Estimates parameters in beta-mixture priors based on number of cells.
+#   ### `med_cov` is the median across-cell coverage in the input dataset.
+#   ### `type` should be 'u' or 'm' indicating grouping type.
+# 
+#   stopifnot("`type` should be either 'u' or 'm'." = type %in% c('u','m'))
+#   stopifnot("`med_cov` should be positive." = med_cov > 0)
+#   smr <- fread(here::here("data/interim/estim_emiBetaPrior_inflated/emiBetaPrior_subtype_summary.csv"))
+# 
+#   if(type == 'u'){
+#     model_w <- lm(w_u ~ log(med_cov), data = smr)
+#     w <- model_w %>% predict(newdata = data.frame(med_cov = med_cov)) %>% max(0) %>% min(1)
+# 
+#     alpha <- lm(alpha_u ~ I(1/med_cov), data = smr) %>% predict(newdata = data.frame(med_cov = med_cov)) #%>% max(0.5)
+#     beta <- lm(beta_u ~ I(1/med_cov), data = smr) %>% predict(newdata = data.frame(med_cov = med_cov)) #%>% max(3)
+#   } else {
+#     model_w <- lm(w_m ~ log(med_cov), data = smr)
+#     w <- model_w %>% predict(newdata = data.frame(med_cov = med_cov)) %>% max(0) %>% min(1)
+# 
+#     alpha <- lm(alpha_m ~ I(1/med_cov), data = smr) %>% predict(newdata = data.frame(med_cov = med_cov)) %>% max(1)
+#     beta <- lm(beta_m ~ I(1/med_cov), data = smr) %>% predict(newdata = data.frame(med_cov = med_cov)) %>% max(0.01)
+#   }
+# 
+#   return(c(w, alpha, beta) %>% unname())
+# }
+# 
 
 # .calMethArray <- function(par_u, par_m, REFARRAY){
 .calMethArray <- function(par_u, par_m, max_size){
@@ -75,24 +110,23 @@ suppressPackageStartupMessages(library(TailRank)) ## to load beta-binomial densi
   UNMETHARRAY <- matrix(data = 0, nrow = max_size+1, ncol = max_size+1)
   for (n in 1:(max_size+1)) {
     for (k in 1:n) {
-      UNMETHARRAY[n,k] <- ifelse(k == 1, 
-                                 yes = par_u[1] + (1-par_u[1])*dbb(0, n-1, par_u[2], par_u[3]), 
-                                 no = (1-par_u[1])*dbb(k-1, n-1, par_u[2], par_u[3]))
-      METHARRAY[n,k] <- ifelse(k == n,
-                               yes = par_m[1] + (1-par_m[1])*dbb(n-1, n-1, par_m[2], par_m[3]),
-                               no = (1-par_m[1])*dbb(k-1, n-1, par_m[2], par_m[3])) 
-      # UNMETHARRAY[n, k] <- par_u[1] * exp(.logBetaBinom(n-1, k-1, 1, par_u[2], REFARRAY)) +
-      #   (1-par_u[1]) * exp(.logBetaBinom(n-1, k-1, 1, par_u[3], REFARRAY))
-      # METHARRAY[n, k] <- par_m[1] * exp(.logBetaBinom(n-1, k-1, par_m[2], 1, REFARRAY)) +
-      #   (1-par_m[1]) * exp(.logBetaBinom(n-1, k-1, par_m[3], 1, REFARRAY))
+      UNMETHARRAY[n,k] <- dZIBB(x = k-1, mu = par_u['mu'], sigma = par_u['sigma'],
+                                nu = par_u['nu'], bd = n-1)
+      METHARRAY[n,k] <- dBB(x = k-1, mu = par_m['mu'], sigma = par_m['sigma'],
+                            bd = n-1)
+      # UNMETHARRAY[n,k] <- ifelse(k == 1, 
+      #                            yes = par_u[1] + (1-par_u[1])*dbb(0, n-1, par_u[2], par_u[3]), 
+      #                            no = (1-par_u[1])*dbb(k-1, n-1, par_u[2], par_u[3]))
+      # METHARRAY[n,k] <- ifelse(k == n,
+      #                          yes = par_m[1] + (1-par_m[1])*dbb(n-1, n-1, par_m[2], par_m[3]),
+      #                          no = (1-par_m[1])*dbb(k-1, n-1, par_m[2], par_m[3])) 
     }
   }
   rownames(METHARRAY) <- colnames(METHARRAY) <- 0:max_size
   rownames(UNMETHARRAY) <- colnames(UNMETHARRAY) <- 0:max_size
   
   return(list(METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY))
-} 
-
+}
 
 # ==== Functions for computing emission probability ====
 

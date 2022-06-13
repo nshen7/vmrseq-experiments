@@ -15,37 +15,47 @@ source(here::here("code/package_functions/helper_functions.R"))
 #### Example ####
 
 ## pre-computing
-K <- 10; lambda <- 20; N <- 100; gamma <- 0.9; sigma <- 0; seed <- 1001
-pi1 <- 0.7; inits <- c(0.25, 0.5, 0.75)
-pos <- .sampGenomCoord(K, lambda, seed)
+K <- 15; lambda <- 20; N <- 100; gamma <- 0.93; sigma <- 0.05; seed <- 1000
+# inits <- c(0.25, 0.5, 0.75)
+inits <- c(0.1, 0.5, 0.9)
 REFARRAY <- .calRefArray(max_size = N)
 CHOICEARRAY <- .calChoiceArray(REFARRAY)
 list <- .calMethArray(par_u = .priorParams(med_cov = N*(1-gamma), type = "u"),
                       par_m = .priorParams(med_cov = N*(1-gamma), type = "m"),
                       max_size = N)
 METHARRAY <- list$METHARRAY; UNMETHARRAY <- list$UNMETHARRAY
+pos <- .sampGenomCoord(K, lambda, seed)
 
 ## 1 grouping
+seed <- 1
 (state_seq_1g <- .sampHiddState1Grp(pos, seed))
 MF_1g <- .sampScMeth1Grp(state_seq_1g, N, gamma, sigma, seed)
 (meth_reads <- rowSums(MF_1g, na.rm = T))
 (total_reads <- rowSums(!is.na(MF_1g)))
 round(meth_reads / total_reads, 2)
+# plot(pos, meth_reads/total_reads, ylim = c(0,1)); sum(meth_reads/total_reads < 1)
+# plot(pos, values(cells.se)$cell_MF[201:300], ylim = c(0,1)); sum(values(cells.se)$cell_MF[201:300] < 1)
 
 .Viterbi1Grp(pos, total_reads, meth_reads, tp = NULL, METHARRAY, UNMETHARRAY)
 .prevOptimMultiInit(pos, total_reads, meth_reads, inits,  backtrack = T,
-                    CHOICEARRAY = CHOICEARRAY, METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY)
+                    CHOICEARRAY = CHOICEARRAY, 
+                    METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY)
 
 ## 2 grouping
+pi1 <- 0.3; seed <- 1
 (state_seq_2g <- .sampHiddState2Grp(pos, seed))
 MF_2g <- .sampScMeth2Grp(state_seq_2g, pi1, N, gamma, sigma, seed)
 (meth_reads <- rowSums(MF_2g, na.rm = T))
 (total_reads <- rowSums(!is.na(MF_2g)))
 round(meth_reads / total_reads, 2)
+plot(pos, meth_reads/total_reads, ylim = c(0,1))
 
-.Viterbi1Grp(pos, total_reads, meth_reads, tp = NULL, METHARRAY, UNMETHARRAY)
-.prevOptimMultiInit(pos, total_reads, meth_reads, inits, backtrack = T,
-                    CHOICEARRAY = CHOICEARRAY, METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY)
+res_1g <- .Viterbi1Grp(pos, total_reads, meth_reads, tp = NULL, METHARRAY, UNMETHARRAY)
+res_1g[K, 2]
+res_2g <- .prevOptimMultiInit(pos, total_reads, meth_reads, inits, backtrack = T,
+                              CHOICEARRAY = CHOICEARRAY, 
+                              METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY)
+res_2g$loglik; res_2g$optim_pi_1; rowSums(res_2g$vit_path)
 
 
 # ==== utils ====
@@ -56,26 +66,21 @@ round(meth_reads / total_reads, 2)
 .sampBeta <- function(n, med_cov, state) {
   if (!state) {
     par_u <- .priorParams(med_cov = med_cov, type = "u")
-    # return(replicate(n, ifelse(runif(1)<=par_u[1], 
-    #                            yes = rbeta(1, 1, par_u[2]), 
-    #                            no = rbeta(1, 1, par_u[3])))
+    return(rBEZI(n, mu = par_u['mu'], sigma = par_u['sigma'], nu = par_u['nu']))
+    # return(replicate(n, ifelse(runif(1)<=par_u[1],
+    #                            yes = 0, 
+    #                            no = rbeta(1, par_u[2], par_u[3])))
     # )
-    return(replicate(n, ifelse(runif(1)<=par_u[1],
-                               yes = 0, 
-                               no = rbeta(1, par_u[2], par_u[3])))
-    )
   } else {
     par_m <- .priorParams(med_cov = med_cov, type = "m")
-    # return(replicate(n, ifelse(runif(1)<=par_m[1], 
-    #                            yes = rbeta(1, par_m[2], 1), 
-    #                            no = rbeta(1, par_m[3], 1)))
+    return(rBE(n, mu = par_m['mu'], sigma = par_m['sigma']))
+    # return(replicate(n, ifelse(runif(1)<=par_m[1],
+    #                            yes = 1,
+    #                            no = rbeta(1, par_m[2], par_m[3])))
     # )
-    return(replicate(n, ifelse(runif(1)<=par_m[1],
-                               yes = 1,
-                               no = rbeta(1, par_m[2], par_m[3])))
-    )
   }
 }
+
 
 ### Sample missing status (of N cells) for each CpG site
 .sampMiss1Cell <- function(N, gamma) sample(c(NA, 1), N, prob = c(gamma, 1-gamma), replace = T)
@@ -99,7 +104,7 @@ round(meth_reads / total_reads, 2)
   state_seq <- rep(-1, K) 
   
   ## Sample initial state 
-  state_seq[1] <- sample(0:1, 1, prob = c(0.23, 0.77))
+  state_seq[1] <- sample(0:1, 1, prob = c(0.2, 0.8))
   
   ## Sample subsequent states based on transition probability
   for (i in 2:K) {
@@ -119,9 +124,9 @@ round(meth_reads / total_reads, 2)
   ## sample missing status
   miss_mat <- t(replicate(K, .sampMiss1Cell(N, gamma)))
   ## sample probability of being methylated
-  nois_mat <- matrix(data = runif(n = N * K, -sigma, sigma), nrow = K, ncol = N)
-  p0_mat <- do.call(rbind, map(state_seq, ~.sampBeta(n = N, med_cov = N*(1-gamma), state = .x))) %>% as.matrix()
-  p_mat <- (p0_mat + nois_mat) %>% pmax(0) %>% pmin(1)
+  nois_seq <- rnorm(n = K, 0, sigma)
+  p0_seq <- map_dbl(state_seq, ~.sampBeta(n = 1, med_cov = N*(1-gamma), state = .x))
+  p_mat <- matrix(replicate(N, (p0_seq + nois_seq) %>% pmax(0) %>% pmin(1)), ncol = N)
   ## sample methylation levels
   MF <- apply(p_mat, c(1, 2), function(p) rbernoulli(1, p = p) %>% as.integer) * miss_mat
   
@@ -142,7 +147,7 @@ round(meth_reads / total_reads, 2)
   state_seq <- rep(-1, K) ## states in integer representation: `0`->(0,0), `1`->(1,0), `2`->(1,1)
   
   ## Sample initial state 
-  state_seq[1] <- sample(0:2, 1, prob = c(0.23^2, 0.23*0.77, 0.77^2) %>% .normTo1())
+  state_seq[1] <- sample(0:2, 1, prob = c(0.2^2, 0.2*0.8, 0.8^2) %>% .normTo1())
   
   ## Sample subsequent states based on transition probability
   for (i in 2:K) {
