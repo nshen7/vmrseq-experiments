@@ -10,6 +10,7 @@
 #   - Prevalence of the methylated grouping $\pi_1$ (only for 2-grouping case)
 
 suppressPackageStartupMessages(library(tidyverse))
+here::i_am("code/package_functions/helper_functions.R")
 source(here::here("code/package_functions/helper_functions.R"))
 
 #### Example ####
@@ -37,9 +38,9 @@ round(meth_reads / total_reads, 2)
 # plot(pos, values(cells.se)$cell_MF[201:300], ylim = c(0,1)); sum(values(cells.se)$cell_MF[201:300] < 1)
 
 .Viterbi1Grp(pos, total_reads, meth_reads, tp = NULL, METHARRAY, UNMETHARRAY)
-.prevOptimMultiInit(pos, total_reads, meth_reads, inits,  backtrack = T,
+system.time(.prevOptimMultiInit(pos, total_reads, meth_reads, inits,  backtrack = T,
                     CHOICEARRAY = CHOICEARRAY, 
-                    METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY)
+                    METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY))
 
 ## 2 grouping
 pi1 <- 0.3; seed <- 1
@@ -52,10 +53,11 @@ plot(pos, meth_reads/total_reads, ylim = c(0,1))
 
 res_1g <- .Viterbi1Grp(pos, total_reads, meth_reads, tp = NULL, METHARRAY, UNMETHARRAY)
 res_1g[K, 2]
-res_2g <- .prevOptimMultiInit(pos, total_reads, meth_reads, inits, backtrack = T,
+system.time(res_2g <- .prevOptimMultiInit(pos, total_reads, meth_reads, inits, backtrack = T,
                               CHOICEARRAY = CHOICEARRAY, 
-                              METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY)
+                              METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY))
 res_2g$loglik; res_2g$optim_pi_1; rowSums(res_2g$vit_path)
+## seems that backtracking works well when K is small, not so well when K is large
 
 
 # ==== utils ====

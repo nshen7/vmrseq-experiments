@@ -1,0 +1,620 @@
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE157868'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE157nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE157nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE157886'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE157nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE157nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE157980'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE157nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE157nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE158014'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE158nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE158nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE135596'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131519'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131557'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131554'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131951'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132060'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132498'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132503'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132114'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132126'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132463'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131913'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131570'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131757'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132101'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132639'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131192'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131326'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132541'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132571'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132135'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132405'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132484'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131771'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131430'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132601'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132609'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131393'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131501'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE131509'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE131nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132456'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE134635'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE134940'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE134490'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE135260'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE135641'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132676'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE134750'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE134967'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132700'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132710'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE134958'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE135139'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? ing
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE134793'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE134507'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? ing
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE134593'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? ing
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE135203'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE134882'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE134899'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE135234'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE135248'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE135252'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE135269'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE135nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132621'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE132629'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE132nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? Y
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE134474'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? 
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE134484'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE134nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+
+### Downloaded? 
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/raw_counts_Liu2021
+n='GSE158043'
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE158nnn/$n/suppl/${n}_RAW.tar"
+mkdir "${n}_RAW"
+tar -xvf "${n}_RAW.tar" -C "${n}_RAW"
+wget "https://ftp.ncbi.nih.gov/geo/series/GSE158nnn/$n/suppl/filelist.txt" -P "${n}_RAW"
+rm "${n}_RAW.tar"
+
+

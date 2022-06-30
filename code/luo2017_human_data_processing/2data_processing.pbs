@@ -1,6 +1,6 @@
 #!/bin/bash
  
-#PBS -l walltime=5:00:00,select=1:ncpus=16:mem=576gb
+#PBS -l walltime=2:00:00,select=1:ncpus=8:mem=192gb
 #PBS -N data_process
 #PBS -A st-kdkortha-1
 #PBS -m abe

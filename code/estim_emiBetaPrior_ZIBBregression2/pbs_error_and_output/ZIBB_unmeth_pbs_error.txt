@@ -1,0 +1,3 @@
+Error in loadNamespace(x) : there is no package called ‘here’
+Calls: setwd ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted

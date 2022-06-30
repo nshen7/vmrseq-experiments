@@ -1,3 +1,4 @@
+setwd(here::here())
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(TailRank)) ## to load beta-binomial density
 

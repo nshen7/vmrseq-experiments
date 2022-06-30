@@ -34,26 +34,40 @@ qcOnSE <- function(se_dir, min_cell_cov = 5, rm_allel_var = T){
 
 
 #### Perform QC ====
-read_dir <- "data/processed/processed_luo2017_human/subtype_hDL-1_144cells" # can't have '/' at the end
-write_dir <- paste0(read_dir, "_qced")
-saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)
+# !!! `read_dir` can't have '/' at the end
 
-read_dir <- "data/processed/processed_luo2017_human/subtype_hL5-4_162cells"
-write_dir <- paste0(read_dir, "_qced")
-saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)
+# read_dir <- "data/processed/processed_luo2017_human/subtype_hDL-1_144cells" 
+# write_dir <- paste0(read_dir, "_qced")
+# saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)
+# 
+# read_dir <- "data/processed/processed_luo2017_human/subtype_hL5-4_162cells"
+# write_dir <- paste0(read_dir, "_qced")
+# saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)
+# 
+# read_dir <- "data/processed/processed_luo2017_human/subtype_hNdnf_173cells"
+# write_dir <- paste0(read_dir, "_qced")
+# saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)
+# 
+# read_dir <- "data/processed/processed_luo2017_human/subtype_hPv-1_175cells"
+# write_dir <- paste0(read_dir, "_qced")
+# saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)
+# 
+# read_dir <- "data/processed/processed_luo2017_human/subtype_hSst-2_163cells"
+# write_dir <- paste0(read_dir, "_qced")
+# saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)
+# 
+# read_dir <- "data/processed/processed_luo2017_human/subtype_hL23_873cells"
+# write_dir <- paste0(read_dir, "_qced")
+# saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)
+# 
+# read_dir <- "data/processed/processed_luo2017_human/subtype_hVip-2_128cells"
+# write_dir <- paste0(read_dir, "_qced")
+# saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)
+# 
+# read_dir <- "data/processed/processed_luo2017_human/subtype_hL4_109cells"
+# write_dir <- paste0(read_dir, "_qced")
+# saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)
 
-read_dir <- "data/processed/processed_luo2017_human/subtype_hNdnf_173cells"
-write_dir <- paste0(read_dir, "_qced")
-saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)
-
-read_dir <- "data/processed/processed_luo2017_human/subtype_hPv-1_175cells"
-write_dir <- paste0(read_dir, "_qced")
-saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)
-
-read_dir <- "data/processed/processed_luo2017_human/subtype_hSst-2_163cells"
-write_dir <- paste0(read_dir, "_qced")
-saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)
-
-read_dir <- "data/processed/processed_luo2017_human/subtype_hL23_873cells"
+read_dir <- "data/processed/processed_luo2017_human/subtype_hL6-2_107cells"
 write_dir <- paste0(read_dir, "_qced")
 saveHDF5SummarizedExperiment(qcOnSE(read_dir), dir = write_dir, replace = T)

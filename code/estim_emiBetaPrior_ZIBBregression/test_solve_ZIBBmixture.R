@@ -1,3 +1,4 @@
+library(gamlss)
 dir <- "data/processed/processed_liu2021/"
 file_list <- list.files(dir)
 file_name <- file_list[8]
@@ -8,8 +9,8 @@ sample_n <- 10000; set.seed(2021)
 index <- sample(1:nrow(cells.se), sample_n)
 sub_dat <- data.frame(
   DataSource = "Liu2021",
-  CellClass = info_row$CellClass,
-  SubType = info_row$SubType,
+  # CellClass = info_row$CellClass,
+  # SubType = info_row$SubType,
   N_cell = ncol(cells.se),
   med_cov = median(values(cells.se)$cell_cov),
   cell_cov = values(cells.se)$cell_cov[index],
@@ -24,11 +25,11 @@ sub_dat <- sub_dat %>%
 for (i in 1:10) {
   mod_u <- gamlss(y_u ~ 1, data = sub_dat %>% filter(Cluster==0), family = ZIBB, 
                   trace = F, n.cyc = 100)
-  plot(mod_u)
+  # plot(mod_u)
   cat("u", fitted(mod_u, "nu")[1], fitted(mod_u, "mu")[1], unname(fitted(mod_u, "sigma")[1]), "\n")
   mod_m <- gamlss(y_m ~ 1, data = sub_dat %>% filter(Cluster==1), family = ZIBB, 
                   trace = F, n.cyc = 100)
-  plot(mod_m)
+  # plot(mod_m)
   cat("m", fitted(mod_m, "nu")[1], fitted(mod_m, "mu")[1], unname(fitted(mod_m, "sigma")[1]), "\n")
   
   c_prior <- unname(table(sub_dat$Cluster) / nrow(sub_dat))
@@ -47,6 +48,13 @@ for (i in 1:10) {
     mutate(Cluster = map_int(p_u, ~ sample(0:1, 1, prob = c(.x, 1-.x))))
   # hist(sub_dat$cell_MF[sub_dat$Cluster==0], xlim = c(0,1), breaks = 100, freq = F)
   # hist(sub_dat$cell_MF[sub_dat$Cluster==1], xlim = c(0,1), breaks = 100, freq = F)
+  
+  loglik_u <- with(sub_dat %>% filter(Cluster==0), sum(log(p0_u)))
+  loglik_m <- with(sub_dat %>% filter(Cluster==1), sum(log(p0_m)))
+  loglik <- sum(loglik_u + loglik_m)
+  print(round(loglik))
 }
 
-## Issue: sites with MF==1 might be assigned to unmethylated cluster.
+## Issue 1: sites with MF==1 might be assigned to unmethylated cluster.
+## Issue 2: likelihood not converging
+
