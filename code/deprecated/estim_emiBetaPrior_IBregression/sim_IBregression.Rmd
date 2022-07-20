@@ -1,0 +1,127 @@
+---
+title: "Simulation of Inflated Beta Regression"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    number_sections: true
+---
+
+```{r setup, message=FALSE, warning=FALSE}
+library(gamlss)
+library(gamlss.inf)
+library(tidyverse)
+```
+
+# Generate predictor `x`
+```{r}
+set.seed(1234)
+x <- sample((-5):5, 10000, replace = T)
+hist(x) # Distribution of x
+```
+
+# Zero-inflated simulation
+
+## Generate zero-inflated beta response
+```{r}
+set.seed(1234)
+y0 <- rBEZI(10000, mu = 0.01*x + 0.15, sigma = 1 / (0.03*x+0.35), nu = 0.01*x + 0.4)
+MASS::truehist(y0) # Distribution of y0
+sum(y0==0)/length(y0) # Proportion of 0's in y0
+
+data.frame(x, y0) %>% # Distribution of y0 conditioning on x
+  ggplot(aes(as.factor(x), y0)) + geom_violin()
+data.frame(x, y0) %>% filter(y0 != 0) %>% # Distribution of non-zero y0 conditioning on x
+  ggplot(aes(as.factor(x), y0)) + geom_violin()
+```
+
+## Run zero-inflated beta regression
+
+Observation: Estimated parameters (shown in summary) are close to the true values, while quantile residuals in diagnostic plots are almost all negative values and the QQ-plot is also deviated.
+```{r}
+model0 <- gamlss(y0 ~ x, sigma.fo = ~ x, nu.fo = ~ x, 
+              family = BEZI(nu.link = "identity",mu.link = "identity", sigma.link = "inverse"))
+summary(model0)
+plot(model0)
+```
+
+## Compare IB regression fit to MOM fit
+```{r}
+y0_smr <- data.frame(x, y0) %>%
+  mutate(nu_fit = fitted(model0, "nu"),
+         mu_fit = fitted(model0, "mu"),
+         sigma_fit = fitted(model0, "sigma")) %>%
+  group_by(x) %>% 
+  summarise(weight = sum(y0==0) / length(y0), 
+            mean = mean(y0[y0>0]), 
+            var = var(y0[y0>0]),
+            nu_fit = max(nu_fit),
+            mu_fit = max(mu_fit),
+            sigma_fit = max(sigma_fit))
+
+y0_smr %>% 
+  ggplot(aes(weight, nu_fit, color = x)) + geom_point() + 
+  geom_abline(slope = 1, intercept = 0, color = "red") + 
+  xlim(0.3, 0.5) + ylim(0.3, 0.5) + xlab("MOM estimate of nu") + ylab("Estimate of nu from inflated beta regression")
+y0_smr %>% 
+  ggplot(aes(mean, mu_fit, color = x)) + geom_point() + 
+  geom_abline(slope = 1, intercept = 0, color = "red") + 
+  xlim(0.08, 0.21) + ylim(0.08, 0.21) + xlab("MOM estimate of mu") + ylab("Estimate of mu from inflated beta regression")
+y0_smr %>% 
+  ggplot(aes(mu_fit*(1-mu_fit)/var - 1, sigma_fit, color = x)) + geom_point() + 
+  geom_abline(slope = 1, intercept = 0, color = "red") + 
+  xlim(1,7) + ylim(1, 7) + xlab("MOM estimate of sigma") + ylab("Estimate of sigma from inflated beta regression")
+```
+
+# One-inflated simulation
+## Generate one-inflated beta response
+```{r}
+set.seed(1234)
+y1 <- rBEOI(10000, mu = 0.01*x + 0.8, sigma = 1 / (0.03*x+0.35), nu = 0.02*x + 0.4)
+MASS::truehist(y1) # Distribution of y1
+sum(y1 == 1) / length(y1) # Proportion of 1's in y1
+data.frame(x, y1) %>% # Distribution of y1 conditioning on x
+  ggplot(aes(as.factor(x), y1)) + geom_violin()
+data.frame(x, y1) %>% filter(y1 != 1) %>% # Distribution of non-one y1 conditioning on x
+  ggplot(aes(as.factor(x), y1)) + geom_violin()
+```
+
+## Run one-inflated beta regression
+
+Observation: Estimated parameters (shown in summary) are close to the true values, while quantile residuals in diagnostic plots are almost all negative values and the QQ-plot is also deviated.
+```{r}
+model1 <- gamlss(y1 ~ x, sigma.fo = ~ x, nu.fo = ~ x, 
+              family = BEOI(nu.link = "identity",mu.link = "identity", sigma.link = "inverse"))
+summary(model1)
+plot(model1)
+```
+
+
+## Compare IB regression fit to MOM fit
+```{r}
+y1_smr <- data.frame(x, y1) %>%
+  mutate(nu_fit = fitted(model1, "nu"),
+         mu_fit = fitted(model1, "mu"),
+         sigma_fit = fitted(model1, "sigma")) %>%
+  group_by(x) %>% 
+  summarise(weight = sum(y1==1) / length(y1), 
+            mean = mean(y1[y1<1]), 
+            var = var(y1[y1<1]),
+            nu_fit = max(nu_fit),
+            mu_fit = max(mu_fit),
+            sigma_fit = max(sigma_fit))
+
+y1_smr %>% 
+  ggplot(aes(weight, nu_fit, color = x)) + geom_point() + 
+  geom_abline(slope = 1, intercept = 0, color = "red") + 
+  xlim(0.25, 0.55) + ylim(0.25, 0.55) + xlab("MOM estimate of nu") + ylab("Estimate of nu from inflated beta regression")
+y1_smr %>% 
+  ggplot(aes(mean, mu_fit, color = x)) + geom_point() + 
+  geom_abline(slope = 1, intercept = 0, color = "red") + 
+  xlim(0.73, 0.85) + ylim(0.73, 0.85) + xlab("MOM estimate of mu") + ylab("Estimate of mu from inflated beta regression")
+y1_smr %>% 
+  ggplot(aes(mu_fit*(1-mu_fit)/var - 1, sigma_fit, color = x)) + geom_point() + 
+  geom_abline(slope = 1, intercept = 0, color = "red") + 
+  xlim(1.8, 5.5) + ylim(1.8, 5.5) + xlab("MOM estimate of sigma") + ylab("Estimate of sigma from inflated beta regression")
+```

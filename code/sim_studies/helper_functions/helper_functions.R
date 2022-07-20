@@ -8,10 +8,10 @@
 #   - Methylation info missing rate $\gamma$ (hence average across-cell coverage should be $N\gamma$ )
 #   - Noise level $\sigma$
 #   - Prevalence of the methylated grouping $\pi_1$ (only for 2-grouping case)
-
+.libPaths("/home/nshen7/R/rstudio_4_2_0-biocon_3_15/")
 suppressPackageStartupMessages(library(tidyverse))
-here::i_am("code/package_functions/helper_functions.R")
-source(here::here("code/package_functions/helper_functions.R"))
+suppressPackageStartupMessages(library(vmrseq))
+here::i_am("code/sim_studies/helper_functions/helper_functions.R")
 
 #### Example ####
 
@@ -39,8 +39,8 @@ round(meth_reads / total_reads, 2)
 
 .Viterbi1Grp(pos, total_reads, meth_reads, tp = NULL, METHARRAY, UNMETHARRAY)
 system.time(.prevOptimMultiInit(pos, total_reads, meth_reads, inits,  backtrack = T,
-                    CHOICEARRAY = CHOICEARRAY, 
-                    METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY))
+                                CHOICEARRAY = CHOICEARRAY, 
+                                METHARRAY = METHARRAY, UNMETHARRAY = UNMETHARRAY))
 
 ## 2 grouping
 pi1 <- 0.3; seed <- 1
@@ -69,23 +69,16 @@ res_2g$loglik; res_2g$optim_pi_1; rowSums(res_2g$vit_path)
   if (!state) {
     par_u <- .priorParams(med_cov = med_cov, type = "u")
     return(rBEZI(n, mu = par_u['mu'], sigma = par_u['sigma'], nu = par_u['nu']))
-    # return(replicate(n, ifelse(runif(1)<=par_u[1],
-    #                            yes = 0, 
-    #                            no = rbeta(1, par_u[2], par_u[3])))
-    # )
   } else {
     par_m <- .priorParams(med_cov = med_cov, type = "m")
     return(rBE(n, mu = par_m['mu'], sigma = par_m['sigma']))
-    # return(replicate(n, ifelse(runif(1)<=par_m[1],
-    #                            yes = 1,
-    #                            no = rbeta(1, par_m[2], par_m[3])))
-    # )
   }
 }
 
 
 ### Sample missing status (of N cells) for each CpG site
-.sampMiss1Cell <- function(N, gamma) sample(c(NA, 1), N, prob = c(gamma, 1-gamma), replace = T)
+.sampMiss1Cell <- function(N, gamma) 
+  sample(c(NA, 1), N, prob = c(gamma, 1-gamma), replace = T)
 
 
 # ==== Functions for sampling NULL regions ====

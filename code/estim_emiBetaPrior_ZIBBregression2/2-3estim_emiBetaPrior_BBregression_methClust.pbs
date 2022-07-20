@@ -1,10 +1,10 @@
 #!/bin/bash
  
-#PBS -l walltime=64:00:00,select=1:ncpus=16:mem=96gb
+#PBS -l walltime=120:00:00,select=1:ncpus=16:mem=64gb
 #PBS -N BB_meth
 #PBS -A st-kdkortha-1
 #PBS -m abe
-#PBS -M nshen7@stat.ubc.ca
+#PBS -M ning.shen@stat.ubc.ca
 #PBS -o pbs_error_and_output/BB_meth_pbs_output.txt
 #PBS -e pbs_error_and_output/BB_meth_pbs_error.txt
  

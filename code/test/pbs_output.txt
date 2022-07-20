@@ -1,0 +1,15 @@
+GRanges object with 6 ranges and 2 metadata columns:
+      seqnames    ranges strand |      meth     total
+         <Rle> <IRanges>  <Rle> | <integer> <integer>
+  [1]        1       181      * |        10        13
+  [2]        1       335      * |         8        18
+  [3]        1      2537      * |         8        12
+  [4]        1      4173      * |         8        20
+  [5]        1      6276      * |        10        12
+  [6]        1      7600      * |         8        15
+  -------
+  seqinfo: 5 sequences from an unspecified genome; no seqlengths
+   user  system elapsed 
+ 10.304   2.000   6.467 
+   user  system elapsed 
+ 11.032   0.074  11.152 

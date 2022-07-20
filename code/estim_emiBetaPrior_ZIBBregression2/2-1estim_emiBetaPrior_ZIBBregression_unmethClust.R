@@ -16,21 +16,29 @@ sub_luo2017h <- fread("data/interim/estim_emiBetaPrior_ZIBBregression2/emiBetaPr
 sub_unmeth <- rbind(sub_liu2021, sub_luo2017m, sub_luo2017h) %>% 
   as_tibble() %>%
   mutate(y = as.matrix(data.frame(cell_meth, cell_cov - cell_meth))) %>% 
-  # slice_sample(n = 50000) %>% # filter(log(med_cov) <= 4.5) %>%
+  # slice_sample(n = 20000) %>% # filter(log(med_cov) <= 4.5) %>%
   dplyr::select(-CellClass) # CellClass contains NA from liu2017 human data so removed
 
 ## Fit ZIBB regression on nu, mu, sigma against log(med_cov)
 show.link("ZIBB")
-mod_u <- gamlss(y ~ lo(~log(med_cov), degree = 1), data = sub_unmeth,
-                sigma.formula = ~ lo(~log(med_cov), degree = 1),
-                nu.formula = ~ lo(~log(med_cov), degree = 1),
-                family = ZIBB(nu.link = "logit", mu.link = "logit", sigma.link = "log"),
-                n.cyc = 100) # n = 50000: 3832824.pbsha.*; all 3839916.pbsha.ib.sockeye
+# mod_u <- gamlss(y ~ lo(~log(med_cov), degree = 1), data = sub_unmeth,
+#                 sigma.formula = ~ lo(~log(med_cov), degree = 1),
+#                 nu.formula = ~ lo(~log(med_cov), degree = 1),
+#                 family = ZIBB(nu.link = "logit", mu.link = "logit", sigma.link = "log"),
+#                 n.cyc = 50, method = mixed(), c.crit = 0.01) 
+
 # mod_u <- gamlss(y ~ pb(log(med_cov), inter = 3, degree = 2), data = sub_unmeth,
 #                 sigma.formula = ~ pb(log(med_cov), inter = 3, degree = 2),
 #                 nu.formula = ~ pb(log(med_cov), inter = 3, degree = 2),
 #                 family = ZIBB(nu.link = "logit", mu.link = "logit", sigma.link = "log"),
 #                 n.cyc = 100)
+mod_u <- gamlss(y ~ cs(log(med_cov)), data = sub_unmeth,
+                sigma.formula = ~ cs(log(med_cov)),
+                nu.formula = ~ cs(log(med_cov)),
+                family = ZIBB(nu.link = "logit", mu.link = "logit", sigma.link = "log"),
+                n.cyc = 100)
+# 2 hrs: 3866974.pbsha.ib.sockeye
+# 120 hrs: 3866976.pbsha.ib.sockeye
 saveRDS(mod_u, file = "code/estim_emiBetaPrior_ZIBBregression2/model_unmeth_ZIBBregression.rds")
 
 ## diagnostics

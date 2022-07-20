@@ -18,10 +18,11 @@ sub_luo2017h <- fread("data/interim/estim_emiBetaPrior_ZIBBregression2/emiBetaPr
 sub_meth <- rbind(sub_liu2021, sub_luo2017m, sub_luo2017h) %>% 
   as_tibble() %>%
   mutate(y = as.matrix(data.frame(cell_meth, cell_cov - cell_meth))) %>% 
-  # slice_sample(n = 50000) %>%  
+  # slice_sample(n = 20000) %>%
   # filter(log(med_cov) <= 4) %>%
   dplyr::select(-CellClass) # CellClass contains NA from liu2017 human data so removed
 
+saveRDS(sub_meth, "data/interim/estim_emiBetaPrior_ZIBBregression2/emiBetaPrior_subtype_subsample_methClust.rds")
 
 show.link("BB")
 # mod_m2 <- gamlss(y ~ lo(~log(med_cov), degree = 1), data = sub_meth,
@@ -32,10 +33,12 @@ show.link("BB")
 #                  sigma.formula = ~ pb(log(med_cov), degree = 1, inter = 5),
 #                  family=BB(mu.link = "logit", sigma.link = "log"),
 #                  control = gamlss.control(n.cyc = 100))
-mod_m2 <- gamlss(y ~ lo(~log(med_cov), degree = 1), data = sub_meth,
-                 sigma.formula = ~ log(med_cov),
+mod_m2 <- gamlss(y ~ 1, data = sub_meth,
+                 sigma.formula = ~ 1, 
                  family = BB(mu.link = "logit", sigma.link = "log"),
-                 n.cyc = 30) # all: 3839918.pbsha.ib.sockeye
+                 n.cyc = 50) 
+# 2 hrs: 3866982.pbsha.ib.sockeye
+# 120 hrs: 3866983.pbsha.ib.sockeye
 saveRDS(mod_m2, file = "code/estim_emiBetaPrior_ZIBBregression2/model_meth_BBregression.rds")
 
 summary(mod_m2)
@@ -49,15 +52,15 @@ sub_meth_smr <- sub_meth %>%
   mutate(mu_fit = fitted(mod_m2, "mu"),
          sigma_fit = fitted(mod_m2, "sigma")) %>%
   group_by(DataSource, SubType, med_cov) %>%
-  summarise(mu_mle = max(mle_mu),
-            sigma_mle = max(mle_sigma),
+  summarise(mu_mle = max(bbmle_mu),
+            sigma_mle = max(bbmle_sigma),
             mu_fit = max(mu_fit),
             sigma_fit = max(sigma_fit))
 
 
 ## regression estimates vs. median coverage
 sub_meth_smr %>% ggplot() +
-  geom_point(aes(log(med_cov), 1-mu_mle), color = "darkgrey") +
+  geom_point(aes(log(med_cov), mu_mle), color = "darkgrey") +
   geom_point(aes(log(med_cov), mu_fit), color = "blue") +
   xlab("Log median across-cell coevrage") + ylab("Ests of mu from BB (blue) & MoM (grey)")
 ggsave("plots/estim_emiBetaPrior_ZIBBregression2/point_methPop_paramMu_vs_medCov_BBreg&IBMoM.png", width = 5, height = 5)
