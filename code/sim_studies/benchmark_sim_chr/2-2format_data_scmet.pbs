@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#PBS -l walltime=3:00:00,select=1:ncpus=16:mem=128gb
+#PBS -N fmat_scmet
+#PBS -A st-kdkortha-1
+#PBS -m abe
+#PBS -M ning.shen@stat.ubc.ca
+#PBS -o pbs_error_and_output/2-2format_data_scmet_pbs_output.txt
+#PBS -e pbs_error_and_output/2-2format_data_scmet_pbs_error.txt
+
+################################################################################
+
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/code/sim_studies/benchmark_sim_chr
+singularity exec -B /scratch/st-kdkortha-1/nshen7 -B /home/nshen7 /project/st-kdkortha-1/rstudio/nshen7_rstudio_4_2_0-biocon_3_15.sif Rscript 2-2format_data_scmet.R

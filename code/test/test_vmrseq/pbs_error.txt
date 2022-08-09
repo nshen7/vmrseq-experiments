@@ -1,0 +1,24 @@
+INFO:    Converting SIF file to temporary sandbox...
+Warning messages:
+1: replacing previous import ‘GenomicRanges::union’ by ‘dplyr::union’ when loading ‘vmrseq’ 
+2: replacing previous import ‘GenomicRanges::intersect’ by ‘dplyr::intersect’ when loading ‘vmrseq’ 
+3: replacing previous import ‘GenomicRanges::setdiff’ by ‘dplyr::setdiff’ when loading ‘vmrseq’ 
+ℹ Loading vmrseq
+Warning messages:
+1: replacing previous import ‘GenomicRanges::union’ by ‘dplyr::union’ when loading ‘vmrseq’ 
+2: replacing previous import ‘GenomicRanges::intersect’ by ‘dplyr::intersect’ when loading ‘vmrseq’ 
+3: replacing previous import ‘GenomicRanges::setdiff’ by ‘dplyr::setdiff’ when loading ‘vmrseq’ 
+QC: Removed 0% of sites with coverage lower than 3.
+Parallel: Parallelizing using 38 workers/cores (backend: BiocParallel:MulticoreParam).
+Step 1: Detecting candidate regions with (smoothed) variance larger than 0.1...
+...Chromosome pseudo: Smoothed (0.18 min). 
+...Finished calling candidate regions - found 10730 candidate regions in total.
+  ...8.4% QC-passed sites are called to be in candidate regions.
+WARNING:
+  Consider lowering 'cutoff' since only 8.4% QC-passed sites are called to be in candidate region.
+    ...If not, might induce low statistical power.
+Step 2: Detecting VMRs without penalty...
+...Finished detecting VMRs - took 142.98 min and 2029 VMRs found in total.
+  ...1.35% QC-passed sites are called to be in VMRs.
+There were 50 or more warnings (use warnings() to see the first 50)
+INFO:    Cleaning up image...

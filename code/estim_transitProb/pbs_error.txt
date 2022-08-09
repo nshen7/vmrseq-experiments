@@ -1,0 +1,45 @@
+INFO:    Converting SIF file to temporary sandbox...
+ℹ Loading vmrseq
+Registered S3 method overwritten by 'bit':
+  method   from  
+  print.ri gamlss
+Warning messages:
+1: replacing previous import ‘GenomicRanges::union’ by ‘dplyr::union’ when loading ‘vmrseq’ 
+2: replacing previous import ‘GenomicRanges::intersect’ by ‘dplyr::intersect’ when loading ‘vmrseq’ 
+3: replacing previous import ‘GenomicRanges::setdiff’ by ‘dplyr::setdiff’ when loading ‘vmrseq’ 
+Computing mean and var of the probs across cells.
+Loess smoothing over probs.
+Warning messages:
+1: Removed 4 rows containing missing values (geom_point). 
+2: Removed 4 row(s) containing missing values (geom_path). 
+Warning messages:
+1: Removed 4 rows containing missing values (geom_point). 
+2: Removed 4 row(s) containing missing values (geom_path). 
+Computing mean and var of the probs across cells.
+Loess smoothing over probs.
+Warning messages:
+1: Removed 4 rows containing missing values (geom_point). 
+2: Removed 4 row(s) containing missing values (geom_path). 
+Warning messages:
+1: Removed 4 rows containing missing values (geom_point). 
+2: Removed 4 row(s) containing missing values (geom_path). 
+Computing mean and var of the probs across cells.
+Loess smoothing over probs.
+Warning messages:
+1: Removed 6 rows containing missing values (geom_point). 
+2: Removed 4 row(s) containing missing values (geom_path). 
+Warning messages:
+1: Removed 6 rows containing missing values (geom_point). 
+2: Removed 4 row(s) containing missing values (geom_path). 
+Computing mean and var of the probs across cells.
+Loess smoothing over probs.
+Warning messages:
+1: Removed 4 rows containing missing values (geom_point). 
+2: Removed 4 row(s) containing missing values (geom_path). 
+Warning messages:
+1: Removed 4 rows containing missing values (geom_point). 
+2: Removed 4 row(s) containing missing values (geom_path). 
+Error: unexpected end of input
+Execution halted
+INFO:    Cleaning up image...
+Cgroup mem limit exceeded: 

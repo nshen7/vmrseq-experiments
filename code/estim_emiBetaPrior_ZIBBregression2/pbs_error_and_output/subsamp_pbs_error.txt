@@ -1,0 +1,7 @@
+Warning messages:
+1: In RS() : Algorithm RS has not yet converged
+2: In RS() : Algorithm RS has not yet converged
+Error in gamlss(y ~ 1, data = sub_dat_glm2, family = BB, trace = F, n.cyc = 100) : 
+  The data contains NA's, use data = na.omit(mydata)
+Calls: do.call -> map -> .f -> wrapper3 -> gamlss
+Execution halted
