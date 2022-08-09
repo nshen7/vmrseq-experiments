@@ -5,6 +5,10 @@ suppressPackageStartupMessages(library(parallel))
 
 setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
 
+metadata <- fread("data/metadata/metadata_liu2021/Liu2021_cell_full_metadata_processed.csv") %>%
+  filter(!is.na(GEO_accession) & !is.na(SubType) & !is.na(FilePath))
+
+# Estimate a maximum coordinate for each chr
 sc.exp <- fread("data/raw_counts/raw_counts_Liu2021/GSE135269_RAW/GSM4001537_allc_CEMBA190205-6D-1-CEMBA190205-6D-2-E3_ad007.tsv.gz")
 chr_pos <- sc.exp %>% 
   group_by(chr) %>% 

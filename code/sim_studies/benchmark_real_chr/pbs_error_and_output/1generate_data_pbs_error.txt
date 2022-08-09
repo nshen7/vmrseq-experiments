@@ -1,0 +1,138 @@
+INFO:    Converting SIF file to temporary sandbox...
+ℹ Loading vmrseq
+Warning messages:
+1: replacing previous import ‘GenomicRanges::union’ by ‘dplyr::union’ when loading ‘vmrseq’ 
+2: replacing previous import ‘GenomicRanges::intersect’ by ‘dplyr::intersect’ when loading ‘vmrseq’ 
+3: replacing previous import ‘GenomicRanges::setdiff’ by ‘dplyr::setdiff’ when loading ‘vmrseq’ 
+ℹ Loading vmrseq
+Warning messages:
+1: replacing previous import ‘GenomicRanges::union’ by ‘dplyr::union’ when loading ‘vmrseq’ 
+2: replacing previous import ‘GenomicRanges::intersect’ by ‘dplyr::intersect’ when loading ‘vmrseq’ 
+3: replacing previous import ‘GenomicRanges::setdiff’ by ‘dplyr::setdiff’ when loading ‘vmrseq’ 
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_100cells_3subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_100cells_4subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_100cells_5subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_100cells_8subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_100cells_12subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_100cells_20subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_500cells_2subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_500cells_3subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_500cells_4subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_500cells_5subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_500cells_8subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_500cells_12subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_500cells_20subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_1000cells_2subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_1000cells_3subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_1000cells_4subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_1000cells_5subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_1000cells_8subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_1000cells_12subpops_seed2022'
+Finished sampling cells.
+Finished sampling CpG clusters.
+Finished filling in single-cell methyl values for VMRs.
+Finished adding metadata for CpGs.
+Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_pseudo_chr/sim/pseudoChr_IT-L23_Cux1_chr1_1000cells_20subpops_seed2022'
+INFO:    Cleaning up image...

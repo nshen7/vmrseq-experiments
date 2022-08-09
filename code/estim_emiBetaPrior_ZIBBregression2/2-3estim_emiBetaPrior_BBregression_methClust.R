@@ -25,14 +25,6 @@ sub_meth <- rbind(sub_liu2021, sub_luo2017m, sub_luo2017h) %>%
 saveRDS(sub_meth, "data/interim/estim_emiBetaPrior_ZIBBregression2/emiBetaPrior_subtype_subsample_methClust.rds")
 
 show.link("BB")
-# mod_m2 <- gamlss(y ~ lo(~log(med_cov), degree = 1), data = sub_meth,
-#                 sigma.formula = ~ lo(~log(med_cov), degree = 1),
-#                 family = BB(mu.link = "logit", sigma.link = "log"),
-#                 n.cyc = 30) 
-# mod_m2 <- gamlss(y ~ pb(log(med_cov), degree = 1, inter = 5), data = sub_meth,
-#                  sigma.formula = ~ pb(log(med_cov), degree = 1, inter = 5),
-#                  family=BB(mu.link = "logit", sigma.link = "log"),
-#                  control = gamlss.control(n.cyc = 100))
 mod_m2 <- gamlss(y ~ 1, data = sub_meth,
                  sigma.formula = ~ 1, 
                  family = BB(mu.link = "logit", sigma.link = "log"),

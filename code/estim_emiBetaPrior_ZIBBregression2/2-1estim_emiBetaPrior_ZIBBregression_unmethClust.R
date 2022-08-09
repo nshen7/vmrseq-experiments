@@ -21,17 +21,6 @@ sub_unmeth <- rbind(sub_liu2021, sub_luo2017m, sub_luo2017h) %>%
 
 ## Fit ZIBB regression on nu, mu, sigma against log(med_cov)
 show.link("ZIBB")
-# mod_u <- gamlss(y ~ lo(~log(med_cov), degree = 1), data = sub_unmeth,
-#                 sigma.formula = ~ lo(~log(med_cov), degree = 1),
-#                 nu.formula = ~ lo(~log(med_cov), degree = 1),
-#                 family = ZIBB(nu.link = "logit", mu.link = "logit", sigma.link = "log"),
-#                 n.cyc = 50, method = mixed(), c.crit = 0.01) 
-
-# mod_u <- gamlss(y ~ pb(log(med_cov), inter = 3, degree = 2), data = sub_unmeth,
-#                 sigma.formula = ~ pb(log(med_cov), inter = 3, degree = 2),
-#                 nu.formula = ~ pb(log(med_cov), inter = 3, degree = 2),
-#                 family = ZIBB(nu.link = "logit", mu.link = "logit", sigma.link = "log"),
-#                 n.cyc = 100)
 mod_u <- gamlss(y ~ cs(log(med_cov)), data = sub_unmeth,
                 sigma.formula = ~ cs(log(med_cov)),
                 nu.formula = ~ cs(log(med_cov)),
