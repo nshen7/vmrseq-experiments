@@ -19,7 +19,7 @@ simPseudoChr <- function(
   subtype <- "IT-L23_Cux1"
   chromosome <- "chr1"
   
-  folder <- paste0("data/interim/sim_studies/benchmark_real_chr/real/liu2021_",subtype,"_",chromosome,"/")
+  folder <- paste0("data/interim/sim_studies/real/liu2021_",subtype,"_",chromosome,"/")
   pos0 <- fread(paste0(folder, "pos0.txt.gz")) %>% unlist %>% unname
   all_file_dirs <- paste0(folder, grep("cell", list.files(folder), value = TRUE))
   file_dirs <- sample(all_file_dirs, N)
@@ -57,9 +57,9 @@ simPseudoChr <- function(
   
   # Sample regions with intermediate methylation values preferentially
   mf_meds <- map_dbl(Indexes, ~ median(mf[.x], na.rm = TRUE)) %>% unname()
-  vmrs_ind <- sample(seq_len(length(Indexes)), NV, replace = FALSE, 
+  vmrs_i <- sample(seq_len(length(Indexes)), NV, replace = FALSE, 
                      prob = pmax(1 - sqrt(2) * abs(0.5 - mf_meds)^0.5, 0))
-  vmrs_Ind <- Indexes[vmrs_ind]
+  vmrs_Ind <- Indexes[vmrs_i]
   message("Finished sampling CpG clusters.")
   
   # Sample prevalences for VMRs
@@ -149,16 +149,6 @@ simPseudoChr <- function(
   )
   mf_mat[nois_ind_mat] <- 1 - mf_mat[nois_ind_mat]
   return(mf_mat)
-}
-
-# Sample methylation level for individual cells in 1-grouping
-.sampScMeth1Grp <- function(state_seq, N, gamma, sigma, pars) {
-  K <- length(state_seq)
-  stopifnot("Number of CpGs `K` not equal to length of state sequence." = K == length(state_seq))
-  stopifnot("Gamma should be between 0 and 1." = gamma > 0 & gamma < 1)
-  miss_mat <- .sampMissMat(N, K, gamma)
-  mf_mat <- .sampMethMat(state_seq, miss_mat, N, sigma, pars)
-  return(mf_mat * miss_mat)
 }
 
 # Sample methylation level for individual cells in 2-grouping

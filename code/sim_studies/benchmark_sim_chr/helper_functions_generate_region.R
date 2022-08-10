@@ -98,11 +98,13 @@ suppressPackageStartupMessages(library(gamlss.dist))
 }
 
 # Sample methylation level for individual cells
-.sampScMeth1Grp <- function(state_seq, N, gamma, sigma, pars) {
-  K <- length(state_seq)
-  stopifnot("Number of CpGs `K` not equal to length of state sequence." = K == length(state_seq))
-  stopifnot("Gamma should be between 0 and 1." = gamma > 0 & gamma < 1)
-  miss_mat <- .sampMissMat(N, K, gamma)
+.sampScMeth1Grp <- function(state_seq, miss_mat, sigma, pars) {
+  
+  N <- ncol(miss_mat)
+  K <- nrow(miss_mat)
+  stopifnot("Number of CpGs `K` not equal to length of state sequence." = 
+              K == length(state_seq))
+
   mf_mat <- .sampMethMat(state_seq, miss_mat, N, sigma, pars)
   return(mf_mat * miss_mat)
 }
@@ -146,11 +148,27 @@ suppressPackageStartupMessages(library(gamlss.dist))
 }
 
 
-.sampScMeth2Grp <- function(state_seq, pi1, N, gamma, sigma, pars) {
-  stopifnot("Gamma should be between 0 and 1." = gamma > 0 & gamma < 1)
+# .sampScMeth2Grp <- function(state_seq, pi1, N, gamma, sigma, pars) {
+#   stopifnot("Gamma should be between 0 and 1." = gamma > 0 & gamma < 1)
+#   
+#   state_vec <- do.call(rbind, map(state_seq, vmrseq:::.translateState2Grp))
+#   miss_mat <- .sampMissMat(N = N, K = length(state_seq), gamma)
+#   ind_g1 <- 1:ceiling(pi1*N)
+#   ind_g2 <- (ceiling(pi1*N)+1):N
+#   mf_mat <- cbind(
+#     .sampMethMat(state_seq = state_vec[,1], miss_mat = miss_mat[,ind_g1], N = length(ind_g1), sigma, pars),
+#     .sampMethMat(state_seq = state_vec[,2], miss_mat = miss_mat[,ind_g2], N = length(ind_g2), sigma, pars)
+#   )
+#   return(mf_mat * miss_mat)
+# }
+
+.sampScMeth2Grp <- function(state_seq, pi1, miss_mat, sigma, pars) {
+  
+  N <- ncol(miss_mat)
+  K <- nrow(miss_mat)
   
   state_vec <- do.call(rbind, map(state_seq, vmrseq:::.translateState2Grp))
-  miss_mat <- .sampMissMat(N = N, K = length(state_seq), gamma)
+  
   ind_g1 <- 1:ceiling(pi1*N)
   ind_g2 <- (ceiling(pi1*N)+1):N
   mf_mat <- cbind(
@@ -159,6 +177,9 @@ suppressPackageStartupMessages(library(gamlss.dist))
   )
   return(mf_mat * miss_mat)
 }
+
+
+
 
 
 

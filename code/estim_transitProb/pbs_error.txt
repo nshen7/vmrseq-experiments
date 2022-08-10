@@ -26,10 +26,10 @@ Warning messages:
 Computing mean and var of the probs across cells.
 Loess smoothing over probs.
 Warning messages:
-1: Removed 6 rows containing missing values (geom_point). 
+1: Removed 4 rows containing missing values (geom_point). 
 2: Removed 4 row(s) containing missing values (geom_path). 
 Warning messages:
-1: Removed 6 rows containing missing values (geom_point). 
+1: Removed 4 rows containing missing values (geom_point). 
 2: Removed 4 row(s) containing missing values (geom_path). 
 Computing mean and var of the probs across cells.
 Loess smoothing over probs.
@@ -39,7 +39,4 @@ Warning messages:
 Warning messages:
 1: Removed 4 rows containing missing values (geom_point). 
 2: Removed 4 row(s) containing missing values (geom_path). 
-Error: unexpected end of input
-Execution halted
 INFO:    Cleaning up image...
-Cgroup mem limit exceeded: 
