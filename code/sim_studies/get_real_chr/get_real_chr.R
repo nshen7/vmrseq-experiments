@@ -13,7 +13,7 @@ suppressPackageStartupMessages(library(SummarizedExperiment))
 # Use real data (subtype 'IT-L23 Cux1' in Liu2021 data) as null
 data_source <- "liu2021"; subtype <- "IT-L23 Cux1"
 chromosome <- "chr1"
-folder <- paste0("data/interim/sim_studies/benchmark_real_chr/real/", 
+folder <- paste0("data/interim/sim_studies/real/", 
                  data_source, "_", sub(" ", "_", subtype), "_", chromosome)
 if (!dir.exists(folder)) dir.create(folder)
 

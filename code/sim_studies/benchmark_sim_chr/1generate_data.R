@@ -5,16 +5,14 @@ devtools::load_all("../vmrseq-package/vmrseq/")
 suppressPackageStartupMessages(library(HDF5Array))
 
 out_dir <- paste0(getwd(), "/", "data/interim/sim_studies/benchmark_sim_chr/simulated/")
-for (N in c(5000)) {
-# for (N in c(100, 500, 1000)) {
-  for (NP in c(2,3,4,5,8,12,20)) {
-    se <- generatePseudoChr(N, NV = 1000, NP)     
-    saveHDF5SummarizedExperiment(
-      se,
-      paste0("data/interim/sim_studies/benchmark_sim_chr/simulated/pseudo_chr_",N,"cells_",NP,"subpops/"),
-      replace = TRUE
-    )
+# for (N in c(5000)) {
+# for (N in c(1000)) {
+# for (N in c(100, 500)) {
+  # for (NP in c(2,3,4,5,8,12,20)) {
+for (N in c(100)) {
+  for (NP in c(2)) {
     cat("N =", N, "; NP =", NP, "\n")
+    simPseudoChr(N = N, NV = 3000, NP = NP, out_dir = out_dir) 
   }
 }
 
