@@ -1,17 +1,1 @@
 INFO:    Converting SIF file to temporary sandbox...
-ℹ Loading vmrseq
-Warning messages:
-1: replacing previous import ‘GenomicRanges::union’ by ‘dplyr::union’ when loading ‘vmrseq’ 
-2: replacing previous import ‘GenomicRanges::intersect’ by ‘dplyr::intersect’ when loading ‘vmrseq’ 
-3: replacing previous import ‘GenomicRanges::setdiff’ by ‘dplyr::setdiff’ when loading ‘vmrseq’ 
-Cell/site missing distribution obtained from real data.
-Five-number summary of number of CpGs in VMRs: 
-c("5", "7", "10", "17", "237")
-Five-number summary of number of null CpGs between neighboring VMRs: 
-c("0", "67", "197", "469", "9353")
-Finished sampling CpG clusters.
-Error in apply(M_mat[ix, ] >= 0, MARGIN = 1:2, FUN = as.numeric) : 
-  dim(X) must have a positive length
-Calls: simPseudoChr -> apply -> apply
-Execution halted
-INFO:    Cleaning up image...
