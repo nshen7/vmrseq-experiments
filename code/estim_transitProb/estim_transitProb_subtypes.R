@@ -15,7 +15,7 @@ set.seed(2022)
 
 # Using default parameters for estimating transition probs:
 max_dist_bp = 2000; buffer_bp = 5000
-lags = 1:100
+lags = 1:7
 degree = 2; span = 0.02
 print(lags)
 

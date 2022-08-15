@@ -6,11 +6,14 @@ suppressPackageStartupMessages(library(HDF5Array))
 
 out_dir <- paste0(getwd(), "/", "data/interim/sim_studies/benchmark_sim_chr/simulated/")
 # for (N in c(5000)) {
+for (N in c(2000)) {
 # for (N in c(1000)) {
-# for (N in c(100, 500)) {
+# for (N in c(500)) {
+# for (N in c(100)) {
   # for (NP in c(2,3,4,5,8,12,20)) {
-for (N in c(100)) {
   for (NP in c(2)) {
+  # for (NP in c(2,3,4)) {
+  # for (NP in c(5,8,12,20)) {
     cat("N =", N, "; NP =", NP, "\n")
     simPseudoChr(N = N, NV = 3000, NP = NP, out_dir = out_dir) 
   }

@@ -4,6 +4,7 @@ source("code/sim_studies/benchmark_sim_chr/helper_functions_generate_region.R")
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(BiocParallel))
 suppressPackageStartupMessages(library(SummarizedExperiment))
+suppressPackageStartupMessages(library(GenomicRanges))
 
 # register(SnowParam(workers = 6, type = "FORK"))
 
@@ -127,7 +128,7 @@ simPseudoChr <- function(
   # )
   
   # Modify real-data M matrix to model-simulated data
-  for (i in 1:NV) {
+  for (i in 1:length(inds_2g)) {
     ix <- inds_2g[[i]]
     miss_mat <- ifelse(M_mat[ix, ] >= 0, 1, NA)
     M_mat[ix, ] <- .sampScMeth2Grp(
@@ -137,7 +138,7 @@ simPseudoChr <- function(
     )
     cat(i, " ")
   }
-  for (i in 1:(NV+1)) {
+  for (i in 1:length(inds_1g)) {
     ix <- inds_1g[[i]]
     if (!is.null(ix)) {
       miss_mat <- ifelse(M_mat[ix, ] >= 0, 1, NA)

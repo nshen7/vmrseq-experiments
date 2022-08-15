@@ -169,4 +169,7 @@ The following objects are masked from ‘package:matrixStats’:
 
     anyMissing, rowMedians
 
+Error in paste0("data/interim/sim_studies/benchmark_sim_chr/simulated/simChr_",  : 
+  object 'subtype' not found
+Execution halted
 INFO:    Cleaning up image...

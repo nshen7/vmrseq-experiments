@@ -26,24 +26,26 @@ formatCell <- function(i, se, folder) {
 }
 
 # ==== main ====
-# for (N in c(100, 500, 1000, 5000)) {
-#   for (NP in c(2,3,4,5,8,12,20)) {
-for (N in c(5000)) {
+subtype <- "IT-L23_Cux1"
+chromosome <- "chr1"
+seed <- 2022
+
+for (N in c(100, 500, 1000)) {
+  for (NP in c(2,3,4,5,8,12,20)) {
+# for (N in c(5000)) {
   # for (NP in c(4,5)) { 
-  for (NP in c(8)) { # TODO
-    
     # Load raw data
     load_dir <- paste0(
-      "data/interim/sim_studies/benchmark_sim_chr/simulated/pseudo_chr_",
-      N, "cells_",
-      NP, "subpops"
+      "data/interim/sim_studies/benchmark_sim_chr/simulated/simChr_",
+      subtype, "_", chromosome, "_", N, "cells_", NP, "subpops", "_seed", seed
     )
     se <- loadHDF5SummarizedExperiment(dir = load_dir)
     
     # format into scbs input
-    folder <- paste0("data/interim/sim_studies/benchmark_sim_chr/scbs/input/pseudo_chr_",
-                     N, "cells_",
-                     NP, "subpops")
+    folder <- paste0(
+      "data/interim/sim_studies/benchmark_sim_chr/scbs/input/simChr_",
+      subtype, "_", chromosome, "_", N, "cells_", NP, "subpops", "_seed", seed
+    )
     if (!file.exists(folder)) dir.create(folder)
     
     invisible(bplapply(1:ncol(se), formatCell, se = se, folder = folder))

@@ -158,4 +158,8 @@ The following objects are masked from ‘package:matrixStats’:
 
     anyMissing, rowMedians
 
+Error in loadHDF5SummarizedExperiment(dir = load_dir) : directory
+  "data/interim/sim_studies/benchmark_sim_chr/simulated/pseudo_chr_100cells_2subpops"
+  not found
+Execution halted
 INFO:    Cleaning up image...
