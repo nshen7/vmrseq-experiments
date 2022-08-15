@@ -40,15 +40,18 @@ formatForScmet <- function(se, bp_size) {
 }
 
 # ==== main ====
+subtype <- "IT-L23_Cux1"
+chromosome <- "chr1"
+seed <- 2022
 bp_size <- 20000
-for (N in c(100, 500, 1000, 5000)) {
+for (N in c(100, 500, 1000, 2000)) {
   for (NP in c(2,3,4,5,8,12,20)) {
 
     # Load raw data
     load_dir <- paste0(
-      "data/interim/sim_studies/benchmark_pseudo_chr/raw/pseudo_chr_",
-      N, "cells_",
-      NP, "subpops"
+      "data/interim/sim_studies/benchmark_real_chr/modified_real/pseudoChr_",
+      subtype, "_", chromosome, "_", 
+      N, "cells_", NP, "subpops", "_seed", seed
     )
     se <- loadHDF5SummarizedExperiment(dir = load_dir)
     
@@ -56,9 +59,13 @@ for (N in c(100, 500, 1000, 5000)) {
     feats.df <- formatForScmet(se, bp_size = bp_size)
     
     # Write file
-    input_folder <- paste0("data/interim/sim_studies/benchmark_pseudo_chr/scmet/input")
-    write_dir <- paste0(input_folder, "/scmet_input_", bp_size/1000, "kbWindow_",
-                        N, "cells_", NP, "subpops.txt")
+    input_folder <- paste0("data/interim/sim_studies/benchmark_real_chr/scmet/input")
+    write_dir <- paste0(
+      input_folder, 
+      "/pseudoChr_", subtype, "_", chromosome, "_", 
+      bp_size/1000, "kbWindow_",
+      N, "cells_", NP, "subpops", "_seed", seed, ".txt"
+    )
     fwrite(feats.df, file = write_dir, quote = F)
     R.utils::gzip(write_dir, remove = T, overwrite = T)
     
