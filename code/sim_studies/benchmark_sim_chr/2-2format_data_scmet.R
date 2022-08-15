@@ -63,7 +63,7 @@ for (N in c(100, 500, 1000)) {
     input_folder <- paste0("data/interim/sim_studies/benchmark_sim_chr/scmet/input")
     write_dir <- paste0(
       input_folder, 
-      "simChr_", subtype, "_", chromosome, "_", 
+      "/simChr_", subtype, "_", chromosome, "_", 
       bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops.txt"
     )
     fwrite(feats.df, file = write_dir, quote = F)

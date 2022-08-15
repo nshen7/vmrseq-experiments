@@ -10,5 +10,5 @@
 
 ################################################################################
 
-cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/code/sim_studies/benchmark_pseudo_chr
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/code/sim_studies/benchmark_real_chr
 singularity exec -B /scratch/st-kdkortha-1/nshen7 -B /home/nshen7 /project/st-kdkortha-1/rstudio/nshen7_rstudio_4_2_0-biocon_3_15.sif Rscript 2-2format_data_scmet.R
