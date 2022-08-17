@@ -158,10 +158,4 @@ The following objects are masked from ‘package:matrixStats’:
 
     anyMissing, rowMedians
 
-Error: BiocParallel errors
-  25 remote errors, element index: 1, 5, 9, 13, 17, 21, ...
-  75 unevaluated and other errors
-  first remote error:
-Error in filter(., !is.na(M_mat)): Problem while computing `..1 = !is.na(M_mat)`.
-Execution halted
 INFO:    Cleaning up image...

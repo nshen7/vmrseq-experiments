@@ -1,0 +1,295 @@
+
+Started prepare on Wed Aug 17 10:42:07 2022.
+
+Command line arguments:
+    input_files: input/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022/cell_100.cov and 99 more files
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+    round_sites: False
+      chunksize: 10000000
+   input_format: bismark
+
+Processing 100 methylation files...
+0.00% done...
+50.00% done...
+100% done.
+
+Storing methylation data in 'compressed sparse row' (CSR) matrix format for future use.
+Populating 195371430 x 100 matrix for chromosome pseudo...
+Writing to output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+
+Wrote cell names to output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/column_header.txt
+Wrote summary stats for each cell to output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/cell_stats.csv
+
+Successfully stored methylation data for 100 cells with 1 chromosomes.
+
+Finished prepare on Wed Aug 17 10:42:38 2022. Total runtime was 0:00:31 (hour:min:s).
+
+Started smooth on Wed Aug 17 10:42:41 2022.
+
+Command line arguments:
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+      bandwidth: 1000
+    use_weights: False
+
+Reading chromosome pseudo data from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Smoothing chromosome pseudo ...
+
+Successfully wrote smoothed methylation data to output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/smoothed.
+
+Finished smooth on Wed Aug 17 10:43:07 2022. Total runtime was 0:00:26 (hour:min:s).
+
+Started scan on Wed Aug 17 10:43:09 2022.
+
+Command line arguments:
+        threads: 14
+  var_threshold: 0.01
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+         output: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_0.01vt.bed
+      bandwidth: 2000
+       stepsize: 10
+
+loading chromosome pseudo from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Scanning chromosome pseudo using 14 parallel threads ...
+Determined the variance threshold of 0.08651449101337096.
+Found 1278 variable regions on chromosome pseudo.
+
+Finished scan on Wed Aug 17 10:44:21 2022. Total runtime was 0:01:11 (hour:min:s).
+
+Started scan on Wed Aug 17 10:44:24 2022.
+
+Command line arguments:
+        threads: 14
+  var_threshold: 0.02
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+         output: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_0.02vt.bed
+      bandwidth: 2000
+       stepsize: 10
+
+loading chromosome pseudo from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Scanning chromosome pseudo using 14 parallel threads ...
+Determined the variance threshold of 0.07308166880831651.
+Found 2110 variable regions on chromosome pseudo.
+
+Finished scan on Wed Aug 17 10:45:35 2022. Total runtime was 0:01:11 (hour:min:s).
+
+Started scan on Wed Aug 17 10:45:37 2022.
+
+Command line arguments:
+        threads: 14
+  var_threshold: 0.05
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+         output: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_0.05vt.bed
+      bandwidth: 2000
+       stepsize: 10
+
+loading chromosome pseudo from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Scanning chromosome pseudo using 14 parallel threads ...
+Determined the variance threshold of 0.046326129684067574.
+Found 6995 variable regions on chromosome pseudo.
+
+Finished scan on Wed Aug 17 10:46:51 2022. Total runtime was 0:01:13 (hour:min:s).
+
+Started scan on Wed Aug 17 10:46:53 2022.
+
+Command line arguments:
+        threads: 14
+  var_threshold: 0.1
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+         output: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_0.1vt.bed
+      bandwidth: 2000
+       stepsize: 10
+
+loading chromosome pseudo from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Scanning chromosome pseudo using 14 parallel threads ...
+Determined the variance threshold of 0.035691226161672744.
+Found 16230 variable regions on chromosome pseudo.
+
+Finished scan on Wed Aug 17 10:48:03 2022. Total runtime was 0:01:09 (hour:min:s).
+
+Started scan on Wed Aug 17 10:48:05 2022.
+
+Command line arguments:
+        threads: 14
+  var_threshold: 0.2
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+         output: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_0.2vt.bed
+      bandwidth: 2000
+       stepsize: 10
+
+loading chromosome pseudo from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Scanning chromosome pseudo using 14 parallel threads ...
+Determined the variance threshold of 0.02817157613637274.
+Found 22942 variable regions on chromosome pseudo.
+
+Finished scan on Wed Aug 17 10:49:21 2022. Total runtime was 0:01:16 (hour:min:s).
+
+Started scan on Wed Aug 17 10:49:24 2022.
+
+Command line arguments:
+        threads: 14
+  var_threshold: 0.3
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+         output: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_0.3vt.bed
+      bandwidth: 2000
+       stepsize: 10
+
+loading chromosome pseudo from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Scanning chromosome pseudo using 14 parallel threads ...
+Determined the variance threshold of 0.02386336339958221.
+Found 22950 variable regions on chromosome pseudo.
+
+Finished scan on Wed Aug 17 10:50:39 2022. Total runtime was 0:01:14 (hour:min:s).
+
+Started scan on Wed Aug 17 10:50:41 2022.
+
+Command line arguments:
+        threads: 14
+  var_threshold: 0.4
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+         output: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_0.4vt.bed
+      bandwidth: 2000
+       stepsize: 10
+
+loading chromosome pseudo from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Scanning chromosome pseudo using 14 parallel threads ...
+Determined the variance threshold of 0.02054079793877206.
+Found 20042 variable regions on chromosome pseudo.
+
+Finished scan on Wed Aug 17 10:51:55 2022. Total runtime was 0:01:13 (hour:min:s).
+
+Started scan on Wed Aug 17 10:51:57 2022.
+
+Command line arguments:
+        threads: 14
+  var_threshold: 0.5
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+         output: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_0.5vt.bed
+      bandwidth: 2000
+       stepsize: 10
+
+loading chromosome pseudo from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Scanning chromosome pseudo using 14 parallel threads ...
+Determined the variance threshold of 0.017702248481196208.
+Found 15749 variable regions on chromosome pseudo.
+
+Finished scan on Wed Aug 17 10:53:14 2022. Total runtime was 0:01:16 (hour:min:s).
+
+Started scan on Wed Aug 17 10:53:16 2022.
+
+Command line arguments:
+        threads: 14
+  var_threshold: 0.6
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+         output: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_0.6vt.bed
+      bandwidth: 2000
+       stepsize: 10
+
+loading chromosome pseudo from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Scanning chromosome pseudo using 14 parallel threads ...
+Determined the variance threshold of 0.015085000339077208.
+Found 11119 variable regions on chromosome pseudo.
+
+Finished scan on Wed Aug 17 10:54:29 2022. Total runtime was 0:01:12 (hour:min:s).
+
+Started scan on Wed Aug 17 10:54:31 2022.
+
+Command line arguments:
+        threads: 14
+  var_threshold: 0.7
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+         output: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_0.7vt.bed
+      bandwidth: 2000
+       stepsize: 10
+
+loading chromosome pseudo from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Scanning chromosome pseudo using 14 parallel threads ...
+Determined the variance threshold of 0.012496871970274912.
+Found 6926 variable regions on chromosome pseudo.
+
+Finished scan on Wed Aug 17 10:55:45 2022. Total runtime was 0:01:13 (hour:min:s).
+
+Started scan on Wed Aug 17 10:55:47 2022.
+
+Command line arguments:
+        threads: 14
+  var_threshold: 0.8
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+         output: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_0.8vt.bed
+      bandwidth: 2000
+       stepsize: 10
+
+loading chromosome pseudo from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Scanning chromosome pseudo using 14 parallel threads ...
+Determined the variance threshold of 0.009733767846524655.
+Found 3745 variable regions on chromosome pseudo.
+
+Finished scan on Wed Aug 17 10:57:00 2022. Total runtime was 0:01:13 (hour:min:s).
+
+Started scan on Wed Aug 17 10:57:02 2022.
+
+Command line arguments:
+        threads: 14
+  var_threshold: 0.9
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+         output: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_0.9vt.bed
+      bandwidth: 2000
+       stepsize: 10
+
+loading chromosome pseudo from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Scanning chromosome pseudo using 14 parallel threads ...
+Determined the variance threshold of 0.006106254002367024.
+Found 1694 variable regions on chromosome pseudo.
+
+Finished scan on Wed Aug 17 10:58:15 2022. Total runtime was 0:01:12 (hour:min:s).
+
+Started scan on Wed Aug 17 10:58:17 2022.
+
+Command line arguments:
+        threads: 14
+  var_threshold: 0.99
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact
+         output: output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_0.99vt.bed
+      bandwidth: 2000
+       stepsize: 10
+
+loading chromosome pseudo from output/simChr_IT-L23_Cux1_chr1_100cells_2subpops_seed2022_compact/pseudo.npz ...
+Scanning chromosome pseudo using 14 parallel threads ...
+Determined the variance threshold of 0.0.
+Found 791 variable regions on chromosome pseudo.
+
+Finished scan on Wed Aug 17 10:59:31 2022. Total runtime was 0:01:13 (hour:min:s).
+
+Started prepare on Wed Aug 17 10:59:34 2022.
+
+Command line arguments:
+    input_files: input/simChr_IT-L23_Cux1_chr1_100cells_3subpops_seed2022/cell_100.cov and 99 more files
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_3subpops_seed2022_compact
+    round_sites: False
+      chunksize: 10000000
+   input_format: bismark
+
+Processing 100 methylation files...
+0.00% done...
+50.00% done...
+100% done.
+
+Storing methylation data in 'compressed sparse row' (CSR) matrix format for future use.
+Populating 195371430 x 100 matrix for chromosome pseudo...
+Writing to output/simChr_IT-L23_Cux1_chr1_100cells_3subpops_seed2022_compact/pseudo.npz ...
+
+Wrote cell names to output/simChr_IT-L23_Cux1_chr1_100cells_3subpops_seed2022_compact/column_header.txt
+Wrote summary stats for each cell to output/simChr_IT-L23_Cux1_chr1_100cells_3subpops_seed2022_compact/cell_stats.csv
+
+Successfully stored methylation data for 100 cells with 1 chromosomes.
+
+Finished prepare on Wed Aug 17 11:00:05 2022. Total runtime was 0:00:30 (hour:min:s).
+
+Started smooth on Wed Aug 17 11:00:07 2022.
+
+Command line arguments:
+       data_dir: output/simChr_IT-L23_Cux1_chr1_100cells_3subpops_seed2022_compact
+      bandwidth: 1000
+    use_weights: False
+
+Reading chromosome pseudo data from output/simChr_IT-L23_Cux1_chr1_100cells_3subpops_seed2022_compact/pseudo.npz ...
+Smoothing chromosome pseudo ...

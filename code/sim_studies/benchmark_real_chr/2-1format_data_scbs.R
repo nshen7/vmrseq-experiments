@@ -30,7 +30,8 @@ subtype <- "IT-L23_Cux1"
 chromosome <- "chr1"
 seed <- 2022
 
-for (N in c(100, 500, 1000, 2000)) {
+for (N in c(5000)) {
+# for (N in c(100, 500, 1000, 2000)) {
   for (NP in c(2,3,4,5,8,12,20)) {
 # for (N in c(5000)) {
   # for (NP in c(4,5)) { 
@@ -46,7 +47,7 @@ for (N in c(100, 500, 1000, 2000)) {
     
     # format into scbs input
     folder <- paste0(
-      "data/interim/sim_studies/benchmark_real_chr/scbs/pseudoChr_",
+      "data/interim/sim_studies/benchmark_real_chr/scbs/input/pseudoChr_",
       subtype, "_", chromosome, "_", 
       N, "cells_", NP, "subpops", "_seed", seed
     )

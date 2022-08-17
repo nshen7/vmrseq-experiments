@@ -30,7 +30,7 @@ subtype <- "IT-L23_Cux1"
 chromosome <- "chr1"
 seed <- 2022
 
-for (N in c(100, 500, 1000)) {
+for (N in c(1000)) {
   for (NP in c(2,3,4,5,8,12,20)) {
 # for (N in c(5000)) {
   # for (NP in c(4,5)) { 

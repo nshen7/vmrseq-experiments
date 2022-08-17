@@ -80,7 +80,8 @@ simPseudoChr <- function(
   for (i in 1:length(inds_2g)) {
     h <- inds_2g[[i]][length(inds_2g[[i]])]+1
     r <- ifelse(i < length(inds_2g), yes = inds_2g[[i+1]][1]-1, no = length(total))
-    if (h <= r) inds_1g[[i+1]] <- h:r
+    cat("h - r = ", h - r, "; h = ", h, "; r = ", r, "\n")
+    if (h <= r) inds_1g[[i+1]] <- h:r 
   }
   message("Five-number summary of number of null CpGs between neighboring VMRs: ")
   message(round(quantile(lengths(inds_1g))), domain = NA, appendLF = TRUE)
@@ -102,7 +103,7 @@ simPseudoChr <- function(
   
   # MFs_1g <- bplapply(
   #   1:(NV+1),
-  #   function(i) 
+  #   function(i)
   #     if (!is.null(inds_1g[[i]])) .sampScMeth1Grp(state_seq = state_seqs_1g[[i]],
   #                                                 miss_mat = apply(
   #                                                   M_mat[inds_1g[[i]], ] >= 0,
@@ -151,13 +152,13 @@ simPseudoChr <- function(
     cat(i, " ")
   }
   message("Finished filling in single-cell methyl values for VMRs.")
-  
+
   # Useful metadata for CpG sites
   gr$is_vml <- rep(FALSE, length(gr))
   gr$vmr_name <- rep(NA, length(gr))
   gr$pi1 <- rep(NA, length(gr))
-  for (i in 1:NV) {
-    ix <- inds_1g[[i]]
+  for (i in 1:length(inds_2g)) {
+    ix <- inds_2g[[i]]
     gr$is_vml[ix] <- TRUE
     gr$vmr_name[ix] <- i
     gr$pi1[ix] <- pi1s[i]
@@ -166,7 +167,7 @@ simPseudoChr <- function(
   gr$total <- rowSums(!is.na(M_mat))
   gr$mf <-   gr$meth / gr$total
   message("Finished adding metadata for CpGs.")
-  
+
   # Initialize SummrizedExperiment object of the pseudo chr
   write_dir <- paste0(out_dir, "simChr_",
                       subtype, "_", chromosome, "_", N, "cells_", NP, "subpops", "_seed", seed)
@@ -175,9 +176,9 @@ simPseudoChr <- function(
       assays = list("MF" = M_mat),
     #   assays = list(
     #     "MF" = rbind(
-    #       MFs_1g[[1]], 
+    #       MFs_1g[[1]],
     #       do.call(
-    #         rbind, 
+    #         rbind,
     #         lapply(1:NV, function(i) rbind(MFs_2g[[i]], MFs_1g[[i+1]]))))
     #   ),
       rowRanges = gr
@@ -185,7 +186,7 @@ simPseudoChr <- function(
     dir = write_dir,
     replace = TRUE
   )
-  
+
   message(paste0("Finished saving simulated chromosome in a HDF5SummarizedExperiment object to:\n '",
                  write_dir, "'"))
   return(write_dir)
