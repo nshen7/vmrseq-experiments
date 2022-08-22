@@ -170,7 +170,8 @@ simPseudoChr <- function(
 
   # Initialize SummrizedExperiment object of the pseudo chr
   write_dir <- paste0(out_dir, "simChr_",
-                      subtype, "_", chromosome, "_", N, "cells_", NP, "subpops", "_seed", seed)
+                      subtype, "_", chromosome, "_", N, "cells_", NP, "subpops_", 
+                      NV, "VMRs_seed", seed)
   saveHDF5SummarizedExperiment(
     x = SummarizedExperiment(
       assays = list("MF" = M_mat),

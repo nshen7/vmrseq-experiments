@@ -28,6 +28,7 @@ simPseudoChr <- function(
   M_mat <- matrix(NA, nrow = length(pos0), ncol = N)
   for (i in 1:N) {
     M_mat[, i] <- fread(file_dirs[i]) %>% unlist %>% unname
+    cat(i, " ")
   }
   
   gr <- GRanges(seqnames = "pseudo", ranges = IRanges(start = pos0, end = pos0))
@@ -47,9 +48,13 @@ simPseudoChr <- function(
   message("Finished sampling cells.")
   
   # Get CpG clusters for VMR sampling
-  cluster <- bumphunter::clusterMaker(chr = seqnames(gr), 
-                                      pos = start(gr), 
-                                      maxGap = 500)
+  cluster <- bumphunter::boundedClusterMaker(chr = seqnames(gr), 
+                                             pos = start(gr), 
+                                             maxGap = 500, 
+                                             maxClusterWidth = 10000)
+  # cluster <- bumphunter::clusterMaker(chr = seqnames(gr),
+  #                                     pos = start(gr),
+  #                                     maxGap = 500)
   Indexes <- split(seq(along = cluster), cluster)
   lns <- lengths(Indexes)
   Indexes <- Indexes[lns >= 5 & lns <= 500]
@@ -58,12 +63,18 @@ simPseudoChr <- function(
   # Sample regions with intermediate methylation values preferentially
   mf_meds <- map_dbl(Indexes, ~ median(mf[.x], na.rm = TRUE)) %>% unname()
   vmrs_i <- sample(seq_len(length(Indexes)), NV, replace = FALSE, 
-                     prob = pmax(1 - sqrt(2) * abs(0.5 - mf_meds)^0.5, 0))
+                   prob = pmax(1 - sqrt(2) * abs(0.5 - mf_meds)^0.5, 0)) %>% sort
   vmrs_Ind <- Indexes[vmrs_i]
   message("Finished sampling CpG clusters.")
   
-  # Sample prevalences for VMRs
-  pi_prob <- choose(NP, 1:(NP-1))/sum(choose(NP, 1:(NP-1)))
+  # # Sample prevalences for VMRs
+  # p_meth <- 0.77
+  # pi_space <- (1:(NP-1))/NP
+  # pi_prob <- dbinom(1:(NP-1), NP, p = p_meth)
+  # pi1s <- sample(pi_space, size = NV, replace = TRUE, prob = pi_prob)
+  
+  # (Original) Sample prevalences for VMRs
+  pi_prob <- dbinom(1:(NP-1), NP, p = 0.5)
   pi_space <- (1:(NP-1))*1/NP
   pi1s <- sample(pi_space, size = NV, replace = TRUE, prob = pi_prob)
   
@@ -96,7 +107,9 @@ simPseudoChr <- function(
   message("Finished adding metadata for CpGs.")
   
   write_dir <- paste0(out_dir, "pseudoChr_",
-                      subtype, "_", chromosome, "_", N, "cells_", NP, "subpops", "_seed", seed)
+                      subtype, "_", chromosome, "_", 
+                      N, "cells_", NP, "subpops_", 
+                      NV, "VMRs_seed", seed)
   saveHDF5SummarizedExperiment(
     x = SummarizedExperiment(
       assays = list(M_mat = M_mat), 
@@ -160,12 +173,12 @@ simPseudoChr <- function(
   state_seq <- rep(1, K) # ps: hidden states in VMR are all (1,0), which is encoded as 1
   state_vec <- do.call(rbind, map(state_seq, vmrseq:::.translateState2Grp))
   
-  ind_g1 <- 1:ceiling(pi1*N)
-  ind_g2 <- (ceiling(pi1*N)+1):N
-  mf_mat <- cbind(
-    .sampMethMat(state_seq = state_vec[,1], miss_mat = miss_mat[,ind_g1], N = length(ind_g1), sigma, pars),
-    .sampMethMat(state_seq = state_vec[,2], miss_mat = miss_mat[,ind_g2], N = length(ind_g2), sigma, pars)
-  )
+  ind_g1 <- sample(1:N, ceiling(pi1*N)) %>% sort
+  ind_g2 <- which(! 1:N %in% ind_g1)
+  mf_mat <- matrix(nrow = K, ncol = N)
+  mf_mat[,ind_g1] <- .sampMethMat(state_seq = state_vec[,1], miss_mat = miss_mat[,ind_g1], N = length(ind_g1), sigma, pars)
+  mf_mat[,ind_g2] <- .sampMethMat(state_seq = state_vec[,2], miss_mat = miss_mat[,ind_g2], N = length(ind_g2), sigma, pars)
+  
   return(mf_mat * miss_mat)
 }
 

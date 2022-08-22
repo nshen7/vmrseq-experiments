@@ -1,0 +1,2 @@
+N = 200 NP = 4 
+penalty = 1 

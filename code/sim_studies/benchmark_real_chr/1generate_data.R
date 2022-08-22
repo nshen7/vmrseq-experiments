@@ -6,10 +6,13 @@ suppressPackageStartupMessages(library(HDF5Array))
 suppressPackageStartupMessages(library(gamlss.dist))
 
 out_dir <- paste0(getwd(), "/", "data/interim/sim_studies/benchmark_real_chr/modified_real/")
-for (N in c(2000)) {
-# for (N in c(100, 500, 1000)) {
-  for (NP in c(2,3,4,5,8,12,20)) {
-    simPseudoChr(N, NP, NV = 3000, seed = 2022, out_dir)     
+# for (N in c(2000)) {
+# for (N in c(500, 1000)) {
+for (N in c(200)) {
+# for (N in c(100)) {
+  # for (NP in c(2,3,4,5,8,12,20)) {
+  for (NP in c(4)) {
+    simPseudoChr(N, NP, NV = 5000, seed = 2022, out_dir)     
     cat("N =", N, "; NP =", NP, "\n")
   }
 }

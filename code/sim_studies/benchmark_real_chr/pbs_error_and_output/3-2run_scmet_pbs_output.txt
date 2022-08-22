@@ -1,0 +1,83 @@
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: 
+Chain 1: Gradient evaluation took 0.219512 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2195.12 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Begin eta adaptation.
+Chain 1: Iteration:   1 / 250 [  0%]  (Adaptation)
+Chain 1: Iteration:  50 / 250 [ 20%]  (Adaptation)
+Chain 1: Iteration: 100 / 250 [ 40%]  (Adaptation)
+Chain 1: Iteration: 150 / 250 [ 60%]  (Adaptation)
+Chain 1: Iteration: 200 / 250 [ 80%]  (Adaptation)
+Chain 1: Iteration: 250 / 250 [100%]  (Adaptation)
+Chain 1: Success! Found best value [eta = 0.1].
+Chain 1: 
+Chain 1: Begin stochastic gradient ascent.
+Chain 1:   iter             ELBO   delta_ELBO_mean   delta_ELBO_med   notes 
+Chain 1:    100     -8012538.276             1.000            1.000
+Chain 1:    200     -5739950.839             0.698            1.000
+Chain 1:    300     -4624407.248             0.546            0.396
+Chain 1:    400     -3988555.990             0.449            0.396
+Chain 1:    500     -3594816.860             0.381            0.241
+Chain 1:    600     -3338262.152             0.330            0.241
+Chain 1:    700     -3165884.175             0.291            0.159
+Chain 1:    800     -3045416.615             0.260            0.159
+Chain 1:    900     -2963101.526             0.234            0.110
+Chain 1:   1000     -2903538.978             0.213            0.110
+Chain 1:   1100     -2861561.864             0.195            0.077
+Chain 1:   1200     -2831409.645             0.179            0.077
+Chain 1:   1300     -2809157.891             0.166            0.054
+Chain 1:   1400     -2793191.531             0.155            0.054
+Chain 1:   1500     -2781474.685             0.145            0.040
+Chain 1:   1600     -2772789.029             0.136            0.040
+Chain 1:   1700     -2766340.312             0.128            0.028
+Chain 1:   1800     -2761457.376             0.121            0.028
+Chain 1:   1900     -2757792.310             0.115            0.021
+Chain 1:   2000     -2755102.427             0.109            0.021
+Chain 1:   2100     -2753017.372             0.104            0.015
+Chain 1:   2200     -2751308.535             0.099            0.015
+Chain 1:   2300     -2750017.343             0.095            0.011
+Chain 1:   2400     -2748939.866             0.091            0.011
+Chain 1:   2500     -2748163.763             0.087            0.008
+Chain 1:   2600     -2747480.486             0.084            0.008
+Chain 1:   2700     -2746953.270             0.081            0.006
+Chain 1:   2800     -2746582.766             0.078            0.006
+Chain 1:   2900     -2746195.864             0.075            0.004
+Chain 1:   3000     -2745950.422             0.073            0.004
+Chain 1:   3100     -2745667.066             0.070            0.003
+Chain 1:   3200     -2745464.332             0.068            0.003
+Chain 1:   3300     -2745275.776             0.066            0.002
+Chain 1:   3400     -2745093.844             0.064            0.002
+Chain 1:   3500     -2744991.309             0.062            0.002
+Chain 1:   3600     -2744861.993             0.061            0.002
+Chain 1:   3700     -2744757.638             0.059            0.001
+Chain 1:   3800     -2744671.864             0.057            0.001
+Chain 1:   3900     -2744600.673             0.056            0.001
+Chain 1:   4000     -2744568.068             0.055            0.001
+Chain 1:   4100     -2744475.079             0.053            0.001
+Chain 1:   4200     -2744479.368             0.052            0.001
+Chain 1:   4300     -2744402.779             0.051            0.001
+Chain 1:   4400     -2744335.823             0.050            0.001
+Chain 1:   4500     -2744295.661             0.048            0.000
+Chain 1:   4600     -2744301.768             0.047            0.000
+Chain 1:   4700     -2744257.669             0.046            0.000
+Chain 1:   4800     -2744220.569             0.045            0.000
+Chain 1:   4900     -2744192.745             0.045            0.000
+Chain 1:   5000     -2744169.618             0.044            0.000
+Chain 1:   5100     -2744154.335             0.024            0.000
+Chain 1:   5200     -2744135.001             0.016            0.000
+Chain 1:   5300     -2744080.871             0.011            0.000
+Chain 1:   5400     -2744090.241             0.008            0.000
+Chain 1:   5500     -2744064.702             0.006            0.000
+Chain 1:   5600     -2744071.630             0.004            0.000   MEDIAN ELBO CONVERGED
+Chain 1: 
+Chain 1: Drawing a sample of size 2000 from the approximate posterior... 
+Chain 1: COMPLETED.

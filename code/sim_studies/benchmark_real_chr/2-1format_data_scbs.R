@@ -29,19 +29,19 @@ formatCell <- function(i, se, folder) {
 subtype <- "IT-L23_Cux1"
 chromosome <- "chr1"
 seed <- 2022
+NV <- 5000
 
-for (N in c(5000)) {
 # for (N in c(100, 500, 1000, 2000)) {
-  for (NP in c(2,3,4,5,8,12,20)) {
-# for (N in c(5000)) {
-  # for (NP in c(4,5)) { 
-  # for (NP in c(8)) { # TODO
-    
+  # for (NP in c(2,3,4,5,8,12,20)) {
+for (N in c(200)) {
+  for (NP in c(4)) {
+
     # Load raw data
     load_dir <- paste0(
       "data/interim/sim_studies/benchmark_real_chr/modified_real/pseudoChr_",
       subtype, "_", chromosome, "_", 
-      N, "cells_", NP, "subpops", "_seed", seed
+      N, "cells_", NP, "subpops_", 
+      NV, "VMRs_seed", seed
     )
     se <- loadHDF5SummarizedExperiment(dir = load_dir)
     
@@ -49,7 +49,8 @@ for (N in c(5000)) {
     folder <- paste0(
       "data/interim/sim_studies/benchmark_real_chr/scbs/input/pseudoChr_",
       subtype, "_", chromosome, "_", 
-      N, "cells_", NP, "subpops", "_seed", seed
+      N, "cells_", NP, "subpops_", 
+      NV, "VMRs_seed", seed
     )
     if (!file.exists(folder)) dir.create(folder)
     

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#PBS -l walltime=2:00:00,select=1:ncpus=16:mem=64gb
-#PBS -N runScbsSim
+#PBS -l walltime=1:00:00,select=1:ncpus=16:mem=64gb
+#PBS -N runScbsReal
 #PBS -A st-kdkortha-1
 #PBS -m abe
 #PBS -M ning.shen@stat.ubc.ca
@@ -10,7 +10,7 @@
 
 ################################################################################
 
-cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_sim_chr/scbs
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_real_chr/scbs
 
 module load miniconda3
 source activate /home/nshen7/conda-env/
@@ -18,13 +18,14 @@ source activate /home/nshen7/conda-env/
 n_cores=14
 NV=5000
 
-for N in 200; do
-# for N in 100 500 1000 2000; do
+for N in 200; do 
+# for N in 100 500 1000; do 
+# for N in 2000; do
   for NP in 4; do
   # for NP in 2 3 4 5 8 12 20; do
   
-    dir_in="input/simChr_IT-L23_Cux1_chr1_${N}cells_${NP}subpops_${NV}VMRs_seed2022/*.cov"
-    dir_cpt="output/simChr_IT-L23_Cux1_chr1_${N}cells_${NP}subpops_${NV}VMRs_seed2022_compact"
+    dir_in="input/pseudoChr_IT-L23_Cux1_chr1_${N}cells_${NP}subpops_${NV}VMRs_seed2022/*.cov"
+    dir_cpt="output/pseudoChr_IT-L23_Cux1_chr1_${N}cells_${NP}subpops_${NV}VMRs_seed2022_compact"
     
     start=`date +%s`
     scbs prepare $dir_in $dir_cpt
@@ -33,7 +34,7 @@ for N in 200; do
     # for vt in 0.02; do
     for vt in $(seq .001 .001 .009) $(seq .01 .01 .09) $(seq .1 .1 .9) 0.99; do
     
-      dir_out="output/simChr_IT-L23_Cux1_chr1_${N}cells_${NP}subpops_${NV}VMRs_seed2022_${vt}vt.bed"
+      dir_out="output/pseudoChr_IT-L23_Cux1_chr1_${N}cells_${NP}subpops_${NV}VMRs_seed2022_${vt}vt.bed"
       scbs scan --threads $n_cores --var-threshold $vt $dir_cpt $dir_out
       
       # Record model running time
