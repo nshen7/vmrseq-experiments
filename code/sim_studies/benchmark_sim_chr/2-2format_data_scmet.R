@@ -8,7 +8,7 @@ library(DelayedMatrixStats)
 library(SummarizedExperiment)
 library(BiocParallel)
 
-# ==== main ====
+
 subtype <- "IT-L23_Cux1"
 chromosome <- "chr1"
 seed <- 2022
@@ -20,11 +20,12 @@ NV <- 5000
 for (N in c(200)) {
   # for (NP in c(2,3,4,5,8,12,20)) {
   for (NP in c(4)) {
-
+    
     # Load raw data
     load_dir <- paste0(
       "data/interim/sim_studies/benchmark_sim_chr/simulated/simChr_",
-      subtype, "_", chromosome, "_", N, "cells_", NP, "subpops", "_seed", seed
+      subtype, "_", chromosome, "_", N, "cells_", NP, "subpops_", 
+      NV, "VMRs_seed", seed
     )
     se <- loadHDF5SummarizedExperiment(dir = load_dir)
     
@@ -52,7 +53,7 @@ for (N in c(200)) {
     
     feats.df <- do.call(
       rbind,
-      bplapply(1:length(wds.gr), computeFeature)
+      bplapply(unique(subjectHits(hits)), computeFeature)
     )
     
     input_folder <- paste0("data/interim/sim_studies/benchmark_sim_chr/scmet/input")
@@ -60,14 +61,16 @@ for (N in c(200)) {
     wds_dir <- paste0(
       input_folder, 
       "/features_", subtype, "_", chromosome, "_", 
-      bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops.rds"
+      bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops_", 
+      NV, "VMRs_seed", seed, ".rds"
     )
     saveRDS(wds.gr, file = wds_dir)
     # Save input for scMET
     write_dir <- paste0(
-      input_folder, 
-      "/simChr_", subtype, "_", chromosome, "_", 
-      bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops.txt"
+      input_folder,
+      "/simChr_", subtype, "_", chromosome, "_",
+      bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops_", 
+      NV, "VMRs_seed", seed, ".txt"
     )
     fwrite(feats.df, file = write_dir, quote = F)
     R.utils::gzip(write_dir, remove = T, overwrite = T)

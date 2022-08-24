@@ -8,9 +8,11 @@ library(SummarizedExperiment)
 library(BiocParallel)
 n_cores <- 18
 NV <- 5000
+bp_size <- 20000
 
-# for (N in c(100)) {
-  for (N in c(200)) {
+for (N in c(200)) { 
+  # for (N in c(500)) { 
+  # for (N in c(500)) {
   # for (N in c(1000)) {
   # for (NP in c(2,3,4,5,8,12,20)) {
   for (NP in c(4)) {
@@ -20,10 +22,10 @@ NV <- 5000
     seed <- 2022
     
     # Load input data
-    dir <- paste0("data/interim/sim_studies/benchmark_sim_chr/scmet/input/simChr_",
-                  subtype, "_", chromosome, "_20kbWindow_",
-                  N, "cells_", NP, "subpops_", 
-                  NV, "VMRs.txt.gz")
+    dir <- paste0("data/interim/sim_studies/benchmark_sim_chr/scmet/input/simChr_", 
+                  subtype, "_", chromosome, "_",
+                  bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops_", 
+                  NV, "VMRs_seed", seed, ".txt.gz")
     dt <- fread(dir) %>% 
       dplyr::filter(total_reads >= 3) %>%  # exclude regions that have less than 3 CpGs covered
       group_by(Feature) %>%
@@ -38,9 +40,9 @@ NV <- 5000
     time <- round((t2 - t1)[3]/60, 2)
     fwrite(
       data.frame(time = time, method = "scmet", n_cores = n_cores),  
-      paste0("data/interim/sim_studies/benchmark_sim_chr/scmet/output/modelTime", 
-             N, "cells_", NP, "subpops_", 
-             NV, "VMRs.txt")
+      paste0("data/interim/sim_studies/benchmark_sim_chr/scmet/output/modelTime_", 
+             bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops_", 
+             NV, "VMRs_seed", seed, ".txt")
     )
     
     # plot mean-overdispersion
@@ -49,9 +51,9 @@ NV <- 5000
     gg2 <- scmet_plot_mean_var(obj = fit_obj, y = "epsilon", 
                                task = NULL, show_fit = TRUE)
     cowplot::plot_grid(gg1, gg2, ncol = 2)
-    ggsave(paste0("plots/sim_studies/benchmark_sim_chr/scmet/overdispersion_vs_mean_20kbWindow_", 
-                  N, "cells_", NP, "subpops_", 
-                  NV, "VMRs.png"), width = 10, height = 5)
+    ggsave(paste0("plots/sim_studies/benchmark_sim_chr/scmet/overdispersion_vs_mean_", 
+                  bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops_", 
+                  NV, "VMRs_seed", seed, ".png"), width = 10, height = 5)
     
     # store results from various efdr level
     for (efdr in c(0.01, 0.02, 0.05, seq(0.1,0.9,0.1), 0.99)) {
@@ -62,8 +64,8 @@ NV <- 5000
         paste0(
           "data/interim/sim_studies/benchmark_sim_chr/scmet/output/simChr_",
           subtype, "_", chromosome, "_", 
-          N, "cells_", NP, "subpops_", 
-          NV, "VMRs_", efdr, "efdr_scmetOutput.csv"
+          bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops_", 
+          NV, "VMRs_seed", seed, "_", efdr, "efdr_scmetOutput.csv"
         ), 
         row.names = FALSE, col.names = TRUE
       )

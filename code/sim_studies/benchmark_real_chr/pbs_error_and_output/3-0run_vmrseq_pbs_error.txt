@@ -187,12 +187,12 @@ The following objects are masked from ‘package:matrixStats’:
 QC: Removed 1.2% of sites with coverage lower than 3.
 Parallel: Parallelizing using 14 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions with (smoothed) variance larger than 0.1...
-...Chromosome pseudo: Smoothed (0.28 min). 
+...Chromosome pseudo: Smoothed (0.25 min). 
 ...Finished calling candidate regions - found 24610 candidate regions in total.
   ...25.79% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs without penalty...
-...Finished detecting VMRs - took 28.55 min and 18243 VMRs found in total.
-  ...18.23% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 18.57 min and 17623 VMRs found in total.
+  ...17.82% QC-passed sites are called to be in VMRs.
 Error in my_eval(res, penalty = penalty) : 
   could not find function "my_eval"
 Execution halted

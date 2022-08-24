@@ -188,9 +188,9 @@ QC: Removed 1.2% of sites with coverage lower than 3.
 Parallel: Parallelizing using 14 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions with (smoothed) variance larger than 0.1...
 ...Chromosome pseudo: Smoothed (0.27 min). 
-...Finished calling candidate regions - found 19047 candidate regions in total.
-  ...13.92% QC-passed sites are called to be in candidate regions.
+...Finished calling candidate regions - found 19942 candidate regions in total.
+  ...17.06% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs without penalty...
-...Finished detecting VMRs - took 14.66 min and 10576 VMRs found in total.
-  ...8.74% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 11.53 min and 10666 VMRs found in total.
+  ...11.05% QC-passed sites are called to be in VMRs.
 INFO:    Cleaning up image...

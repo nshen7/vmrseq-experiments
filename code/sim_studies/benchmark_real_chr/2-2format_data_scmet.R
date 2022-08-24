@@ -24,7 +24,8 @@ for (N in c(200)) {
     # Load raw data
     load_dir <- paste0(
       "data/interim/sim_studies/benchmark_real_chr/modified_real/pseudoChr_",
-      subtype, "_", chromosome, "_", N, "cells_", NP, "subpops", "_seed", seed
+      subtype, "_", chromosome, "_", N, "cells_", NP, "subpops_", 
+      NV, "VMRs_seed", seed
     )
     se <- loadHDF5SummarizedExperiment(dir = load_dir)
     
@@ -50,27 +51,29 @@ for (N in c(200)) {
       return(feat.df)
     }
     
-    # feats.df <- do.call(
-    #   rbind,
-    #   bplapply(1:length(wds.gr), computeFeature)
-    # )
+    feats.df <- do.call(
+      rbind,
+      bplapply(unique(subjectHits(hits)), computeFeature)
+    )
     
     input_folder <- paste0("data/interim/sim_studies/benchmark_real_chr/scmet/input")
     # Save feature metadata
     wds_dir <- paste0(
       input_folder, 
       "/features_", subtype, "_", chromosome, "_", 
-      bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops.rds"
+      bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops_", 
+      NV, "VMRs_seed", seed, ".rds"
     )
     saveRDS(wds.gr, file = wds_dir)
     # Save input for scMET
-    # write_dir <- paste0(
-    #   input_folder, 
-    #   "/pseudoChr_", subtype, "_", chromosome, "_", 
-    #   bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops.txt"
-    # )
-    # fwrite(feats.df, file = write_dir, quote = F)
-    # R.utils::gzip(write_dir, remove = T, overwrite = T)
+    write_dir <- paste0(
+      input_folder,
+      "/pseudoChr_", subtype, "_", chromosome, "_",
+      bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops_", 
+      NV, "VMRs_seed", seed, ".txt"
+    )
+    fwrite(feats.df, file = write_dir, quote = F)
+    R.utils::gzip(write_dir, remove = T, overwrite = T)
     
     cat("N =", N, "; NP =", NP, "\n")
   }

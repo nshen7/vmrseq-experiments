@@ -166,133 +166,133 @@ Total # of cells: 200.
 
 Total # of features: 9603.
 
-Mon Aug 22 10:17:40 2022: Using EB to set model priors.
+Tue Aug 23 16:17:37 2022: Using EB to set model priors.
 
 Usin EB estimates as initial values for posterior inference.
 
-Mon Aug 22 10:25:56 2022: Finished EB.
+Tue Aug 23 16:25:28 2022: Finished EB.
 
-Mon Aug 22 10:25:56 2022: Starting inference.
+Tue Aug 23 16:25:28 2022: Starting inference.
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
 In addition: There were 50 or more warnings (use warnings() to see the first 50)
 Warning: Inference failed with seed: 12
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 670136158
+Warning: Inference failed with seed: 265884874
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 1592991631
+Warning: Inference failed with seed: 360365249
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 1492469732
+Warning: Inference failed with seed: 404559850
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 1972487690
+Warning: Inference failed with seed: 594317448
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 1774901661
+Warning: Inference failed with seed: 337901089
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 836860256
+Warning: Inference failed with seed: 872594411
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 433151928
+Warning: Inference failed with seed: 1455286087
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 1778571573
+Warning: Inference failed with seed: 1367760680
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 619732820
+Warning: Inference failed with seed: 1976213505
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 84655015
+Warning: Inference failed with seed: 1705769782
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 642043968
+Warning: Inference failed with seed: 1081050260
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 1713807909
+Warning: Inference failed with seed: 1158542391
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 679186725
+Warning: Inference failed with seed: 1228818263
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 687228550
+Warning: Inference failed with seed: 45545960
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 238946970
+Warning: Inference failed with seed: 2084871668
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 1958733327
+Warning: Inference failed with seed: 568285238
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 1183490200
+Warning: Inference failed with seed: 227282461
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 1633263289
+Warning: Inference failed with seed: 176943365
  Reruning with different seed...
 
 Error in sampler$call_sampler(c(args, dotlist)) : 
-  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.8246, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+  Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.9883, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
 
-Warning: Inference failed with seed: 192721792
+Warning: Inference failed with seed: 793007887
  Reruning with different seed...
 
 Error in scmet(Y = dt, L = 4, iter = 50000, seed = 12, n_cores = n_cores) : 

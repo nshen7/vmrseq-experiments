@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#PBS -l walltime=1:00:00,select=1:ncpus=16:mem=96gb
+#PBS -l walltime=2:00:00,select=1:ncpus=16:mem=96gb
 #PBS -N runVseqReal
 #PBS -A st-kdkortha-1
 #PBS -m abe
