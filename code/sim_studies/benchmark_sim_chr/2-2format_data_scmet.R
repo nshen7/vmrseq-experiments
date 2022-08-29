@@ -13,7 +13,7 @@ subtype <- "IT-L23_Cux1"
 chromosome <- "chr1"
 seed <- 2022
 bp_size <- 20000
-NV <- 5000
+NV <- 3000
 
 # for (N in c(100, 500, 1000, 2000)) {
 # for (N in c(100, 500, 1000)) {
@@ -40,8 +40,8 @@ for (N in c(200)) {
     
     computeFeature <- function(i) { # i th feature/window
       feat.se <- se[queryHits(hits)[subjectHits(hits)==i],]
-      total_reads <- colSums(assays(feat.se)$MF >= 0, na.rm = T)
-      met_reads <- colSums(assays(feat.se)$MF, na.rm = T)
+      total_reads <- colSums(assays(feat.se)$M_mat >= 0, na.rm = T)
+      met_reads <- colSums(assays(feat.se)$M_mat, na.rm = T)
       feat.df <- data.frame(
         Feature = paste0("Window_", i),
         Cell = paste0("Cell_",1:length(total_reads)),

@@ -12,7 +12,7 @@ for (N in c(200)) {
 # for (N in c(100)) {
   # for (NP in c(2,3,4,5,8,12,20)) {
   for (NP in c(4)) {
-    simPseudoChr(N, NP, NV = 5000, seed = 2022, out_dir)     
+    simPseudoChr(N, NP, NV = 3000, seed = 2022, out_dir)     
     cat("N =", N, "; NP =", NP, "\n")
   }
 }

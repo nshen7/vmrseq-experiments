@@ -49,8 +49,8 @@ simPseudoChr <- function(
   state <- as.numeric(meth / total >= 0.5)
   rm(meth)
 
-  # Remove sites with no coverage
-  index_rm <- which(total == 0)
+  # Remove sites with coverage less than 3
+  index_rm <- which(total < 3)
   gr <- gr[-index_rm]
   M_mat <- M_mat[-index_rm, ]
   total <- total[-index_rm]
@@ -59,9 +59,10 @@ simPseudoChr <- function(
   message("Cell/site missing distribution obtained from real data.")
   
   # Get CpG clusters for VMR sampling (minCov >= 3 & 5 <= num_cpg <= 500)
-  cluster <- bumphunter::clusterMaker(chr = seqnames(gr), 
-                                      pos = start(gr), 
-                                      maxGap = 500)
+  cluster <- bumphunter::boundedClusterMaker(chr = seqnames(gr), 
+                                             pos = start(gr), 
+                                             maxGap = 500, 
+                                             maxClusterWidth = 10000)
   Indexes <- split(seq(along = cluster), cluster)
   lns <- lengths(Indexes)
   min_covs <- sapply(Indexes, function(.x) min(total[.x])) %>% unname
@@ -174,14 +175,7 @@ simPseudoChr <- function(
                       NV, "VMRs_seed", seed)
   saveHDF5SummarizedExperiment(
     x = SummarizedExperiment(
-      assays = list("MF" = M_mat),
-    #   assays = list(
-    #     "MF" = rbind(
-    #       MFs_1g[[1]],
-    #       do.call(
-    #         rbind,
-    #         lapply(1:NV, function(i) rbind(MFs_2g[[i]], MFs_1g[[i+1]]))))
-    #   ),
+      assays = list("M_mat" = M_mat),
       rowRanges = gr
     ),
     dir = write_dir,

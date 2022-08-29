@@ -14,9 +14,9 @@ formatCell <- function(i, se, folder) {
     seqnames = seqnames(cell.se),
     start = start(cell.se),
     end = end(cell.se),
-    MF = assays(cell.se)$MF*100,
-    meth = assays(cell.se)$MF,
-    unmeth = 1-assays(cell.se)$MF
+    MF = assays(cell.se)$M_mat*100,
+    meth = assays(cell.se)$M_mat,
+    unmeth = 1-assays(cell.se)$M_mat
   ) %>% filter(!is.na(MF))
   
   fwrite(cell.df, 
@@ -29,7 +29,7 @@ formatCell <- function(i, se, folder) {
 subtype <- "IT-L23_Cux1"
 chromosome <- "chr1"
 seed <- 2022
-NV <- 5000
+NV <- 3000
 
 # for (N in c(2000)) {
 # for (N in c(1000)) {

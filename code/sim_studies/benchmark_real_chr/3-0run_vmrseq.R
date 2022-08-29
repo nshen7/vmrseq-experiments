@@ -28,11 +28,11 @@ for (N in c(200)) {
                   subtype, "_", chromosome, "_", 
                   N, "cells_", NP, "subpops_", 
                   NV, "VMRs_seed", seed)
-    gr <- loadHDF5SummarizedExperiment(dir) %>% granges
+    SE <- loadHDF5SummarizedExperiment(dir)
 
     # run model
     t1 <- proc.time()
-    res <- vmrseq(gr, penalty = 0)
+    res <- vmrseq(SE, penalty = -3)
     t2 <- proc.time()
     
     # record time elapsed
@@ -50,11 +50,6 @@ for (N in c(200)) {
       N, "cells_", NP, "subpops_", 
       NV, "VMRs_seed", seed, "_vmrseqOutput.rds"
     ))
-    
-    for (penalty in 1:20) {
-      cat("penalty =", penalty, "\n")
-      smr <- my_eval(res, penalty = penalty)
-    }
     
     cat("\n\n")
   }

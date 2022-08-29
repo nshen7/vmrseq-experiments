@@ -37,8 +37,8 @@ simPseudoChr <- function(
   total <- rowSums(!is.na(M_mat))
   mf <- meth / total
 
-  # Remove sites with no coverage
-  index_rm <- which(total == 0)
+  # Remove sites with coverage less than 3
+  index_rm <- which(total < 3)
   gr <- gr[-index_rm]
   meth <- meth[-index_rm]
   total <- total[-index_rm]

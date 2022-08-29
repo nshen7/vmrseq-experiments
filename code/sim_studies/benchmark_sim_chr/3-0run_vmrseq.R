@@ -8,7 +8,7 @@ library(SummarizedExperiment)
 library(BiocParallel)
 n_cores <- 14
 register(MulticoreParam(workers = n_cores))
-NV <- 5000
+NV <- 3000
 
 for (N in c(200)) {
 # for (N in c(500)) {
@@ -26,11 +26,11 @@ for (N in c(200)) {
                   subtype, "_", chromosome, "_", 
                   N, "cells_", NP, "subpops_", 
                   NV, "VMRs_seed", seed)
-    gr <- loadHDF5SummarizedExperiment(dir) %>% granges
+    SE <- loadHDF5SummarizedExperiment(dir)
 
     # run model
     t1 <- proc.time()
-    res <- vmrseq(gr, penalty = 0)
+    res <- vmrseq(SE, cutoff = 0.1, penalty = 0)
     t2 <- proc.time()
     
     # record time elapsed

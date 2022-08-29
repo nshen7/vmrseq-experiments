@@ -15,8 +15,8 @@ seed <- 2022
 
 # ==== vmrseq ====
 
-vmrseq_eval <- function(res_vmrseq, penalty) {
-  res_gr <- res_vmrseq$gr_qced
+vmrseq_eval <- function(res_vseq, penalty) {
+  res_gr <- res_vseq$gr_qced
   index <- which(res_gr$loglik_diff < penalty) # indices of sites failed to pass penalty threshold
   res_gr$vmr_index[index] <- NA
   res_gr$vmr_num_cpg[index] <- NA
@@ -58,33 +58,94 @@ vmrseq_eval <- function(res_vmrseq, penalty) {
               true = true, detected = detected))
 }
 
-res_vmrseq <- readRDS(
+vmrseq_cr_eval <- function(res_vseq, cutoff) {
+  res_gr <- res_vseq$gr_qced
+  index <- which(res_gr$`res_cr$var` < cutoff) # indices of sites failed to pass penalty threshold
+  res_gr$cr_index[index] <- NA
+  power_site <- with(res_gr, sum(is_vml&!is.na(cr_index))/sum(is_vml))
+  fdr_site <- with(res_gr, sum(!is_vml&!is.na(cr_index))/sum(!is.na(cr_index)))
+  # cat("Site-level power =", power_site, "; ")
+  # cat("Site-level FDR =", fdr_site, "\n")
+  
+  true <- res_gr %>% data.frame %>%
+    filter(is_vml) %>%
+    group_by(vmr_name) %>%
+    summarise(n_cpg = n(),
+              n_dectected = sum(!is.na(cr_index)),
+              n_incr = sum(!is.na(cr_index)),
+              cr_index = max(cr_index, na.rm = T),
+              pi1 = max(pi1, na.rm = T),
+              med_total = median(total),
+              loglik_diff = max(loglik_diff, na.rm = T)) %>%
+    filter(n_cpg >= 5)
+  power_region <- sum(true$n_dectected > 0) / nrow(true)
+  # cat("Region-level power =", power, "; ")
+  detected <- res_gr %>% data.frame %>%
+    filter(!is.na(cr_index)) %>%
+    group_by(cr_index) %>%
+    mutate(cr_n_cpg = n()) %>%
+    ungroup() %>%
+    group_by(cr_index) %>%
+    summarise(cr_index = max(cr_index),
+              n_cpg = n(),
+              n_true = sum(!is.na(vmr_name)),
+              pi1 = max(pi1, na.rm = T),
+              optim_pi = max(pi),
+              mean_MF = mean(meth/total),
+              loglik_diff = max(loglik_diff))
+  fdr_region <- 1-sum(detected$n_true > 0) / nrow(detected)
+  # cat("Region-level FDR =", fdr, "\n")
+  return(list(power_site = power_site, fdr_site = fdr_site, 
+              power_region = power_region , fdr_region  = fdr_region , 
+              true = true, detected = detected))
+}
+
+res_vseq <- readRDS(
   paste0("data/interim/sim_studies/benchmark_sim_chr/vmrseq/output/simChr_IT-L23_Cux1_chr1_",
          N, "cells_", NP, "subpops_", 
          NV, "VMRs_seed", seed, "_vmrseqOutput.rds")
 )
 
-smr_vmrseq <- data.frame(method = "vmrseq",
-                         penalty = c(0:10, seq(15,60,5)),
-                         power_site = NA,
-                         fdr_site = NA,
-                         power_region = NA,
-                         fdr_region = NA)
+smr_vseq <- data.frame(method = "vmrseq",
+                       penalty = c(0:10, seq(15,60,5)),
+                       power_site = NA,
+                       fdr_site = NA,
+                       power_region = NA,
+                       fdr_region = NA)
 
-for (i in 1:nrow(smr_vmrseq)) {
-  pen <- smr_vmrseq$penalty[i]
-  smr <- vmrseq_eval(res_vmrseq, penalty = pen)
-  if (pen==0) {View(smr$true); View(smr$detected)}
-  smr_vmrseq$penalty[i] <- pen
-  smr_vmrseq$power_site[i] <- smr$power_site
-  smr_vmrseq$fdr_site[i] <- smr$fdr_site
-  smr_vmrseq$power_region[i] <- smr$power_region
-  smr_vmrseq$fdr_region[i] <- smr$fdr_region
+for (i in 1:nrow(smr_vseq)) {
+  pen <- smr_vseq$penalty[i]
+  smr <- vmrseq_eval(res_vseq, penalty = pen)
+  # if (pen==0) {View(smr$true); View(smr$detected)}
+  smr_vseq$penalty[i] <- pen
+  smr_vseq$power_site[i] <- smr$power_site
+  smr_vseq$fdr_site[i] <- smr$fdr_site
+  smr_vseq$power_region[i] <- smr$power_region
+  smr_vseq$fdr_region[i] <- smr$fdr_region
   cat(i, " ")
 }
 
-# with(smr_vmrseq, plot(fdr_site, power_site, type = "l", xlim = c(0,1), ylim = c(0,1)))
-# with(smr_vmrseq, plot(fdr_region, power_region, type = "l", xlim = c(0,1), ylim = c(0,1)))
+smr_vseq_cr <- data.frame(method = "vmrseq_CR",
+                          cutoff = seq(0.05,0.2,0.01),
+                          power_site = NA,
+                          fdr_site = NA,
+                          power_region = NA,
+                          fdr_region = NA)
+
+for (i in 1:nrow(smr_vseq_cr)) {
+  cutoff <- smr_vseq_cr$cutoff[i]
+  smr <- vmrseq_cr_eval(res_vseq, cutoff = cutoff)
+  # if (pen==0) {View(smr$true); View(smr$detected)}
+  smr_vseq_cr$cutoff[i] <- cutoff
+  smr_vseq_cr$power_site[i] <- smr$power_site
+  smr_vseq_cr$fdr_site[i] <- smr$fdr_site
+  smr_vseq_cr$power_region[i] <- smr$power_region
+  smr_vseq_cr$fdr_region[i] <- smr$fdr_region
+  cat(i, " ")
+}
+
+# with(smr_vseq, plot(fdr_site, power_site, type = "l", xlim = c(0,1), ylim = c(0,1)))
+# with(smr_vseq, plot(fdr_region, power_region, type = "l", xlim = c(0,1), ylim = c(0,1)))
 
 # === scbs ====
 gr <- loadHDF5SummarizedExperiment(
@@ -144,13 +205,15 @@ for (i in 1:nrow(smr_scbs)) {
 
 
 # ==== plots ====
-smr <- rbind(smr_vmrseq[-2], smr_scbs[-2])
+smr <- rbind(smr_vseq[-2], smr_scbs[-2])
 
 # site-level fdr and power
 smr %>%  
   ggplot(aes(fdr_site, power_site, color = method)) + 
   geom_vline(xintercept = 0.05, color = "grey", linetype = "dashed") +
   geom_path() +
+  scale_color_manual(values = c("vmrseq" = "red", "scbs" = "green")) +
+  ggtitle("Simulated chromosome (200 cells, 4 subpops)") +
   xlim(0,1) + ylim(0,1)
 ggsave(paste0(
   "plots/sim_studies/benchmark_sim_chr/comparison/simChr_fdr&power_siteLevel_", 
@@ -162,6 +225,8 @@ smr %>%
   ggplot(aes(fdr_region, power_region, color = method)) + 
   geom_vline(xintercept = 0.05, color = "grey", linetype = "dashed") +
   geom_path() +
+  scale_color_manual(values = c("vmrseq" = "red", "scbs" = "green")) +
+  ggtitle("Simulated chromosome (200 cells, 4 subpops)") +
   xlim(0,1) + ylim(0,1)
 ggsave(paste0(
   "plots/sim_studies/benchmark_sim_chr/comparison/simChr_fdr&power_regionLevel_", 

@@ -7,7 +7,7 @@ library(HDF5Array)
 library(SummarizedExperiment)
 library(BiocParallel)
 n_cores <- 18
-NV <- 5000
+NV <- 3000
 bp_size <- 20000
   
 for (N in c(200)) { 

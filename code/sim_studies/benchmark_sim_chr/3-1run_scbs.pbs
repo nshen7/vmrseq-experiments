@@ -16,7 +16,7 @@ module load miniconda3
 source activate /home/nshen7/conda-env/
 
 n_cores=14
-NV=5000
+NV=3000
 
 for N in 200; do
 # for N in 100 500 1000 2000; do
