@@ -28,9 +28,13 @@ for (N in c(200)) {
                   NV, "VMRs_seed", seed)
     SE <- loadHDF5SummarizedExperiment(dir)
 
+    # QC: remove sites with across-cell coverage < 3
+    total <- rowSums(assays(SE)[[1]]>=0, na.rm = T)
+    SE <- subset(SE, total >= 3)
+    
     # run model
     t1 <- proc.time()
-    res <- vmrseq(SE, cutoff = 0.1, penalty = 0)
+    res <- vmrseq(SE)
     t2 <- proc.time()
     
     # record time elapsed

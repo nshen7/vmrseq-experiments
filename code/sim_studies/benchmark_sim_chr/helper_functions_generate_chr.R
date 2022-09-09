@@ -72,6 +72,21 @@ simPseudoChr <- function(
   # Sample regions 
   vmrs_i <- sample(seq_len(length(Indexes)), NV, replace = FALSE) %>% sort
   inds_2g <- Indexes[vmrs_i]
+  # Merge adjacent VMRs if there are equal or less than `maxNumMerge` CpGs in between
+  maxNumMerge <- 2
+  if (maxNumMerge > 0) {
+    for (i in 1:(length(inds_2g)-1)) {
+      fr <- inds_2g[[i]]
+      bh <- inds_2g[[i+1]]
+      if (bh[1] - fr[length(fr)] <= maxNumMerge + 1) {
+        combined <- (fr[1]):(bh[length(bh)])
+        inds_2g[[i]] <- NA
+        inds_2g[[i+1]] <- combined
+      }
+    }
+    inds_2g <- inds_2g[!is.na(inds_2g)]
+  }
+  message("Finished sampling CpG clusters.")
   message("Five-number summary of number of CpGs in VMRs: ")
   message(round(quantile(lengths(inds_2g))), domain = NA, appendLF = TRUE)
   
@@ -102,33 +117,7 @@ simPseudoChr <- function(
   state_seqs_1g <- lapply(inds_1g, function(ix) state[ix]) 
   state_seqs_2g <- lapply(inds_2g, function(ix) rep(1, length(ix))) # ps: hidden states in VMR are all (1,0)
   
-  # MFs_1g <- bplapply(
-  #   1:(NV+1),
-  #   function(i)
-  #     if (!is.null(inds_1g[[i]])) .sampScMeth1Grp(state_seq = state_seqs_1g[[i]],
-  #                                                 miss_mat = apply(
-  #                                                   M_mat[inds_1g[[i]], ] >= 0,
-  #                                                   MARGIN = 1:2,
-  #                                                   FUN = as.numeric
-  #                                                 ),
-  #                                                 sigma = 0,
-  #                                                 pars = pars
-  #     ) else NULL
-  # )
-  # MFs_2g <- bplapply(
-  #   1:NV,
-  #   function(i) .sampScMeth2Grp(state_seq = state_seqs_2g[[i]],
-  #                               pi1 = pi1s[i],
-  #                               miss_mat = apply(
-  #                                 M_mat[inds_2g[[i]], ] >= 0,
-  #                                 MARGIN = 1:2,
-  #                                 FUN = as.numeric
-  #                               ),
-  #                               sigma = 0,
-  #                               pars = pars
-  #   )
-  # )
-  
+
   # Modify real-data M matrix to model-simulated data
   for (i in 1:length(inds_2g)) {
     ix <- inds_2g[[i]]

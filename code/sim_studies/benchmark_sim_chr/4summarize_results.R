@@ -15,7 +15,7 @@ seed <- 2022
 
 # ==== vmrseq ====
 
-vmrseq_eval <- function(res_vseq, penalty) {
+.vmrseqEval <- function(res_vseq, penalty) {
   res_gr <- res_vseq$gr_qced
   index <- which(res_gr$loglik_diff < penalty) # indices of sites failed to pass penalty threshold
   res_gr$vmr_index[index] <- NA
@@ -58,9 +58,9 @@ vmrseq_eval <- function(res_vseq, penalty) {
               true = true, detected = detected))
 }
 
-vmrseq_cr_eval <- function(res_vseq, cutoff) {
+.vmrseqCrEval <- function(res_vseq, cutoff) {
   res_gr <- res_vseq$gr_qced
-  index <- which(res_gr$`res_cr$var` < cutoff) # indices of sites failed to pass penalty threshold
+  index <- which(res_gr$var < cutoff) # indices of sites failed to pass penalty threshold
   res_gr$cr_index[index] <- NA
   power_site <- with(res_gr, sum(is_vml&!is.na(cr_index))/sum(is_vml))
   fdr_site <- with(res_gr, sum(!is_vml&!is.na(cr_index))/sum(!is.na(cr_index)))
@@ -115,7 +115,7 @@ smr_vseq <- data.frame(method = "vmrseq",
 
 for (i in 1:nrow(smr_vseq)) {
   pen <- smr_vseq$penalty[i]
-  smr <- vmrseq_eval(res_vseq, penalty = pen)
+  smr <- .vmrseqEval(res_vseq, penalty = pen)
   # if (pen==0) {View(smr$true); View(smr$detected)}
   smr_vseq$penalty[i] <- pen
   smr_vseq$power_site[i] <- smr$power_site
@@ -126,7 +126,7 @@ for (i in 1:nrow(smr_vseq)) {
 }
 
 smr_vseq_cr <- data.frame(method = "vmrseq_CR",
-                          cutoff = seq(0.05,0.2,0.01),
+                          cutoff = 0.1,
                           power_site = NA,
                           fdr_site = NA,
                           power_region = NA,
@@ -134,7 +134,7 @@ smr_vseq_cr <- data.frame(method = "vmrseq_CR",
 
 for (i in 1:nrow(smr_vseq_cr)) {
   cutoff <- smr_vseq_cr$cutoff[i]
-  smr <- vmrseq_cr_eval(res_vseq, cutoff = cutoff)
+  smr <- .vmrseqCrEval(res_vseq, cutoff = cutoff)
   # if (pen==0) {View(smr$true); View(smr$detected)}
   smr_vseq_cr$cutoff[i] <- cutoff
   smr_vseq_cr$power_site[i] <- smr$power_site
@@ -205,30 +205,42 @@ for (i in 1:nrow(smr_scbs)) {
 
 
 # ==== plots ====
-smr <- rbind(smr_vseq[-2], smr_scbs[-2])
+smr <- rbind(smr_vseq[-2], smr_vseq_cr[-2], smr_scbs[-2])
+
+colors <- RColorBrewer::brewer.pal(n = 4, name = "RdYlBu")
 
 # site-level fdr and power
 smr %>%  
   ggplot(aes(fdr_site, power_site, color = method)) + 
-  geom_vline(xintercept = 0.05, color = "grey", linetype = "dashed") +
-  geom_path() +
-  scale_color_manual(values = c("vmrseq" = "red", "scbs" = "green")) +
+  geom_vline(xintercept = 0.05, linetype = "dotted") +
+  geom_path() + geom_point() +
+  geom_point(data = smr_vseq_cr, color = colors[2], size = 4) + 
+  scale_color_manual(values = c("vmrseq" = colors[1], 
+                                "vmrseq_CR" = colors[2], 
+                                "scbs" = colors[3])) +
   ggtitle("Simulated chromosome (200 cells, 4 subpops)") +
-  xlim(0,1) + ylim(0,1)
+  xlim(0,1) + ylim(0,1) +
+  theme_minimal()
 ggsave(paste0(
   "plots/sim_studies/benchmark_sim_chr/comparison/simChr_fdr&power_siteLevel_", 
-  N , "cells_", NP, "subpops_seed", seed, ".png"
+  N , "cells_", NP, "subpops_", 
+  NV, "VMRs_seed", seed, ".png"
 ), width = 6, height = 5)
 
 # region-level fdr and power
 smr %>%  
   ggplot(aes(fdr_region, power_region, color = method)) + 
-  geom_vline(xintercept = 0.05, color = "grey", linetype = "dashed") +
-  geom_path() +
-  scale_color_manual(values = c("vmrseq" = "red", "scbs" = "green")) +
+  geom_vline(xintercept = 0.05, linetype = "dotted") +
+  geom_path() + geom_point() +
+  geom_point(data = smr_vseq_cr, color = colors[2], size = 4) + 
+  scale_color_manual(values = c("vmrseq" = colors[1], 
+                                "vmrseq_CR" = colors[2], 
+                                "scbs" = colors[3])) +
   ggtitle("Simulated chromosome (200 cells, 4 subpops)") +
-  xlim(0,1) + ylim(0,1)
+  xlim(0,1) + ylim(0,1) +
+  theme_minimal()
 ggsave(paste0(
   "plots/sim_studies/benchmark_sim_chr/comparison/simChr_fdr&power_regionLevel_", 
-  N , "cells_", NP, "subpops_seed", seed, ".png"
+  N , "cells_", NP, "subpops_", 
+  NV, "VMRs_seed", seed, ".png"
 ), width = 6, height = 5)

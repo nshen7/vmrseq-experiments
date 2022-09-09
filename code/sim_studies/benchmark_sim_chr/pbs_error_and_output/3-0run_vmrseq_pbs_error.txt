@@ -186,10 +186,10 @@ The following objects are masked from ‘package:matrixStats’:
 
 Parallel: Parallelizing using 14 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions with (smoothed) variance larger than 0.1...
-...Chromosome pseudo: Smoothed, variance computed (1.36 min). 
-...Finished calling candidate regions - found 9433 candidate regions in total.
-  ...14.06% QC-passed sites are called to be in candidate regions.
+...Chromosome pseudo: Smoothed, variance computed (8.08 min). 
+...Finished calling candidate regions - found 16555 candidate regions in total.
+  ...17.52% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs without penalty...
-...Finished detecting VMRs - took 27.06 min and 5420 VMRs found in total.
-  ...9.72% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 28.92 min and 6631 VMRs found in total.
+  ...10.33% QC-passed sites are called to be in VMRs.
 INFO:    Cleaning up image...

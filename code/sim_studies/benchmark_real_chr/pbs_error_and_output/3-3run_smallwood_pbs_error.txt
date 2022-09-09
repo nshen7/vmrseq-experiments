@@ -184,11 +184,4 @@ The following objects are masked from ‘package:matrixStats’:
 
     anyMissing, rowMedians
 
-Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
-Step 1: Detecting candidate regions...
-...Chromosome pseudo: Smoothed, variance computed (0.77 min). 
-...Calling candidate regions with cutoff of 0.24 on variance.
-Error in rep.int(1:length(CRI), lengths(CRI)) : invalid 'times' value
-Calls: vmrseq -> rep.int
-Execution halted
 INFO:    Cleaning up image...

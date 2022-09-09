@@ -37,8 +37,8 @@ simPseudoChr <- function(
   total <- rowSums(!is.na(M_mat))
   mf <- meth / total
 
-  # Remove sites with coverage less than 3
-  index_rm <- which(total < 3)
+  # Remove sites with 0 coverage 
+  index_rm <- which(total == 0)
   gr <- gr[-index_rm]
   meth <- meth[-index_rm]
   total <- total[-index_rm]
@@ -61,10 +61,27 @@ simPseudoChr <- function(
   if (length(Indexes) < NV) stop("'NV' is too large.")
   
   # Sample regions with intermediate methylation values preferentially
-  mf_meds <- map_dbl(Indexes, ~ median(mf[.x], na.rm = TRUE)) %>% unname()
+  mf_meds <- map_dbl(Indexes, ~ mean(colMeans(M_mat[.x,], na.rm = TRUE), na.rm = TRUE)) %>% unname()
+  # mf_meds <- map_dbl(Indexes, ~ median(mf[.x], na.rm = TRUE)) %>% unname()
   vmrs_i <- sample(seq_len(length(Indexes)), NV, replace = FALSE, 
                    prob = pmax(1 - sqrt(2) * abs(0.5 - mf_meds)^0.5, 0)) %>% sort
   vmrs_Ind <- Indexes[vmrs_i]
+  
+  # Merge adjacent VMRs if there are equal or less than `maxNumMerge` CpGs in between
+  maxNumMerge <- 2
+  if (maxNumMerge > 0) {
+    for (i in 1:(length(vmrs_Ind)-1)) {
+      fr <- vmrs_Ind[[i]]
+      bh <- vmrs_Ind[[i+1]]
+      if (bh[1] - fr[length(fr)] <= maxNumMerge + 1) {
+        combined <- (fr[1]):(bh[length(bh)])
+        vmrs_Ind[[i]] <- NA
+        vmrs_Ind[[i+1]] <- combined
+      }
+    }
+    vmrs_Ind <- vmrs_Ind[!is.na(vmrs_Ind)]
+  }
+  print(length(vmrs_Ind)); print(quantile(lengths(vmrs_Ind)))
   message("Finished sampling CpG clusters.")
   
   # # Sample prevalences for VMRs
@@ -83,7 +100,7 @@ simPseudoChr <- function(
   par_m <- vmrseq:::.priorParams(med_cov = median(total), type = "m")
   pars <- list("u" = par_u, "m" = par_m)
   
-  for (i in 1:NV) {
+  for (i in 1:length(vmrs_Ind)) {
     ix <- vmrs_Ind[[i]]
     miss_mat <- matrix(data = NA, nrow = length(ix), ncol = N) 
     miss_mat[!is.na(M_mat[ix, ])] <- 1
@@ -95,7 +112,7 @@ simPseudoChr <- function(
   gr$is_vml <- rep(FALSE, length(gr))
   gr$vmr_name <- rep(NA, length(gr))
   gr$pi1 <- rep(NA, length(gr))
-  for (i in 1:NV) {
+  for (i in 1:length(vmrs_Ind)) {
     ix <- vmrs_Ind[[i]]
     gr$is_vml[ix] <- TRUE
     gr$vmr_name[ix] <- i
@@ -103,7 +120,7 @@ simPseudoChr <- function(
   }
   gr$meth <- rowSums(M_mat, na.rm = TRUE)
   gr$total <- rowSums(!is.na(M_mat))
-  gr$mf <-   gr$meth /   gr$total
+  gr$mf <-   gr$meth / gr$total
   message("Finished adding metadata for CpGs.")
   
   write_dir <- paste0(out_dir, "pseudoChr_",

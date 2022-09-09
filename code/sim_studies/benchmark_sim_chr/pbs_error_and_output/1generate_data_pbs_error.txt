@@ -5,10 +5,11 @@ Warning messages:
 2: replacing previous import ‘GenomicRanges::intersect’ by ‘dplyr::intersect’ when loading ‘vmrseq’ 
 3: replacing previous import ‘GenomicRanges::setdiff’ by ‘dplyr::setdiff’ when loading ‘vmrseq’ 
 Cell/site missing distribution obtained from real data.
+Finished sampling CpG clusters.
 Five-number summary of number of CpGs in VMRs: 
-c("5", "8", "14", "31", "320")
+c("5", "8", "16", "34", "495")
 Five-number summary of number of null CpGs between neighboring VMRs: 
-c("0", "38", "126", "303", "4830")
+c("3", "59", "150", "334", "4830")
 Finished sampling CpG clusters.
 Finished filling in single-cell methyl values for VMRs.
 Finished adding metadata for CpGs.

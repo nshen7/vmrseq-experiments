@@ -29,7 +29,7 @@ formatCell <- function(i, se, folder) {
 subtype <- "IT-L23_Cux1"
 chromosome <- "chr1"
 seed <- 2022
-NV <- 3000
+NV <- 1500
 
 # for (N in c(100, 500, 1000, 2000)) {
   # for (NP in c(2,3,4,5,8,12,20)) {
