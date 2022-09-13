@@ -16,7 +16,7 @@ suppressPackageStartupMessages(library(GenomicRanges))
 
 # ==== Main function for generating  object of a pseudo chromosome ====
 
-simPseudoChr <- function(
+simulateChr <- function(
     N, # total number of cells
     NV, # number of VMRs
     NP, # total number of subpopulations 

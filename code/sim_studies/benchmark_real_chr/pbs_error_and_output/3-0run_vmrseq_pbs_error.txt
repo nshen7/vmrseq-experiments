@@ -185,10 +185,22 @@ The following objects are masked from ‘package:matrixStats’:
     anyMissing, rowMedians
 
 Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
+Smoothing in progress...
+...Chromosome pseudo: Variance computed (1 min). 
+Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
-...Chromosome pseudo: Smoothed, variance computed (0.77 min). 
-...Calling candidate regions with cutoff of 0.24 on variance.
-Error in rep.int(1:length(CRI), lengths(CRI)) : invalid 'times' value
-Calls: vmrseq -> rep.int
-Execution halted
+...Calling candidate regions with cutoff of 0.05 on variance.
+...Finished calling candidate regions - found 22345 candidate regions in total.
+  ...26.53% QC-passed sites are called to be in candidate regions.
+Step 2: Detecting VMRs...
+...Finished detecting VMRs - took 28.52 min and 8985 VMRs found in total.
+  ...9.48% QC-passed sites are called to be in VMRs.
+Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
+Step 1: Detecting candidate regions...
+...Calling candidate regions with cutoff of 0.04 on variance.
+...Finished calling candidate regions - found 27923 candidate regions in total.
+  ...36.41% QC-passed sites are called to be in candidate regions.
+Step 2: Detecting VMRs...
+...Finished detecting VMRs - took 33.49 min and 10404 VMRs found in total.
+  ...10.32% QC-passed sites are called to be in VMRs.
 INFO:    Cleaning up image...

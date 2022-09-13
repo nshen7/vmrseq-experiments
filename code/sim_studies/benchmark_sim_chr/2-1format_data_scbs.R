@@ -29,7 +29,7 @@ formatCell <- function(i, se, folder) {
 subtype <- "IT-L23_Cux1"
 chromosome <- "chr1"
 seed <- 2022
-NV <- 5000
+NV <- 2000
 
 # for (N in c(2000)) {
 # for (N in c(1000)) {
@@ -49,7 +49,8 @@ for (N in c(200)) {
     # format into scbs input
     folder <- paste0(
       "data/interim/sim_studies/benchmark_sim_chr/scbs/input/simChr_",
-      subtype, "_", chromosome, "_", N, "cells_", NP, "subpops_", 
+      subtype, "_", chromosome, "_", 
+      N, "cells_", NP, "subpops_", 
       NV, "VMRs_seed", seed
     )
     if (!file.exists(folder)) dir.create(folder)
