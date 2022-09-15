@@ -11,6 +11,7 @@ simPseudoChr <- function(
     N, # total number of cells
     NP, # total number of subpopulations 
     NV, # number of VMRs
+    sparseLevel, # sparsity level, should be 1, 2, or 3
     seed = 1, # random seed
     out_dir
 ) {
@@ -21,8 +22,18 @@ simPseudoChr <- function(
   
   folder <- paste0("data/interim/sim_studies/real/liu2021_",subtype,"_",chromosome,"/")
   pos0 <- fread(paste0(folder, "pos0.txt.gz")) %>% unlist %>% unname
-  all_file_dirs <- paste0(folder, grep("cell", list.files(folder), value = TRUE))
-  file_dirs <- sample(all_file_dirs, N)
+  # all_file_dirs <- paste0(folder, grep("cell", list.files(folder), value = TRUE))
+  
+  # Metadata: Proportion of covered CpGs in individual cells
+  md <- fread("data/interim/sim_studies/real/liu2021_IT-L23_Cux1_chr1_metadata.csv")
+  
+  # Sample from designated sparse level
+  qt <- quantile(md$cpgCovProp, prob = seq(0.02,0.98,0.32))
+  filtered_file_dirs <- with(
+    md, 
+    fileDir[which(cpgCovProp >= qt[sparseLevel] & cpgCovProp < qt[sparseLevel+1])]
+  )
+  file_dirs <- sample(filtered_file_dirs, N)
   
   # Initialize
   M_mat <- matrix(NA, nrow = length(pos0), ncol = N)
@@ -126,7 +137,8 @@ simPseudoChr <- function(
   write_dir <- paste0(out_dir, "pseudoChr_",
                       subtype, "_", chromosome, "_", 
                       N, "cells_", NP, "subpops_", 
-                      NV, "VMRs_seed", seed)
+                      NV, "VMRs_sparseLevel", sparseLevel, 
+                      "_seed", seed)
   saveHDF5SummarizedExperiment(
     x = SummarizedExperiment(
       assays = list(M_mat = M_mat), 

@@ -10,18 +10,19 @@ suppressPackageStartupMessages(library(GenomicRanges))
 
 N <- 200
 NP <- 4
-NV <- 5000
 seed <- 2022
+chromosome <- "chr1"
+subtype <- "IT-L23_Cux1"
 
 # ==== vmrseq ====
-
-.vmrseqEval <- function(res_vseq, penalty) {
-  res_gr <- res_vseq$gr_qced
-  index <- which(res_gr$loglik_diff < penalty) # indices of sites failed to pass penalty threshold
-  res_gr$vmr_index[index] <- NA
-  res_gr$vmr_num_cpg[index] <- NA
+.vmrseqEval <- function(res_vseq) {
+  res_gr <- res_vseq$gr
+  # index <- which(res_gr$loglik_diff < penalty) # indices of sites failed to pass penalty threshold
+  # res_gr$vmr_index[index] <- NA
+  # res_gr$vmr_num_cpg[index] <- NA
   power_site <- with(res_gr, sum(is_vml&!is.na(vmr_index))/sum(is_vml))
   fdr_site <- with(res_gr, sum(!is_vml&!is.na(vmr_index))/sum(!is.na(vmr_index)))
+  total_n_site <- with(res_gr, sum(!is.na(vmr_index)))
   # cat("Site-level power =", power_site, "; ")
   # cat("Site-level FDR =", fdr_site, "\n")
   
@@ -33,8 +34,7 @@ seed <- 2022
               n_incr = sum(!is.na(cr_index)),
               cr_index = max(cr_index, na.rm = T),
               pi1 = max(pi1, na.rm = T),
-              med_total = median(total),
-              loglik_diff = max(loglik_diff, na.rm = T)) %>%
+              med_total = median(total)) %>%
     filter(n_cpg >= 5)
   power_region <- sum(true$n_dectected > 0) / nrow(true)
   # cat("Region-level power =", power, "; ")
@@ -49,23 +49,20 @@ seed <- 2022
               n_true = sum(!is.na(vmr_name)),
               pi1 = max(pi1, na.rm = T),
               optim_pi = max(pi),
-              mean_MF = mean(meth/total),
-              loglik_diff = max(loglik_diff))
+              mean_MF = mean(meth/total))
   fdr_region <- 1-sum(detected$n_true > 0) / nrow(detected)
   # cat("Region-level FDR =", fdr, "\n")
-  return(list(power_site = power_site, fdr_site = fdr_site, 
+  return(list(total_n_site = total_n_site,
+              power_site = power_site, fdr_site = fdr_site, 
               power_region = power_region , fdr_region  = fdr_region , 
               true = true, detected = detected))
 }
 
-.vmrseqCrEval <- function(res_vseq, cutoff) {
-  res_gr <- res_vseq$gr_qced
-  index <- which(res_gr$var < cutoff) # indices of sites failed to pass penalty threshold
-  res_gr$cr_index[index] <- NA
+.vmrseqCrEval <- function(res_vseq) {
+  res_gr <- res_vseq$gr
   power_site <- with(res_gr, sum(is_vml&!is.na(cr_index))/sum(is_vml))
   fdr_site <- with(res_gr, sum(!is_vml&!is.na(cr_index))/sum(!is.na(cr_index)))
-  # cat("Site-level power =", power_site, "; ")
-  # cat("Site-level FDR =", fdr_site, "\n")
+  total_n_site <- with(res_gr, sum(!is.na(cr_index)))
   
   true <- res_gr %>% data.frame %>%
     filter(is_vml) %>%
@@ -75,11 +72,9 @@ seed <- 2022
               n_incr = sum(!is.na(cr_index)),
               cr_index = max(cr_index, na.rm = T),
               pi1 = max(pi1, na.rm = T),
-              med_total = median(total),
-              loglik_diff = max(loglik_diff, na.rm = T)) %>%
+              med_total = median(total)) %>%
     filter(n_cpg >= 5)
   power_region <- sum(true$n_dectected > 0) / nrow(true)
-  # cat("Region-level power =", power, "; ")
   detected <- res_gr %>% data.frame %>%
     filter(!is.na(cr_index)) %>%
     group_by(cr_index) %>%
@@ -91,156 +86,285 @@ seed <- 2022
               n_true = sum(!is.na(vmr_name)),
               pi1 = max(pi1, na.rm = T),
               optim_pi = max(pi),
-              mean_MF = mean(meth/total),
-              loglik_diff = max(loglik_diff))
+              mean_MF = mean(meth/total))
   fdr_region <- 1-sum(detected$n_true > 0) / nrow(detected)
-  # cat("Region-level FDR =", fdr, "\n")
-  return(list(power_site = power_site, fdr_site = fdr_site, 
+  return(list(total_n_site = total_n_site,
+              power_site = power_site, fdr_site = fdr_site, 
               power_region = power_region , fdr_region  = fdr_region , 
               true = true, detected = detected))
 }
 
-res_vseq <- readRDS(
-  paste0("data/interim/sim_studies/benchmark_sim_chr/vmrseq/output/simChr_IT-L23_Cux1_chr1_",
-         N, "cells_", NP, "subpops_", 
-         NV, "VMRs_seed", seed, "_vmrseqOutput.rds")
-)
-
-smr_vseq <- data.frame(method = "vmrseq",
-                       penalty = c(0:10, seq(15,60,5)),
-                       power_site = NA,
-                       fdr_site = NA,
-                       power_region = NA,
-                       fdr_region = NA)
-
-for (i in 1:nrow(smr_vseq)) {
-  pen <- smr_vseq$penalty[i]
-  smr <- .vmrseqEval(res_vseq, penalty = pen)
-  # if (pen==0) {View(smr$true); View(smr$detected)}
-  smr_vseq$penalty[i] <- pen
-  smr_vseq$power_site[i] <- smr$power_site
-  smr_vseq$fdr_site[i] <- smr$fdr_site
-  smr_vseq$power_region[i] <- smr$power_region
-  smr_vseq$fdr_region[i] <- smr$fdr_region
-  cat(i, " ")
+summarizeResVseq <- function(NV) {
+  
+  smr_vseq <- data.frame(method = "vmrseq",
+                         NV = NV,
+                         qVar = c(0.005, 
+                                  seq(0.01, 0.1, 0.01), 
+                                  0.12, 0.15, seq(0.2,0.4,0.1)),
+                         total_n_site = NA,
+                         power_site = NA,
+                         fdr_site = NA,
+                         power_region = NA,
+                         fdr_region = NA)
+  
+  for (i in 1:nrow(smr_vseq)) {
+    res_vseq <- readRDS(
+      paste0(
+        "data/interim/sim_studies/benchmark_sim_chr/vmrseq/output/simChr_",
+        subtype, "_", chromosome, "_", 
+        N, "cells_", NP, "subpops_", 
+        NV, "VMRs_qVar", smr_vseq$qVar[i], "_seed", seed, "_vmrseqOutput.rds"
+      )
+    )
+    smr <- .vmrseqEval(res_vseq)
+    # View(smr$true); View(smr$detected)
+    smr_vseq$total_n_site[i] <- smr$total_n_site
+    smr_vseq$power_site[i] <- smr$power_site
+    smr_vseq$fdr_site[i] <- smr$fdr_site
+    smr_vseq$power_region[i] <- smr$power_region
+    smr_vseq$fdr_region[i] <- smr$fdr_region
+    cat(i, " ")
+  }
+  
+  return(smr_vseq)
 }
 
-smr_vseq_cr <- data.frame(method = "vmrseq_CR",
-                          cutoff = 0.1,
-                          power_site = NA,
-                          fdr_site = NA,
-                          power_region = NA,
-                          fdr_region = NA)
-
-for (i in 1:nrow(smr_vseq_cr)) {
-  cutoff <- smr_vseq_cr$cutoff[i]
-  smr <- .vmrseqCrEval(res_vseq, cutoff = cutoff)
-  # if (pen==0) {View(smr$true); View(smr$detected)}
-  smr_vseq_cr$cutoff[i] <- cutoff
-  smr_vseq_cr$power_site[i] <- smr$power_site
-  smr_vseq_cr$fdr_site[i] <- smr$fdr_site
-  smr_vseq_cr$power_region[i] <- smr$power_region
-  smr_vseq_cr$fdr_region[i] <- smr$fdr_region
-  cat(i, " ")
+summarizeResVseqCr <- function(NV) {
+  smr_vseq_cr <- data.frame(method = "vmrseq_CR",
+                            NV = NV,
+                            qVar = c(0.005, 
+                                     seq(0.01, 0.1, 0.01), 
+                                     0.12, 0.15, seq(0.2,0.4,0.1)),
+                            total_n_site = NA,
+                            power_site = NA,
+                            fdr_site = NA,
+                            power_region = NA,
+                            fdr_region = NA)
+  
+  for (i in 1:nrow(smr_vseq_cr)) {
+    res_vseq <- readRDS(
+      paste0(
+        "data/interim/sim_studies/benchmark_sim_chr/vmrseq/output/simChr_",
+        subtype, "_", chromosome, "_", 
+        N, "cells_", NP, "subpops_", 
+        NV, "VMRs_qVar", smr_vseq_cr$qVar[i], "_seed", seed, "_vmrseqOutput.rds"
+      )
+    )
+    smr <- .vmrseqCrEval(res_vseq)
+    smr_vseq_cr$total_n_site[i] <- smr$total_n_site
+    smr_vseq_cr$power_site[i] <- smr$power_site
+    smr_vseq_cr$fdr_site[i] <- smr$fdr_site
+    smr_vseq_cr$power_region[i] <- smr$power_region
+    smr_vseq_cr$fdr_region[i] <- smr$fdr_region
+    cat(i, " ")
+  }
+  return(smr_vseq_cr)
 }
 
-# with(smr_vseq, plot(fdr_site, power_site, type = "l", xlim = c(0,1), ylim = c(0,1)))
-# with(smr_vseq, plot(fdr_region, power_region, type = "l", xlim = c(0,1), ylim = c(0,1)))
+# === smallwood ====
+summarizeResSmwd <- function(NV) {
+  gr <- loadHDF5SummarizedExperiment(paste0(
+    "data/interim/sim_studies/benchmark_sim_chr/simulated/simChr_",
+    subtype, "_", chromosome, "_", N, "cells_", NP, "subpops_", 
+    NV, "VMRs_seed", seed)) %>% granges()
+  res_smwd.gr <- readRDS(paste0(
+    "data/interim/sim_studies/benchmark_sim_chr/smallwood/output/simChr_",
+    subtype, "_", chromosome, "_",
+    N, "cells_", NP, "subpops_",
+    NV, "VMRs_seed", seed, "_varLowerBound.rds")) 
+  
+  smr_smwd <- data.frame(method = "smallwood",
+                         NV = NV,
+                         threshold = c(1e-4, 5e-4, 1e-3, 5e-3, seq(0.01, 0.025, 0.005), seq(.03, .09, .01), seq(0.1,0.3,0.1)),
+                         total_n_site = NA,
+                         power_site = NA,
+                         fdr_site = NA,
+                         power_region = NA,
+                         fdr_region = NA)
+  
+  for (i in 1:nrow(smr_smwd)) {
+    top_n <- round(length(res_smwd.gr)*smr_smwd$threshold[i])
+    top_idx <- order(res_smwd.gr$var_lb, decreasing = TRUE)[1:top_n] %>% sort
+    hvf.gr <- res_smwd.gr[top_idx]
+    hits <- findOverlaps(gr, hvf.gr)
+    gr$vmr_index <- NA # to store detected VMRs by scbs
+    gr$vmr_index[queryHits(hits)] <- subjectHits(hits) 
+    smr_smwd$power_site[i] <- with(gr, sum(is_vml&!is.na(vmr_index)) / sum(is_vml))
+    smr_smwd$fdr_site[i] <- with(gr, sum(!is_vml&!is.na(vmr_index)) / sum(!is.na(vmr_index)))
+    smr_smwd$total_n_site[i] <- with(gr, sum(!is.na(vmr_index)))
+    
+    true_olap <- gr %>% as.data.frame %>% group_by(vmr_name) %>%  
+      summarise(n_olap = sum(!is.na(vmr_index))) %>% dplyr::select(n_olap) %>% unlist
+    smr_smwd$power_region[i] <- sum(true_olap>0)/length(true_olap)
+    
+    detected_olap <- gr %>% as.data.frame %>% group_by(vmr_index) %>%  
+      summarise(n_olap = sum(!is.na(vmr_name))) %>% dplyr::select(n_olap) %>% unlist
+    smr_smwd$fdr_region[i] <- sum(detected_olap==0)/length(detected_olap)
+    
+    cat(i, " ")
+  }
+  return(smr_smwd)
+}
 
 # === scbs ====
-gr <- loadHDF5SummarizedExperiment(
-  paste0("data/interim/sim_studies/benchmark_sim_chr/simulated/simChr_IT-L23_Cux1_chr1_",
-         N , "cells_", NP, "subpops_", 
-         NV, "VMRs_seed", seed)
-) %>% granges()
-
-smr_scbs <- data.frame(method = "scbs",
-                       vt = c(seq(.001, .009, .001), seq(.01, .09, .01), seq(0.1,0.3,0.1)),
-                       power_site = NA,
-                       fdr_site = NA,
-                       power_region = NA,
-                       fdr_region = NA)
-
-for (i in 1:nrow(smr_scbs)) {
-  vt <- smr_scbs$vt[i]
-  res_scbs <- fread(
-    paste0("data/interim/sim_studies/benchmark_sim_chr/scbs/output/simChr_IT-L23_Cux1_chr1_", 
-           N, "cells_", NP, "subpops_", 
-           NV, "VMRs_seed", seed, "_", vt, "vt.bed")
-  )
-  colnames(res_scbs) <- c("chr", "start", "end", "meth_var")
+summarizeResScbs <- function(NV) {
+  gr <- loadHDF5SummarizedExperiment(
+    paste0(
+      "data/interim/sim_studies/benchmark_sim_chr/simulated/simChr_",
+      subtype, "_", chromosome, "_", N, "cells_", NP, "subpops_", 
+      NV, "VMRs_seed", seed
+    )
+  ) %>% granges()
   
-  res_scbs.gr <- with(
-    res_scbs, 
-    GRanges(seqnames = chr,
-            ranges = IRanges(start = start, end = end))
-  )
+  smr_scbs <- data.frame(method = "scbs",
+                         NV = NV,
+                         vt = c(0.001, 0.005, seq(0.01, 0.025, 0.005), seq(.03, .09, .01), seq(0.1,0.3,0.1)),
+                         total_n_site = NA,
+                         power_site = NA,
+                         fdr_site = NA,
+                         power_region = NA,
+                         fdr_region = NA)
   
-  hits <- findOverlaps(gr, res_scbs.gr)
-  gr$vmr_index <- NA # to store detected VMRs by scbs
-  gr$vmr_index[queryHits(hits)] <- subjectHits(hits) 
-  smr_scbs$power_site[i] <- with(gr, sum(is_vml&!is.na(vmr_index)) / sum(is_vml))
-  smr_scbs$fdr_site[i] <- with(gr, sum(!is_vml&!is.na(vmr_index)) / sum(!is.na(vmr_index)))
-  
-  true_olap <- gr %>% as.data.frame %>% group_by(vmr_name) %>%  
-    summarise(n_olap = sum(!is.na(vmr_index))) %>% select(n_olap) %>% unlist
-  smr_scbs$power_region[i] <- sum(true_olap>0)/length(true_olap)
-  
-  detected_olap <- gr %>% as.data.frame %>% group_by(vmr_index) %>%  
-    summarise(n_olap = sum(!is.na(vmr_name))) %>% select(n_olap) %>% unlist
-  smr_scbs$fdr_region[i] <- sum(detected_olap==0)/length(detected_olap)
-  
-  
-  cat(i, " ")
+  for (i in 1:nrow(smr_scbs)) {
+    res_scbs <- fread(
+      paste0("data/interim/sim_studies/benchmark_sim_chr/scbs/output/simChr_IT-L23_Cux1_chr1_", 
+             N, "cells_", NP, "subpops_", 
+             NV, "VMRs_seed", seed, "_", format(smr_scbs$vt[i], scientific = FALSE), "vt.bed")
+    )
+    colnames(res_scbs) <- c("chr", "start", "end", "meth_var")
+    
+    res_scbs.gr <- with(
+      res_scbs, 
+      GRanges(seqnames = chr,
+              ranges = IRanges(start = start, end = end))
+    )
+    
+    hits <- findOverlaps(gr, res_scbs.gr)
+    gr$vmr_index <- NA # to store detected VMRs by scbs
+    gr$vmr_index[queryHits(hits)] <- subjectHits(hits) 
+    smr_scbs$power_site[i] <- with(gr, sum(is_vml&!is.na(vmr_index)) / sum(is_vml))
+    smr_scbs$fdr_site[i] <- with(gr, sum(!is_vml&!is.na(vmr_index)) / sum(!is.na(vmr_index)))
+    smr_scbs$total_n_site[i] <- with(gr, sum(!is.na(vmr_index)))
+    
+    true_olap <- gr %>% as.data.frame %>% group_by(vmr_name) %>%  
+      summarise(n_olap = sum(!is.na(vmr_index))) %>% dplyr::select(n_olap) %>% unlist
+    smr_scbs$power_region[i] <- sum(true_olap>0)/length(true_olap)
+    
+    detected_olap <- gr %>% as.data.frame %>% group_by(vmr_index) %>%  
+      summarise(n_olap = sum(!is.na(vmr_name))) %>% dplyr::select(n_olap) %>% unlist
+    smr_scbs$fdr_region[i] <- sum(detected_olap==0)/length(detected_olap)
+    
+    
+    cat(i, " ")
+  }
+  return(smr_scbs)
 }
 
-# with(smr_scbs, lines(fdr_site, power_site, col = "red"))
-# with(smr_scbs, lines(fdr_region, power_region, col = "red"))
-
 # ==== scmet ====
+# summarizeResScmet <- function(NV) {
+#   
+#   bp_size <- 20000
+#   gr <- loadHDF5SummarizedExperiment(
+#     paste0(
+#       "data/interim/sim_studies/benchmark_sim_chr/simulated/simChr_",
+#       subtype, "_", chromosome, "_", N, "cells_", NP, "subpops_", 
+#       NV, "VMRs_seed", seed
+#     )
+#   ) %>% granges()
+#   wds.gr <- readRDS(paste0(
+#     "data/interim/sim_studies/benchmark_sim_chr/scmet/input/features_", 
+#     subtype, "_", chromosome, "_", 
+#     bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops_", 
+#     NV, "VMRs_seed", seed, ".rds"
+#   ))
+#   
+#   smr_scmet <- data.frame(method = "scmet",
+#                           NV = NV,
+#                           efdr = c(0.02, 0.05, seq(0.1,0.9,0.1), 0.99),
+#                           total_n_site = NA,
+#                           power_site = NA,
+#                           fdr_site = NA,
+#                           power_region = NA,
+#                           fdr_region = NA)
+#   for (i in 1:nrow(smr_scmet)) {
+#     
+#     efdr <- smr_scmet$efdr[i]
+#     res_scmet <- fread(paste0(
+#       "data/interim/sim_studies/benchmark_sim_chr/scmet/output/simChr_",
+#       subtype, "_", chromosome, "_", 
+#       bp_size/1000, "kbWindow_", N, "cells_", NP, "subpops_", 
+#       NV, "VMRs_seed", seed, "_", efdr, "efdr_scmetOutput.csv"
+#     )) %>% mutate(window = as.integer(gsub(".*_(.*)$", "\\1", feature_name))) %>% filter(is_variable)
+#     
+#     hvf.gr <- wds.gr[res_scmet$window]
+#     
+#     hits <- findOverlaps(gr, hvf.gr)
+#     gr$vmr_index <- NA # to store detected VMRs by scbs
+#     gr$vmr_index[queryHits(hits)] <- subjectHits(hits) 
+#     smr_scmet$power_site[i] <- with(gr, sum(is_vml&!is.na(vmr_index)) / sum(is_vml))
+#     smr_scmet$fdr_site[i] <- with(gr, sum(!is_vml&!is.na(vmr_index)) / sum(!is.na(vmr_index)))
+#     smr_scmet$total_n_site[i] <- with(gr, sum(!is.na(vmr_index)))
+#     
+#     true_olap <- gr %>% as.data.frame %>% group_by(vmr_name) %>%  
+#       summarise(n_olap = sum(!is.na(vmr_index))) %>% select(n_olap) %>% unlist
+#     smr_scmet$power_region[i] <- sum(true_olap>0)/length(true_olap)
+#     
+#     detected_olap <- gr %>% as.data.frame %>% group_by(vmr_index) %>%  
+#       summarise(n_olap = sum(!is.na(vmr_name))) %>% select(n_olap) %>% unlist
+#     smr_scmet$fdr_region[i] <- sum(detected_olap==0)/length(detected_olap)
+#   }
+#   return(smr_scmet)
+# }
 
-# res_scmet <- fread("data/interim/sim_studies/benchmark_sim_chr/scmet/output/")
+# ==== Compare methods ====
+NV <- 2000
+smr_vseq <- summarizeResVseq(NV)
+smr_vseq_cr <- summarizeResVseqCr(NV) 
+smr_scbs <- summarizeResScbs(NV)
+smr_smwd <- summarizeResSmwd(NV)
+# smr_scmet <- summarizeResScmet(NV)
+smr <- rbind(smr_vseq[-3], smr_vseq_cr[-3], smr_scbs[-3], smr_smwd[-3])
+# smr <- rbind(smr_vseq[-3], smr_vseq_cr[-3], smr_scbs[-3])
 
-
-
-
-# ==== plots ====
-smr <- rbind(smr_vseq[-2], smr_vseq_cr[-2], smr_scbs[-2])
-
-colors <- RColorBrewer::brewer.pal(n = 4, name = "RdYlBu")
+colors <- RColorBrewer::brewer.pal(n = 6, name = "RdYlBu")[-4]
 
 # site-level fdr and power
 smr %>%  
   ggplot(aes(fdr_site, power_site, color = method)) + 
   geom_vline(xintercept = 0.05, linetype = "dotted") +
   geom_path() + geom_point() +
-  geom_point(data = smr_vseq_cr, color = colors[2], size = 4) + 
   scale_color_manual(values = c("vmrseq" = colors[1], 
                                 "vmrseq_CR" = colors[2], 
-                                "scbs" = colors[3])) +
-  ggtitle("Simulated chromosome (200 cells, 4 subpops)") +
-  xlim(0,1) + ylim(0,1) +
-  theme_minimal()
+                                "smallwood" = colors[3],
+                                "scbs" = colors[4])) +
+  xlab("Site-level FDR") + ylab("Site-level power") +
+  ggtitle(paste0("Modified real chromosome (", N, " cells, ", NP, " subpops)")) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
+  scale_x_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
+  theme_classic()
 ggsave(paste0(
   "plots/sim_studies/benchmark_sim_chr/comparison/simChr_fdr&power_siteLevel_", 
   N , "cells_", NP, "subpops_", 
   NV, "VMRs_seed", seed, ".png"
-), width = 6, height = 5)
+), width = 8, height = 7.5)
 
 # region-level fdr and power
 smr %>%  
   ggplot(aes(fdr_region, power_region, color = method)) + 
   geom_vline(xintercept = 0.05, linetype = "dotted") +
   geom_path() + geom_point() +
-  geom_point(data = smr_vseq_cr, color = colors[2], size = 4) + 
   scale_color_manual(values = c("vmrseq" = colors[1], 
                                 "vmrseq_CR" = colors[2], 
-                                "scbs" = colors[3])) +
-  ggtitle("Simulated chromosome (200 cells, 4 subpops)") +
-  xlim(0,1) + ylim(0,1) +
-  theme_minimal()
+                                "smallwood" = colors[3],
+                                "scbs" = colors[4])) +
+  xlab("Region-level FDR") + ylab("Region-level power") +
+  ggtitle(paste0("Modified real chromosome (", N, " cells, ", NP, " subpops)")) +
+  scale_y_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
+  scale_x_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
+  theme_classic()
 ggsave(paste0(
   "plots/sim_studies/benchmark_sim_chr/comparison/simChr_fdr&power_regionLevel_", 
   N , "cells_", NP, "subpops_", 
   NV, "VMRs_seed", seed, ".png"
-), width = 6, height = 5)
+), width = 8, height = 7.5)
+

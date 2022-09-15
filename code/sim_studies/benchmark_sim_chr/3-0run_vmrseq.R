@@ -34,9 +34,9 @@ for (N in c(200)) {
     
     # run model
     gr <- vmrseq.smooth(SE)
-    for (qVar in c(0.005, seq(0.01, 0.1, 0.01))) {
+    # for (qVar in c(0.005, seq(0.01, 0.1, 0.01))) {
     # for (qVar in c(0.12, 0.15, 0.2)) {
-    # for (qVar in c(0.3, 0.4)) {
+    for (qVar in c(0.3, 0.4)) {
       t1 <- proc.time()
       fit <- vmrseq.fit(gr, cutoff = quantile(gr$var, prob = 1-qVar))
       t2 <- proc.time()

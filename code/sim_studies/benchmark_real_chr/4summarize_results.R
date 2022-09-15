@@ -12,14 +12,15 @@ N <- 200
 NP <- 4
 seed <- 2022
 chromosome <- "chr1"
+subtype <- "IT-L23_Cux1"
 
 # ==== vmrseq ====
 
-.vmrseqEval <- function(res_vseq, penalty) {
-  res_gr <- res_vseq$gr_qced
-  index <- which(res_gr$loglik_diff < penalty) # indices of sites failed to pass penalty threshold
-  res_gr$vmr_index[index] <- NA
-  res_gr$vmr_num_cpg[index] <- NA
+.vmrseqEval <- function(res_vseq) {
+  res_gr <- res_vseq$gr
+  # index <- which(res_gr$loglik_diff < penalty) # indices of sites failed to pass penalty threshold
+  # res_gr$vmr_index[index] <- NA
+  # res_gr$vmr_num_cpg[index] <- NA
   power_site <- with(res_gr, sum(is_vml&!is.na(vmr_index))/sum(is_vml))
   fdr_site <- with(res_gr, sum(!is_vml&!is.na(vmr_index))/sum(!is.na(vmr_index)))
   total_n_site <- with(res_gr, sum(!is.na(vmr_index)))
@@ -34,8 +35,7 @@ chromosome <- "chr1"
               n_incr = sum(!is.na(cr_index)),
               cr_index = max(cr_index, na.rm = T),
               pi1 = max(pi1, na.rm = T),
-              med_total = median(total),
-              loglik_diff = max(loglik_diff, na.rm = T)) %>%
+              med_total = median(total)) %>%
     filter(n_cpg >= 5)
   power_region <- sum(true$n_dectected > 0) / nrow(true)
   # cat("Region-level power =", power, "; ")
@@ -50,8 +50,7 @@ chromosome <- "chr1"
               n_true = sum(!is.na(vmr_name)),
               pi1 = max(pi1, na.rm = T),
               optim_pi = max(pi),
-              mean_MF = mean(meth/total),
-              loglik_diff = max(loglik_diff))
+              mean_MF = mean(meth/total))
   fdr_region <- 1-sum(detected$n_true > 0) / nrow(detected)
   # cat("Region-level FDR =", fdr, "\n")
   return(list(total_n_site = total_n_site,
@@ -61,7 +60,7 @@ chromosome <- "chr1"
 }
 
 .vmrseqCrEval <- function(res_vseq) {
-  res_gr <- res_vseq$gr_qced
+  res_gr <- res_vseq$gr
   power_site <- with(res_gr, sum(is_vml&!is.na(cr_index))/sum(is_vml))
   fdr_site <- with(res_gr, sum(!is_vml&!is.na(cr_index))/sum(!is.na(cr_index)))
   total_n_site <- with(res_gr, sum(!is.na(cr_index)))
@@ -74,8 +73,7 @@ chromosome <- "chr1"
               n_incr = sum(!is.na(cr_index)),
               cr_index = max(cr_index, na.rm = T),
               pi1 = max(pi1, na.rm = T),
-              med_total = median(total),
-              loglik_diff = max(loglik_diff, na.rm = T)) %>%
+              med_total = median(total)) %>%
     filter(n_cpg >= 5)
   power_region <- sum(true$n_dectected > 0) / nrow(true)
   detected <- res_gr %>% data.frame %>%
@@ -89,8 +87,7 @@ chromosome <- "chr1"
               n_true = sum(!is.na(vmr_name)),
               pi1 = max(pi1, na.rm = T),
               optim_pi = max(pi),
-              mean_MF = mean(meth/total),
-              loglik_diff = max(loglik_diff))
+              mean_MF = mean(meth/total))
   fdr_region <- 1-sum(detected$n_true > 0) / nrow(detected)
   return(list(total_n_site = total_n_site,
               power_site = power_site, fdr_site = fdr_site, 
@@ -98,11 +95,11 @@ chromosome <- "chr1"
               true = true, detected = detected))
 }
 
-summarizeResVseq <- function(NV, penalty, smooth) {
+summarizeResVseq <- function(NV) {
   
   smr_vseq <- data.frame(method = "vmrseq",
                          NV = NV,
-                         qVar = c(1e-4, 5e-4, 0.001, 0.005, 
+                         qVar = c(0.005, 
                                   seq(0.01, 0.1, 0.01), 
                                   0.12, 0.15, seq(0.2,0.4,0.1)),
                          total_n_site = NA,
@@ -117,11 +114,10 @@ summarizeResVseq <- function(NV, penalty, smooth) {
         "data/interim/sim_studies/benchmark_real_chr/vmrseq/output/pseudoChr_",
         subtype, "_", chromosome, "_", 
         N, "cells_", NP, "subpops_", 
-        NV, "VMRs_qVar", smr_vseq$qVar[i], "_seed", seed, "_vmrseqOutput",
-        ifelse(smooth, "", "_noAcrsSmooth"), ".rds"
+        NV, "VMRs_qVar", smr_vseq$qVar[i], "_seed", seed, "_vmrseqOutput.rds"
       )
     )
-    smr <- .vmrseqEval(res_vseq, penalty = penalty)
+    smr <- .vmrseqEval(res_vseq)
     # View(smr$true); View(smr$detected)
     smr_vseq$total_n_site[i] <- smr$total_n_site
     smr_vseq$power_site[i] <- smr$power_site
@@ -134,10 +130,10 @@ summarizeResVseq <- function(NV, penalty, smooth) {
   return(smr_vseq)
 }
 
-summarizeResVseqCr <- function(NV, smooth) {
+summarizeResVseqCr <- function(NV) {
   smr_vseq_cr <- data.frame(method = "vmrseq_CR",
                             NV = NV,
-                            qVar = c(1e-4, 5e-4, 0.001, 0.005, 
+                            qVar = c(0.005, 
                                      seq(0.01, 0.1, 0.01), 
                                      0.12, 0.15, seq(0.2,0.4,0.1)),
                             total_n_site = NA,
@@ -152,8 +148,7 @@ summarizeResVseqCr <- function(NV, smooth) {
         "data/interim/sim_studies/benchmark_real_chr/vmrseq/output/pseudoChr_",
         subtype, "_", chromosome, "_", 
         N, "cells_", NP, "subpops_", 
-        NV, "VMRs_qVar", smr_vseq_cr$qVar[i], "_seed", seed, "_vmrseqOutput",
-        ifelse(smooth, "", "_noAcrsSmooth"), ".rds"
+        NV, "VMRs_qVar", smr_vseq_cr$qVar[i], "_seed", seed, "_vmrseqOutput.rds"
       )
     )
     smr <- .vmrseqCrEval(res_vseq)
@@ -326,50 +321,50 @@ summarizeResScmet <- function(NV) {
   return(smr_scmet)
 }
 
-# === Smooth vs. no smooth in vmrseq ====
-NV <- 2000
-smr1 <- summarizeResVseq(NV, penalty = 0, smooth = T) %>% mutate(smoothed = "TRUE")
-smr1_cr <- summarizeResVseqCr(NV, smooth = T)  %>% mutate(smoothed = "TRUE")
-smr0 <- summarizeResVseq(NV, penalty = 0, smooth = F) %>% mutate(smoothed = "FALSE")
-smr0_cr <- summarizeResVseqCr(NV, smooth = F)  %>% mutate(smoothed = "FALSE")
-smr <- rbind(smr1, smr1_cr, smr0, smr0_cr)
-
-# site-level fdr and power
-smr %>%  
-  ggplot(aes(fdr_site, power_site, linetype = method, color = smoothed)) + 
-  geom_vline(xintercept = 0.05, linetype = "dotted") +
-  geom_path() + geom_point() +
-  xlab("Site-level FDR") + ylab("Site-level power") +
-  ggtitle(paste0("Modified real chromosome (", N, " cells, ", NP, " subpops)")) +
-  scale_y_continuous(breaks = seq(0, 1, by = 0.1)) +
-  scale_x_continuous(breaks = seq(0, 1, by = 0.1)) +
-  theme_classic()
-ggsave(paste0(
-  "plots/sim_studies/benchmark_real_chr/comparison/ifSmooth_fdr&power_siteLevel_", 
-  N , "cells_", NP, "subpops_", 
-  NV, "VMRs_seed", seed, ".png"
-), width = 8, height = 6)
-
-# region-level fdr and power
-smr %>%  
-  ggplot(aes(fdr_region, power_region, linetype = method, color = smoothed)) + 
-  geom_vline(xintercept = 0.05, linetype = "dotted") +
-  geom_path() + geom_point() +
-  xlab("Region-level FDR") + ylab("Region-level power") +
-  ggtitle(paste0("Modified real chromosome (", N, " cells, ", NP, " subpops)")) +
-  scale_y_continuous(breaks = seq(0, 1, by = 0.1)) +
-  scale_x_continuous(breaks = seq(0, 1, by = 0.1)) +
-  theme_classic()
-ggsave(paste0(
-  "plots/sim_studies/benchmark_real_chr/comparison/ifSmooth_fdr&power_regionLevel_", 
-  N , "cells_", NP, "subpops_", 
-  NV, "VMRs_seed", seed, ".png"
-), width = 8, height = 6)
+# === (Archived) Smooth vs. no smooth in vmrseq ====
+# NV <- 2000
+# smr1 <- summarizeResVseq(NV, penalty = 0, smooth = T) %>% mutate(smoothed = "TRUE")
+# smr1_cr <- summarizeResVseqCr(NV, smooth = T)  %>% mutate(smoothed = "TRUE")
+# smr0 <- summarizeResVseq(NV, penalty = 0, smooth = F) %>% mutate(smoothed = "FALSE")
+# smr0_cr <- summarizeResVseqCr(NV, smooth = F)  %>% mutate(smoothed = "FALSE")
+# smr <- rbind(smr1, smr1_cr, smr0, smr0_cr)
+# 
+# # site-level fdr and power
+# smr %>%  
+#   ggplot(aes(fdr_site, power_site, linetype = method, color = smoothed)) + 
+#   geom_vline(xintercept = 0.05, linetype = "dotted") +
+#   geom_path() + geom_point() +
+#   xlab("Site-level FDR") + ylab("Site-level power") +
+#   ggtitle(paste0("Modified real chromosome (", N, " cells, ", NP, " subpops)")) +
+#   scale_y_continuous(breaks = seq(0, 1, by = 0.1)) +
+#   scale_x_continuous(breaks = seq(0, 1, by = 0.1)) +
+#   theme_classic()
+# ggsave(paste0(
+#   "plots/sim_studies/benchmark_real_chr/comparison/ifSmooth_fdr&power_siteLevel_", 
+#   N , "cells_", NP, "subpops_", 
+#   NV, "VMRs_seed", seed, ".png"
+# ), width = 8, height = 6)
+# 
+# # region-level fdr and power
+# smr %>%  
+#   ggplot(aes(fdr_region, power_region, linetype = method, color = smoothed)) + 
+#   geom_vline(xintercept = 0.05, linetype = "dotted") +
+#   geom_path() + geom_point() +
+#   xlab("Region-level FDR") + ylab("Region-level power") +
+#   ggtitle(paste0("Modified real chromosome (", N, " cells, ", NP, " subpops)")) +
+#   scale_y_continuous(breaks = seq(0, 1, by = 0.1)) +
+#   scale_x_continuous(breaks = seq(0, 1, by = 0.1)) +
+#   theme_classic()
+# ggsave(paste0(
+#   "plots/sim_studies/benchmark_real_chr/comparison/ifSmooth_fdr&power_regionLevel_", 
+#   N , "cells_", NP, "subpops_", 
+#   NV, "VMRs_seed", seed, ".png"
+# ), width = 8, height = 6)
 
 # ==== Compare methods ====
 NV <- 2000
-smr_vseq <- summarizeResVseq(NV, penalty = 0, smooth = F)
-smr_vseq_cr <- summarizeResVseqCr(NV, smooth = F) 
+smr_vseq <- summarizeResVseq(NV)
+smr_vseq_cr <- summarizeResVseqCr(NV) 
 smr_scbs <- summarizeResScbs(NV)
 smr_smwd <- summarizeResSmwd(NV)
 smr_scmet <- summarizeResScmet(NV)

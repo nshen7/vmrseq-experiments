@@ -30,7 +30,8 @@ for N in 200; do
     scbs prepare $dir_in $dir_cpt
     scbs smooth $dir_cpt
     
-    for vt in 0.0005 0.0001 0.001 0.005 $(seq .01 .01 .09) $(seq .1 .1 .9) 0.99; do
+    for vt in 0.015 0.025; do
+    # for vt in 0.0005 0.0001 0.001 0.005 $(seq .01 .01 .09) $(seq .1 .1 .9) 0.99; do
     
       dir_out="output/simChr_IT-L23_Cux1_chr1_${N}cells_${NP}subpops_${NV}VMRs_seed2022_${vt}vt.bed"
       scbs scan --threads $n_cores --var-threshold $vt $dir_cpt $dir_out
