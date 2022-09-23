@@ -184,95 +184,55 @@ The following objects are masked from ‘package:matrixStats’:
 
     anyMissing, rowMedians
 
-Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
+Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
-...Chromosome pseudo: Variance computed (0.85 min). 
-Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
-Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.20 on variance.
-...Finished calling candidate regions - found 512 candidate regions in total.
-  ...0.38% QC-passed sites are called to be in candidate regions.
-Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 0.72 min and 508 VMRs found in total.
-  ...0.38% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
-Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.19 on variance.
-...Finished calling candidate regions - found 853 candidate regions in total.
-  ...0.84% QC-passed sites are called to be in candidate regions.
-Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 1.43 min and 851 VMRs found in total.
-  ...0.83% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
-Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.17 on variance.
-...Finished calling candidate regions - found 1281 candidate regions in total.
-  ...1.78% QC-passed sites are called to be in candidate regions.
-Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 2.68 min and 1287 VMRs found in total.
-  ...1.75% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
-Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.15 on variance.
-...Finished calling candidate regions - found 1679 candidate regions in total.
-  ...2.72% QC-passed sites are called to be in candidate regions.
-Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 4.25 min and 1684 VMRs found in total.
-  ...2.64% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
-Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.14 on variance.
-...Finished calling candidate regions - found 2070 candidate regions in total.
-  ...3.63% QC-passed sites are called to be in candidate regions.
-Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 5.34 min and 2054 VMRs found in total.
-  ...3.49% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
-Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.13 on variance.
-...Finished calling candidate regions - found 2428 candidate regions in total.
-  ...4.54% QC-passed sites are called to be in candidate regions.
-Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 7.68 min and 2356 VMRs found in total.
-  ...4.29% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
+...Chromosome pseudo: Mean methylation smoothed. Variance computed (1.09 min). 
+Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
 ...Calling candidate regions with cutoff of 0.12 on variance.
-...Finished calling candidate regions - found 2767 candidate regions in total.
-  ...5.35% QC-passed sites are called to be in candidate regions.
+...Finished calling candidate regions - found 4428 candidate regions in total.
+  ...6.85% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 9.1 min and 2536 VMRs found in total.
-  ...4.91% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
+...Finished detecting VMRs - took 6.8 min and 3517 VMRs found in total.
+  ...5.46% QC-passed sites are called to be in VMRs.
+Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
 ...Calling candidate regions with cutoff of 0.11 on variance.
-...Finished calling candidate regions - found 3405 candidate regions in total.
-  ...6.12% QC-passed sites are called to be in candidate regions.
+...Finished calling candidate regions - found 4748 candidate regions in total.
+  ...7.18% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 9.77 min and 2834 VMRs found in total.
-  ...5.36% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
+...Finished detecting VMRs - took 6.79 min and 3664 VMRs found in total.
+  ...5.61% QC-passed sites are called to be in VMRs.
+Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.10 on variance.
-...Finished calling candidate regions - found 4168 candidate regions in total.
-  ...6.86% QC-passed sites are called to be in candidate regions.
+...Calling candidate regions with cutoff of 0.11 on variance.
+...Finished calling candidate regions - found 5074 candidate regions in total.
+  ...7.49% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 9.74 min and 3154 VMRs found in total.
-  ...5.7% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
+...Finished detecting VMRs - took 7.18 min and 3814 VMRs found in total.
+  ...5.73% QC-passed sites are called to be in VMRs.
+Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.10 on variance.
-...Finished calling candidate regions - found 5103 candidate regions in total.
-  ...7.63% QC-passed sites are called to be in candidate regions.
+...Calling candidate regions with cutoff of 0.11 on variance.
+...Finished calling candidate regions - found 5464 candidate regions in total.
+  ...7.84% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 10.3 min and 3538 VMRs found in total.
-  ...5.99% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 30 workers/cores (backend: BiocParallel:MulticoreParam).
+...Finished detecting VMRs - took 7.71 min and 3994 VMRs found in total.
+  ...5.87% QC-passed sites are called to be in VMRs.
+Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.09 on variance.
-...Finished calling candidate regions - found 6086 candidate regions in total.
-  ...8.42% QC-passed sites are called to be in candidate regions.
+...Calling candidate regions with cutoff of 0.11 on variance.
+...Finished calling candidate regions - found 5710 candidate regions in total.
+  ...8.09% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 10.61 min and 3914 VMRs found in total.
-  ...6.24% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 7.41 min and 4094 VMRs found in total.
+  ...5.95% QC-passed sites are called to be in VMRs.
+Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
+Step 1: Detecting candidate regions...
+...Calling candidate regions with cutoff of 0.11 on variance.
+...Finished calling candidate regions - found 6011 candidate regions in total.
+  ...8.36% QC-passed sites are called to be in candidate regions.
+Step 2: Detecting VMRs...
+...Finished detecting VMRs - took 7.54 min and 4238 VMRs found in total.
+  ...6.05% QC-passed sites are called to be in VMRs.
 INFO:    Cleaning up image...

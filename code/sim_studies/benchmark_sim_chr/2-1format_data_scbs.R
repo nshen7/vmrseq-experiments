@@ -35,27 +35,32 @@ NV <- 2000
 # for (N in c(1000)) {
 # for (N in c(500)) {
 for (N in c(200)) {
-# for (N in c(100)) {
+  # for (N in c(100)) {
   # for (NP in c(2,3,4,5,8,12,20)) {
   for (NP in c(4)) {
-    # Load raw data
-    load_dir <- paste0(
-      "data/interim/sim_studies/benchmark_sim_chr/simulated/simChr_",
-      subtype, "_", chromosome, "_", N, "cells_", NP, "subpops_", 
-      NV, "VMRs_seed", seed
-    )
-    se <- loadHDF5SummarizedExperiment(dir = load_dir)
-    
-    # format into scbs input
-    folder <- paste0(
-      "data/interim/sim_studies/benchmark_sim_chr/scbs/input/simChr_",
-      subtype, "_", chromosome, "_", 
-      N, "cells_", NP, "subpops_", 
-      NV, "VMRs_seed", seed
-    )
-    if (!file.exists(folder)) dir.create(folder)
-    
-    invisible(bplapply(1:ncol(se), formatCell, se = se, folder = folder))
+    for (sparseLevel in 1:3) {
+      # Load raw data
+      load_dir <- paste0(
+        "data/interim/sim_studies/benchmark_sim_chr/simulated/simChr_",
+        subtype, "_", chromosome, "_", N, "cells_", NP, "subpops_", 
+        NV, "VMRs_sparseLevel", sparseLevel, 
+        "_seed", seed
+      )
+      se <- loadHDF5SummarizedExperiment(dir = load_dir)
+      
+      # format into scbs input
+      folder <- paste0(
+        "data/interim/sim_studies/benchmark_sim_chr/scbs/input/simChr_",
+        subtype, "_", chromosome, "_", 
+        N, "cells_", NP, "subpops_", 
+        NV, "VMRs_sparseLevel", sparseLevel, 
+        "_seed", seed
+      )
+      if (!file.exists(folder)) dir.create(folder)
+      
+      invisible(bplapply(1:ncol(se), formatCell, se = se, folder = folder))
+    }
     cat("N =", N, "; NP =", NP, "\n")
+    
   }
 }

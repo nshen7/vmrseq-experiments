@@ -1,1 +1,3 @@
-N = 200 ; NP = 4 
+N = 200 ; NP = 4 sparse level =  1 
+N = 200 ; NP = 4 sparse level =  2 
+N = 200 ; NP = 4 sparse level =  3 

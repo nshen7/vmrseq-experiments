@@ -18,8 +18,8 @@ suppressPackageStartupMessages(library(GenomicRanges))
 
 simulateChr <- function(
     N, # total number of cells
-    NV, # number of VMRs
     NP, # total number of subpopulations 
+    NV, # number of VMRs
     sparseLevel, # sparsity level, should be 1, 2, or 3
     out_dir, # path to where simulated should be stored
     seed = 2022, # random seed
@@ -60,8 +60,8 @@ simulateChr <- function(
   state <- as.numeric(meth / total >= 0.5)
   rm(meth)
 
-  # Remove sites with coverage less than 3
-  index_rm <- which(total < 3)
+  # Remove sites with no coverage 
+  index_rm <- which(total <= 0)
   gr <- gr[-index_rm]
   M_mat <- M_mat[-index_rm, ]
   total <- total[-index_rm]
@@ -69,15 +69,15 @@ simulateChr <- function(
 
   message("Cell/site missing distribution obtained from real data.")
   
-  # Get CpG clusters for VMR sampling (minCov >= 3 & 5 <= num_cpg <= 500)
-  cluster <- bumphunter::boundedClusterMaker(chr = seqnames(gr), 
-                                             pos = start(gr), 
+  # Get CpG clusters from all available CpGs in the subtype pseudo-bulk data (for VMR sampling)
+  cluster <- bumphunter::boundedClusterMaker(chr = rep(chromosome, length(pos0)), 
+                                             pos = pos0, 
                                              maxGap = 500, 
                                              maxClusterWidth = 10000)
+  cluster <- cluster[-index_rm]
   Indexes <- split(seq(along = cluster), cluster)
   lns <- lengths(Indexes)
-  min_covs <- sapply(Indexes, function(.x) min(total[.x])) %>% unname
-  Indexes <- Indexes[lns >= 5 & lns <= 500 & min_covs >= 3]
+  Indexes <- Indexes[lns >= 5 & lns <= 500]
   if (length(Indexes) < NV) stop("'NV' is too large.")
   
   # Sample regions 

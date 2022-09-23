@@ -169,4 +169,4 @@ The following objects are masked from ‘package:matrixStats’:
 
     anyMissing, rowMedians
 
-INFO:    Cleaning up image...
+=>> PBS: job killed: walltime 21814 exceeded limit 21600
