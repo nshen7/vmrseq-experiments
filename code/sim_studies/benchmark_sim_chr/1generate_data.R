@@ -6,16 +6,14 @@ suppressPackageStartupMessages(library(HDF5Array))
 
 NV <- 2000
 out_dir <- paste0(getwd(), "/", "data/interim/sim_studies/benchmark_sim_chr/simulated/")
-# for (N in c(5000)) {
-# for (N in c(2000)) {
-# for (N in c(1000)) {
+
 for (N in c(200)) { 
 # for (N in c(100)) { 
   # for (NP in c(2,3,4,5,8,12,20)) {
   for (NP in c(4)) {
-    simulateChr(N, NP, NV, sparseLevel = 1, seed = 2022, out_dir)
+    # simulateChr(N, NP, NV, sparseLevel = 1, seed = 2022, out_dir)
     # simulateChr(N, NP, NV, sparseLevel = 2, seed = 2022, out_dir)
-    # simulateChr(N, NP, NV, sparseLevel = 3, seed = 2022, out_dir)
+    simulateChr(N, NP, NV, sparseLevel = 3, seed = 2022, out_dir)
     cat("N =", N, "; NP =", NP, "\n")
   }
 }

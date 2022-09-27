@@ -41,9 +41,9 @@ for (N in c(200)) {
       hits <- findOverlaps(granges(se), wds.gr)
       
       computeFeature <- function(i) { # i th feature/window
-        feat.se <- se[queryHits(hits)[subjectHits(hits)==i],]
-        total_reads <- colSums(assays(feat.se)$M_mat >= 0, na.rm = T)
-        met_reads <- colSums(assays(feat.se)$M_mat, na.rm = T)
+        M_mat <- assays(se)$M_mat[queryHits(hits)[subjectHits(hits)==i],]
+        met_reads <- colSums(M_mat)
+        total_reads <- colSums(M_mat > 0)
         feat.df <- data.frame(
           Feature = paste0("Window_", i),
           Cell = paste0("Cell_",1:length(total_reads)),

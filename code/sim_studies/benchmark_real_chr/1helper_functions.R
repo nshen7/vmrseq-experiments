@@ -7,6 +7,8 @@ suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(BiocParallel))
 suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(recommenderlab))
+suppressPackageStartupMessages(library(gamlss.dist))
+
 ## !!! Important: the M_mat stored in a format of recommenderlab::dropNA() 
 ## outputs, i.e., replace NA as zero and then represent 0 as a very small 
 ## positive value close to 0.
@@ -134,7 +136,7 @@ simPseudoChr <- function(
     # rbind vmr
     ix <- vmrs_Ind[[i]]
     miss_mat <- matrix(data = NA, nrow = length(ix), ncol = N)
-    miss_mat[as.matrix(M_mat0[ix, ]==0)] <- 1
+    miss_mat[as.matrix(M_mat0[ix, ] > 0)] <- 1
     vmr_mat <- .sampScMeth2Grp(pi1 = pi1s[i], miss_mat, 0, pars) %>% dropNA()
     M_mat <- rbind(M_mat, vmr_mat)
     # rbind null segment

@@ -5,20 +5,20 @@ library(data.table)
 library(HDF5Array)
 library(SummarizedExperiment)
 library(BiocParallel)
+library(recommenderlab)
 
 # ==== util ====
 formatCell <- function(i, se, folder) {
-  
   cell.se <- se[, i]
+  M_vec <- dropNA2matrix(as(assays(cell.se)$M_mat, "dgCMatrix")) %>% as.vector()
   cell.df <- data.frame(
     seqnames = seqnames(cell.se),
     start = start(cell.se),
     end = end(cell.se),
-    MF = assays(cell.se)$M_mat*100,
-    meth = assays(cell.se)$M_mat,
-    unmeth = 1-assays(cell.se)$M_mat
+    MF = M_vec*100,
+    meth = M_vec,
+    unmeth = 1-M_vec
   ) %>% filter(!is.na(MF))
-  
   fwrite(cell.df, 
          file = paste0(folder, "/cell_", i, ".cov"),
          row.names = F, col.names = F, sep = "\t", quote = F)

@@ -1,1 +1,5 @@
+[1] "Finished finding hits."
+[1] "2022-09-27 12:24:54 PDT"
+1  2  3  4  5  6  7  [1] "Finished computing features."
+[1] "2022-09-27 12:45:01 PDT"
 N = 200 ; NP = 4 

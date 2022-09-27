@@ -1,9 +1,9 @@
 INFO:    Converting SIF file to temporary sandbox...
 ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-✔ ggplot2 3.3.6     ✔ purrr   0.3.4
-✔ tibble  3.1.7     ✔ dplyr   1.0.9
-✔ tidyr   1.2.0     ✔ stringr 1.4.0
-✔ readr   2.1.2     ✔ forcats 0.5.1
+✔ ggplot2 3.3.6      ✔ purrr   0.3.4 
+✔ tibble  3.1.7      ✔ dplyr   1.0.10
+✔ tidyr   1.2.1      ✔ stringr 1.4.0 
+✔ readr   2.1.2      ✔ forcats 0.5.2 
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()
@@ -42,12 +42,12 @@ The following objects are masked from ‘package:stats’:
 
 The following objects are masked from ‘package:base’:
 
-    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
-    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
-    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
-    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
-    union, unique, unsplit, which.max, which.min
+    anyDuplicated, aperm, append, as.data.frame, basename, cbind,
+    colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
+    get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
+    match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
+    Position, rank, rbind, Reduce, rownames, sapply, setdiff, sort,
+    table, tapply, union, unique, unsplit, which.max, which.min
 
 Loading required package: MatrixGenerics
 Loading required package: matrixStats
@@ -122,6 +122,10 @@ The following object is masked from ‘package:purrr’:
 
 Attaching package: ‘DelayedArray’
 
+The following object is masked from ‘package:BiocGenerics’:
+
+    aperm
+
 The following object is masked from ‘package:purrr’:
 
     simplify
@@ -138,6 +142,9 @@ The following object is masked from ‘package:rhdf5’:
 
     h5ls
 
+Warning messages:
+1: multiple methods tables found for ‘aperm’ 
+2: replacing previous import ‘BiocGenerics::aperm’ by ‘DelayedArray::aperm’ when loading ‘HDF5Array’ 
 Loading required package: GenomicRanges
 Loading required package: GenomeInfoDb
 Loading required package: Biobase
@@ -158,6 +165,8 @@ The following objects are masked from ‘package:matrixStats’:
 
     anyMissing, rowMedians
 
+Warning message:
+replacing previous import ‘BiocGenerics::aperm’ by ‘DelayedArray::aperm’ when loading ‘SummarizedExperiment’ 
 Converting Y matrix to data.table.
 
 Sorting features.
@@ -166,134 +175,23 @@ Total # of cells: 200.
 
 Total # of features: 9603.
 
-Sun Sep 18 12:38:43 2022: Using EB to set model priors.
+Tue Sep 27 13:45:01 2022: Using EB to set model priors.
 
 Usin EB estimates as initial values for posterior inference.
 
-Sun Sep 18 12:45:57 2022: Finished EB.
+Tue Sep 27 13:52:10 2022: Finished EB.
 
-Sun Sep 18 12:45:57 2022: Starting inference.
+Tue Sep 27 13:52:10 2022: Starting inference.
 
-Warning: Pareto k diagnostic value is 15.43. Resampling is disabled. Decreasing tol_rel_obj may help if variational algorithm has terminated prematurely. Otherwise consider using sampling instead.
-Sun Sep 18 14:46:25 2022: Posterior inference finished.
+Error in new_CppObject_xp(fields$.module, fields$.pointer, ...) : 
+  Exception: int variable contained non-int values; processing stage=data initialization; variable name=y; base type=int  (in 'model_scmet' at line 69)
 
-21 Features classified as highly variable using: 
-- The  99 percentile of variable genes 
-- Evidence threshold = 0.96475
-- EFDR = 1.06% 
-- EFNR = 2.1% 
+In addition: There were 50 or more warnings (use warnings() to see the first 50)
+failed to create the optimizer; optimization not done
+Tue Sep 27 13:52:10 2022: Posterior inference finished.
 
-46 Features classified as highly variable using: 
-- The  98 percentile of variable genes 
-- Evidence threshold = 0.88675
-- EFDR = 2.1% 
-- EFNR = 3.38% 
-
-192 Features classified as highly variable using: 
-- The  95 percentile of variable genes 
-- Evidence threshold = 0.851
-- EFDR = 4.98% 
-- EFNR = 6.1% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-543 Features classified as highly variable using: 
-- The  90 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 5.93% 
-- EFNR = 9.9% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-1125 Features classified as highly variable using: 
-- The  80 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 4.95% 
-- EFNR = 16.71% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-1766 Features classified as highly variable using: 
-- The  70 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 4.47% 
-- EFNR = 22.86% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-2393 Features classified as highly variable using: 
-- The  60 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 4.27% 
-- EFNR = 28.79% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-3005 Features classified as highly variable using: 
-- The  50 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 4.18% 
-- EFNR = 33.82% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-3561 Features classified as highly variable using: 
-- The  40 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 3.95% 
-- EFNR = 39.01% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-4209 Features classified as highly variable using: 
-- The  30 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 3.96% 
-- EFNR = 43.61% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-5046 Features classified as highly variable using: 
-- The  20 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 3.9% 
-- EFNR = 49.24% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-6264 Features classified as highly variable using: 
-- The  10 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 3.89% 
-- EFNR = 56.41% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-9148 Features classified as highly variable using: 
-- The  1 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 2.75% 
-- EFNR = 61.97% 
-
-There were 50 or more warnings (use warnings() to see the first 50)
+Error in (function (classes, fdef, mtable)  : 
+  unable to find an inherited method for function ‘extract’ for signature ‘"list"’
+Calls: scmet -> <Anonymous> -> <Anonymous>
+Execution halted
 INFO:    Cleaning up image...

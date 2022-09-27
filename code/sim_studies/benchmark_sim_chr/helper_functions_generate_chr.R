@@ -5,6 +5,7 @@ suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(BiocParallel))
 suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(GenomicRanges))
+suppressPackageStartupMessages(library(recommenderlab))
 
 # register(SnowParam(workers = 6, type = "FORK"))
 
@@ -47,24 +48,36 @@ simulateChr <- function(
   file_dirs <- sample(filtered_file_dirs, N)
   
   # Get missing distribution from real data
-  M_mat <- matrix(NA, nrow = length(pos0), ncol = N)
+  M_mat0 <- NULL
   for (i in 1:N) {
-    M_mat[, i] <- fread(file_dirs[i]) %>% unlist %>% unname
-    # cat(i, " ")
+    M_mat0 <- cbind(
+      M_mat0,
+      fread(file_dirs[i]) %>% as.matrix() %>% dropNA()
+    )
+    cat(i, " ")
   }
+  # M_mat0 <- matrix(NA, nrow = length(pos0), ncol = N)
+  # for (i in 1:N) {
+  #   M_mat0[, i] <- fread(file_dirs[i]) %>% unlist %>% unname
+  #   # cat(i, " ")
+  # }
   
   gr <- GRanges(seqnames = "pseudo", ranges = IRanges(start = pos0, end = pos0))
   
-  meth <- rowSums(M_mat, na.rm = TRUE)
-  total <- rowSums(!is.na(M_mat))
+  meth <- rowSums(M_mat0)
+  total <- rowSums(M_mat0 > 0)
+  # meth <- rowSums(M_mat0, na.rm = TRUE)
+  # total <- rowSums(!is.na(M_mat0))
+  mf <- meth / total
   state <- as.numeric(meth / total >= 0.5)
   rm(meth)
 
   # Remove sites with no coverage 
   index_rm <- which(total <= 0)
   gr <- gr[-index_rm]
-  M_mat <- M_mat[-index_rm, ]
+  M_mat0 <- M_mat0[-index_rm, ]
   total <- total[-index_rm]
+  mf <- mf[-index_rm]
   state <- state[-index_rm]
 
   message("Cell/site missing distribution obtained from real data.")
@@ -80,8 +93,11 @@ simulateChr <- function(
   Indexes <- Indexes[lns >= 5 & lns <= 500]
   if (length(Indexes) < NV) stop("'NV' is too large.")
   
-  # Sample regions 
-  vmrs_i <- sample(seq_len(length(Indexes)), NV, replace = FALSE) %>% sort
+  # Sample regions with intermediate methylation values preferentially
+  mf_means <- map_dbl(Indexes, ~ mean(mf[.x], na.rm = TRUE)) %>% unname()
+  # mf_means <- map_dbl(Indexes, ~ mean(colMeans(M_mat0[.x,], na.rm = TRUE), na.rm = TRUE)) %>% unname()
+  vmrs_i <- sample(seq_len(length(Indexes)), NV, replace = FALSE, 
+                   prob = pmax(1 - sqrt(2) * abs(0.5 - mf_means)^0.5, 0)) %>% sort
   inds_2g <- Indexes[vmrs_i]
   # Merge adjacent VMRs if there are equal or less than `maxNumMerge` CpGs in between
   maxNumMerge <- 2
@@ -107,7 +123,7 @@ simulateChr <- function(
   for (i in 1:length(inds_2g)) {
     h <- inds_2g[[i]][length(inds_2g[[i]])]+1
     r <- ifelse(i < length(inds_2g), yes = inds_2g[[i+1]][1]-1, no = length(total))
-    cat("h - r = ", h - r, "; h = ", h, "; r = ", r, "\n")
+    # cat("h - r = ", h - r, "; h = ", h, "; r = ", r, "\n")
     if (h <= r) inds_1g[[i+1]] <- h:r 
   }
   message("Five-number summary of number of null CpGs between neighboring VMRs: ")
@@ -128,30 +144,63 @@ simulateChr <- function(
   state_seqs_1g <- lapply(inds_1g, function(ix) state[ix]) 
   state_seqs_2g <- lapply(inds_2g, function(ix) rep(1, length(ix))) # ps: hidden states in VMR are all (1,0)
   
-
   # Modify real-data M matrix to model-simulated data
+  M_mat <- NULL
+  if (inds_1g[[1]][1] == 1) { # rbind first null segments
+    ix <- inds_1g[[1]]
+    miss_mat <- matrix(data = NA, nrow = length(ix), ncol = N)
+    miss_mat[as.matrix(M_mat0[ix, ] > 0)] <- 1
+    null_mat <- .sampScMeth1Grp(state_seq = state_seqs_1g[[1]], miss_mat, 0, pars) %>% dropNA()
+    M_mat <- rbind(M_mat, null_mat)
+  }
   for (i in 1:length(inds_2g)) {
+    # rbind VMR
     ix <- inds_2g[[i]]
-    miss_mat <- ifelse(M_mat[ix, ] >= 0, 1, NA)
-    M_mat[ix, ] <- .sampScMeth2Grp(
+    miss_mat <- matrix(data = NA, nrow = length(ix), ncol = N)
+    miss_mat[as.matrix(M_mat0[ix, ] > 0)] <- 1
+    vmr_mat <- .sampScMeth2Grp(
       state_seq = state_seqs_2g[[i]],
       pi1 = pi1s[i],
       miss_mat, 0, pars
-    )
+    ) %>% dropNA()
+    M_mat <- rbind(M_mat, vmr_mat)
+    
+    # rbind null segments
+    ix <- inds_1g[[i+1]]
+    # if (!is.null(ix)) {
+    miss_mat <- matrix(data = NA, nrow = length(ix), ncol = N)
+    miss_mat[as.matrix(M_mat0[ix, ] > 0)] <- 1
+    null_mat <- .sampScMeth1Grp(
+      state_seq = state_seqs_1g[[i+1]],
+      miss_mat, 0, pars
+    ) %>% dropNA()
+    M_mat <- rbind(M_mat, null_mat)
+    # }
+    
     cat(i, " ")
   }
-  for (i in 1:length(inds_1g)) {
-    ix <- inds_1g[[i]]
-    if (!is.null(ix)) {
-      miss_mat <- ifelse(M_mat[ix, ] >= 0, 1, NA)
-      if (is.null(dim(miss_mat))) miss_mat <- matrix(miss_mat, ncol = N)
-      M_mat[ix, ] <- .sampScMeth1Grp(
-        state_seq = state_seqs_1g[[i]],
-        miss_mat, 0, pars
-      )
-    }
-    cat(i, " ")
-  }
+  # for (i in 1:length(inds_2g)) {
+  #   ix <- inds_2g[[i]]
+  #   miss_mat <- ifelse(M_mat0[ix, ] >= 0, 1, NA)
+  #   M_mat[ix, ] <- .sampScMeth2Grp(
+  #     state_seq = state_seqs_2g[[i]],
+  #     pi1 = pi1s[i],
+  #     miss_mat, 0, pars
+  #   )
+  #   cat(i, " ")
+  # }
+  # for (i in 1:length(inds_1g)) {
+  #   ix <- inds_1g[[i]]
+  #   if (!is.null(ix)) {
+  #     miss_mat <- ifelse(M_mat0[ix, ] >= 0, 1, NA)
+  #     if (is.null(dim(miss_mat))) miss_mat <- matrix(miss_mat, ncol = N)
+  #     M_mat[ix, ] <- .sampScMeth1Grp(
+  #       state_seq = state_seqs_1g[[i]],
+  #       miss_mat, 0, pars
+  #     )
+  #   }
+  #   cat(i, " ")
+  # }
   message("Finished filling in single-cell methyl values for VMRs.")
 
   # Useful metadata for CpG sites
@@ -164,8 +213,8 @@ simulateChr <- function(
     gr$vmr_name[ix] <- i
     gr$pi1[ix] <- pi1s[i]
   }
-  gr$meth <- rowSums(M_mat, na.rm = TRUE)
-  gr$total <- rowSums(!is.na(M_mat))
+  gr$meth <- round(rowSums(M_mat))
+  gr$total <- rowSums(M_mat > 0)
   gr$mf <-   gr$meth / gr$total
   message("Finished adding metadata for CpGs.")
 

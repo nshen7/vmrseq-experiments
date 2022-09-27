@@ -19,5 +19,5 @@ Finished sampling prevalences.
 Finished filling in single-cell methyl values for VMRs.
 Finished adding metadata for CpGs.
 Finished saving pseudo-chromosome in a HDF5SummarizedExperiment object to:
- '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_real_chr/modified_real/pseudoChr_IT-L23_Cux1_chr1_200cells_4subpops_100VMRs_sparseLevel1_seed2022'
+ '/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/sim_studies/benchmark_real_chr/modified_real/pseudoChr_IT-L23_Cux1_chr1_200cells_4subpops_2000VMRs_sparseLevel3_seed2022'
 INFO:    Cleaning up image...

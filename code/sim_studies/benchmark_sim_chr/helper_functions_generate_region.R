@@ -178,8 +178,8 @@ suppressPackageStartupMessages(library(gamlss.dist))
   ind_g1 <- sample(1:N, ceiling(pi1*N)) %>% sort
   ind_g2 <- which(! 1:N %in% ind_g1)
   mf_mat <- matrix(nrow = K, ncol = N)
-  mf_mat[,ind_g1] <- .sampMethMat(state_seq = state_vec[,1], miss_mat = miss_mat[,ind_g1], N = length(ind_g1), sigma, pars)
-  mf_mat[,ind_g2] <- .sampMethMat(state_seq = state_vec[,2], miss_mat = miss_mat[,ind_g2], N = length(ind_g2), sigma, pars)
+  mf_mat[,ind_g1] <- .sampMethMat(state_seq = state_vec[,1], miss_mat = matrix(miss_mat[,ind_g1], nrow = K), N = length(ind_g1), sigma, pars)
+  mf_mat[,ind_g2] <- .sampMethMat(state_seq = state_vec[,2], miss_mat = matrix(miss_mat[,ind_g2], nrow = K), N = length(ind_g2), sigma, pars)
   return(mf_mat * miss_mat)
 }
 

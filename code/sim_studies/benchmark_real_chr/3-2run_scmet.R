@@ -16,9 +16,9 @@ for (N in c(200)) {
   # for (N in c(1000)) {
   # for (NP in c(2,3,4,5,8,12,20)) {
   for (NP in c(4)) {
-    # for (sparseLevel in 1) {
+    for (sparseLevel in 1) {
     # for (sparseLevel in 2) {
-    for (sparseLevel in 3) {
+    # for (sparseLevel in 3) {
       
       subtype <- "IT-L23_Cux1"
       chromosome <- "chr1"
@@ -31,6 +31,7 @@ for (N in c(200)) {
                     NV, "VMRs_sparseLevel", sparseLevel, 
                     "_seed", seed, ".txt.gz")
       dt <- fread(dir) %>% 
+        mutate(met_reads = as.integer(round(met_reads))) %>%
         dplyr::filter(total_reads >= 3) %>%  # exclude regions that have less than 3 CpGs covered
         group_by(Feature) %>%
         dplyr::filter(n() >= 5) # exclude features that did not have CpG coverage in at least 5 cells

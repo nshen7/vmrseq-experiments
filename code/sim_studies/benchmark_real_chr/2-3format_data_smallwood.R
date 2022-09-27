@@ -6,7 +6,8 @@ library(HDF5Array)
 library(SummarizedExperiment)
 library(BiocParallel)
 
-register(MulticoreParam(workers = 22))
+# mc.cores <- 22
+register(MulticoreParam(workers = 14))
 
 subtype <- "IT-L23_Cux1"
 chromosome <- "chr1"
@@ -39,50 +40,67 @@ for (N in c(200)) {
       cuts <- cuts[-((len-3):len)]
       wds.gr <- GRanges(
         seqnames = seqnames(se)[1],
-        ranges = IRanges(start = cuts,
-                         end = c(cuts[-length(cuts)]+bp_window, start(se)[length(se)]))
+        ranges = IRanges(
+          start = cuts,
+          end = c(cuts[-length(cuts)]+bp_window, start(se)[length(se)])
+        )
       )
       hits <- findOverlaps(granges(se), wds.gr)
+      Indexes <- lapply(
+        unique(subjectHits(hits)), 
+        function(i) queryHits(hits)[subjectHits(hits)==i]
+      )
+      print("Finished finding hits.")
+      print(Sys.time())
       
-      getFeature <- function(i, type) { # i th feature/window
-        feat.se <- se[queryHits(hits)[subjectHits(hits)==i],]
-        if (type == "Cov") {
-          return(colSums(assays(feat.se)$M_mat >= 0, na.rm = T)) 
-        } else if (type == "M") {
-          return(colSums(assays(feat.se)$M_mat, na.rm = T))
-        } else {
-          stop("Wrong 'type' value. Either 'Cov' or 'M'.")
+      # Divide M_mat into groups to read into RAM and save time
+      grp_size <- 50000
+      n_grp <- length(Indexes) %/% grp_size
+      if (length(Indexes) %% grp_size > 0) n_grp <- n_grp + 1
+      
+      M <- NULL; Cov <- NULL
+      for (i in 1:n_grp) {
+        grp_idx <- (grp_size*(i-1)+1):min(grp_size*i, length(Indexes))
+        head <- Indexes[[grp_idx[1]]]
+        tail <- Indexes[[grp_idx[length(grp_idx)]]]
+        site_idx <- head[1]:tail[length(tail)]
+        grp.se <- se[site_idx,]
+        grp_mat <- assays(grp.se)$M_mat %>% as("sparseMatrix")
+        
+        getFeature <- function(j, type) { # i th feature/window
+          mat <- matrix(grp_mat[Indexes[[j]]-site_idx[1]+1, ], ncol = N)
+          if (type == "M") return(round(colSums(mat))) 
+          else if (type == "Cov") return(colSums(mat > 0))
+          else stop("Wrong 'type' value. Either 'Cov' or 'M'.")
         }
+        M <- rbind(M, do.call(
+          rbind,
+          bplapply(grp_idx, getFeature, type = "M")
+        ))
+        Cov <- rbind(Cov, do.call(
+          rbind,
+          bplapply(grp_idx, getFeature, type = "Cov")
+        ))
+        cat(i, " ")
       }
-      
-      M <- do.call(
-        rbind,
-        bplapply(unique(subjectHits(hits)), getFeature, type = "M")
-        # bplapply(1:10000, getFeature, type = "M")
-      )
-      Cov <- do.call(
-        rbind,
-        bplapply(unique(subjectHits(hits)), getFeature, type = "Cov")
-        # bplapply(1:10000, getFeature, type = "Cov")
-      )
-      
+      print("Finished computing features.")
+      print(Sys.time())
       
       input_folder <- paste0("data/interim/sim_studies/benchmark_real_chr/smallwood/input")
       write_dir <- paste0(
         input_folder,
         "/pseudoChr_", subtype, "_", chromosome, "_",
-        N, "cells_", NP, "subpops_", 
-        NV, "VMRs_sparseLevel", sparseLevel, 
+        N, "cells_", NP, "subpops_",
+        NV, "VMRs_sparseLevel", sparseLevel,
         "_seed", seed
       )
-      
+
       saveHDF5SummarizedExperiment(
         x = SummarizedExperiment(
           assays = list("M" = M, "Cov" = Cov),
           rowRanges = wds.gr[unique(subjectHits(hits))]
-          # rowRanges = wds.gr[1:10000]
-        ), 
-        dir = write_dir, 
+        ),
+        dir = write_dir,
         replace = TRUE
       )
       cat("N =", N, "; NP =", NP, "\n")
