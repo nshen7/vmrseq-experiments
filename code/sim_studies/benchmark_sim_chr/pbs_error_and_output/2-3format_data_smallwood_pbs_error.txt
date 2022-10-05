@@ -167,4 +167,6 @@ The following objects are masked from ‘package:matrixStats’:
 
 Warning message:
 replacing previous import ‘BiocGenerics::aperm’ by ‘DelayedArray::aperm’ when loading ‘SummarizedExperiment’ 
+Error: unexpected ')' in ")"
+Execution halted
 INFO:    Cleaning up image...

@@ -9,17 +9,14 @@ register(MulticoreParam(workers = 14))
 NV <- 2000
 
 out_dir <- paste0(getwd(), "/", "data/interim/sim_studies/benchmark_real_chr/modified_real/")
-# for (N in c(2000)) {
-# for (N in c(500, 1000)) {
-for (N in c(200)) {
-# for (N in c(100)) {
-  # for (NP in c(2,3,4,5,8,12,20)) {
+# for (N in c(200)) {
+for (N in c(500)) {
   # for (NP in c(2,3)) {
-  for (NP in c(4)) {
+  # for (NP in c(4)) {
   # for (NP in c(5,8)) {
-  # for (NP in c(12,20)) {
-    # simPseudoChr(N, NP, NV, sparseLevel = 1, seed = 2022, out_dir)
-    # simPseudoChr(N, NP, NV, sparseLevel = 2, seed = 2022, out_dir)
+  for (NP in c(12,20)) {
+    simPseudoChr(N, NP, NV, sparseLevel = 1, seed = 2022, out_dir)
+    simPseudoChr(N, NP, NV, sparseLevel = 2, seed = 2022, out_dir)
     simPseudoChr(N, NP, NV, sparseLevel = 3, seed = 2022, out_dir)
     cat("N =", N, "; NP =", NP, "\n")
   }

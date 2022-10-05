@@ -7,18 +7,15 @@ library(data.table)
 library(HDF5Array)
 library(SummarizedExperiment)
 library(BiocParallel)
-# n_cores <- 14
-# register(MulticoreParam(workers = n_cores))
+n_cores <- 22
+register(MulticoreParam(workers = n_cores))
 
 NV <- 2000
 
 
-for (N in c(200)) {
-  # for (N in c(100, 500)) {
-  # for (N in c(500)) {
-  # for (N in c(1000)) {
-  # for (NP in c(2,3,4,5,8,12,20)) {
-  for (NP in c(4)) {
+for (N in c(500)) {
+  # for (NP in c(2,3,4,5)) {
+  for (NP in c(8,12,20)) {
     for (sparseLevel in 1:3) {
       
       cat("N =", N, "NP =", NP, "\n")

@@ -15,13 +15,12 @@ seed <- 2022
 bp_size <- 20000
 NV <- 2000
 
-# for (N in c(100, 500, 1000, 2000)) {
-# for (N in c(100, 500, 1000)) {
-for (N in c(200)) {
-  # for (NP in c(2,3,4,5,8,12,20)) {
-  for (NP in c(4)) {
+for (N in c(500)) {
+  for (NP in c(2,3)) {
+  # for (NP in c(4,5)) {
+  # for (NP in c(8,12)) {
+  # for (NP in c(20)) {
     for (sparseLevel in 1:3) {
-      
       # Load raw data
       load_dir <- paste0(
         "data/interim/sim_studies/benchmark_sim_chr/simulated/simChr_",
@@ -78,9 +77,7 @@ for (N in c(200)) {
       )
       fwrite(feats.df, file = write_dir, quote = F)
       R.utils::gzip(write_dir, remove = T, overwrite = T)
-      
     }
     cat("N =", N, "; NP =", NP, "\n")
-    
   }
 }

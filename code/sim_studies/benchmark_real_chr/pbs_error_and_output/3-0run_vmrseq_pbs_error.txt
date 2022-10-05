@@ -1,14 +1,20 @@
 INFO:    Converting SIF file to temporary sandbox...
 ℹ Loading vmrseq
+Registered S3 methods overwritten by 'registry':
+  method               from 
+  print.registry_field proxy
+  print.registry_entry proxy
 Warning messages:
-1: replacing previous import ‘GenomicRanges::union’ by ‘dplyr::union’ when loading ‘vmrseq’ 
-2: replacing previous import ‘GenomicRanges::intersect’ by ‘dplyr::intersect’ when loading ‘vmrseq’ 
-3: replacing previous import ‘GenomicRanges::setdiff’ by ‘dplyr::setdiff’ when loading ‘vmrseq’ 
+1: multiple methods tables found for ‘aperm’ 
+2: replacing previous import ‘BiocGenerics::aperm’ by ‘DelayedArray::aperm’ when loading ‘SummarizedExperiment’ 
+3: replacing previous import ‘GenomicRanges::union’ by ‘dplyr::union’ when loading ‘vmrseq’ 
+4: replacing previous import ‘GenomicRanges::intersect’ by ‘dplyr::intersect’ when loading ‘vmrseq’ 
+5: replacing previous import ‘GenomicRanges::setdiff’ by ‘dplyr::setdiff’ when loading ‘vmrseq’ 
 ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-✔ ggplot2 3.3.6     ✔ purrr   0.3.4
-✔ tibble  3.1.7     ✔ dplyr   1.0.9
-✔ tidyr   1.2.0     ✔ stringr 1.4.0
-✔ readr   2.1.2     ✔ forcats 0.5.1
+✔ ggplot2 3.3.6      ✔ purrr   0.3.4 
+✔ tibble  3.1.7      ✔ dplyr   1.0.10
+✔ tidyr   1.2.1      ✔ stringr 1.4.0 
+✔ readr   2.1.2      ✔ forcats 0.5.2 
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks vmrseq::filter(), stats::filter()
 ✖ dplyr::lag()    masks vmrseq::lag(), stats::lag()
@@ -56,12 +62,12 @@ The following objects are masked from ‘package:stats’:
 
 The following objects are masked from ‘package:base’:
 
-    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
-    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
-    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
-    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
-    union, unique, unsplit, which.max, which.min
+    anyDuplicated, aperm, append, as.data.frame, basename, cbind,
+    colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
+    get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
+    match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
+    Position, rank, rbind, Reduce, rownames, sapply, setdiff, sort,
+    table, tapply, union, unique, unsplit, which.max, which.min
 
 Loading required package: MatrixGenerics
 Loading required package: matrixStats
@@ -148,6 +154,10 @@ The following objects are masked from ‘package:vmrseq’:
 
 Attaching package: ‘DelayedArray’
 
+The following object is masked from ‘package:BiocGenerics’:
+
+    aperm
+
 The following object is masked from ‘package:purrr’:
 
     simplify
@@ -164,6 +174,8 @@ The following object is masked from ‘package:rhdf5’:
 
     h5ls
 
+Warning message:
+replacing previous import ‘BiocGenerics::aperm’ by ‘DelayedArray::aperm’ when loading ‘HDF5Array’ 
 Loading required package: GenomicRanges
 Loading required package: GenomeInfoDb
 Loading required package: Biobase
@@ -186,53 +198,29 @@ The following objects are masked from ‘package:matrixStats’:
 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
-...Chromosome pseudo: Mean methylation smoothed. Variance computed (1.09 min). 
+...Chromosome pseudo: Variance computed (1.23 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.12 on variance.
-...Finished calling candidate regions - found 4428 candidate regions in total.
-  ...6.85% QC-passed sites are called to be in candidate regions.
+...Calling candidate regions with cutoff of 0.10 on variance.
+...Finished calling candidate regions - found 4659 candidate regions in total.
+  ...7.23% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 6.8 min and 3517 VMRs found in total.
-  ...5.46% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 97.08 min and 3050 VMRs found in total.
+  ...5.78% QC-passed sites are called to be in VMRs.
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.11 on variance.
-...Finished calling candidate regions - found 4748 candidate regions in total.
-  ...7.18% QC-passed sites are called to be in candidate regions.
+...Calling candidate regions with cutoff of 0.09 on variance.
+...Finished calling candidate regions - found 6412 candidate regions in total.
+  ...8.64% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 6.79 min and 3664 VMRs found in total.
-  ...5.61% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 95.4 min and 3662 VMRs found in total.
+  ...6.14% QC-passed sites are called to be in VMRs.
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.11 on variance.
-...Finished calling candidate regions - found 5074 candidate regions in total.
-  ...7.49% QC-passed sites are called to be in candidate regions.
+...Calling candidate regions with cutoff of 0.08 on variance.
+...Finished calling candidate regions - found 8572 candidate regions in total.
+  ...10.52% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 7.18 min and 3814 VMRs found in total.
-  ...5.73% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
-Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.11 on variance.
-...Finished calling candidate regions - found 5464 candidate regions in total.
-  ...7.84% QC-passed sites are called to be in candidate regions.
-Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 7.71 min and 3994 VMRs found in total.
-  ...5.87% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
-Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.11 on variance.
-...Finished calling candidate regions - found 5710 candidate regions in total.
-  ...8.09% QC-passed sites are called to be in candidate regions.
-Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 7.41 min and 4094 VMRs found in total.
-  ...5.95% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
-Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.11 on variance.
-...Finished calling candidate regions - found 6011 candidate regions in total.
-  ...8.36% QC-passed sites are called to be in candidate regions.
-Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 7.54 min and 4238 VMRs found in total.
-  ...6.05% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 99.81 min and 4317 VMRs found in total.
+  ...6.52% QC-passed sites are called to be in VMRs.
 INFO:    Cleaning up image...

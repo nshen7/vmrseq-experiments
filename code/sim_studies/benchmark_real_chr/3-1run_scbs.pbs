@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#PBS -l walltime=3:00:00,select=1:ncpus=24:mem=64gb
+#PBS -l walltime=6:00:00,select=1:ncpus=24:mem=64gb
 #PBS -N runScbsReal
 #PBS -A st-kdkortha-1
 #PBS -m abe
@@ -19,14 +19,16 @@ n_cores=22
 seed=2022
 NV=2000
 
-for N in 200; do 
-# for N in 100 500 1000; do 
-# for N in 2000; do
-  for NP in 4; do
-  # for NP in 2 3 4 5 8 12 20; do
+for N in 500; do 
+  # for NP in 2; do
+  # for NP in 3; do
+  # for NP in 4; do
+  # for NP in 5; do
+  # for NP in 8; do
+  # for NP in 12; do
+  for NP in 20; do
     for sparseLevel in 1 2 3; do
-    # for sparseLevel in 1 2 3; do
-  
+
       dir_in="input/pseudoChr_IT-L23_Cux1_chr1_${N}cells_${NP}subpops_${NV}VMRs_sparseLevel${sparseLevel}_seed${seed}/*.cov"
       dir_cpt="output/pseudoChr_IT-L23_Cux1_chr1_${N}cells_${NP}subpops_${NV}VMRs_sparseLevel${sparseLevel}_seed${seed}_compact"
       

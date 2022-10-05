@@ -7,7 +7,7 @@ library(SummarizedExperiment)
 library(BiocParallel)
 
 # mc.cores <- 22
-register(MulticoreParam(workers = 14))
+register(MulticoreParam(workers = 18))
 
 subtype <- "IT-L23_Cux1"
 chromosome <- "chr1"
@@ -16,14 +16,15 @@ bp_window <- 3000
 bp_step <- 600
 NV <- 2000
 
-# for (N in c(100, 500, 1000, 2000)) {
-# for (N in c(100, 500, 1000)) {
-for (N in c(200)) {
-  # for (NP in c(2,3,4,5,8,12,20)) {
-  for (NP in c(4)) {
-    # for (sparseLevel in 1) {
-    # for (sparseLevel in 2) {
-    for (sparseLevel in 3) {
+for (N in c(500)) {
+  # for (NP in c(2)) {
+  # for (NP in c(3)) {
+  # for (NP in c(4)) {
+  # for (NP in c(5)) {
+  # for (NP in c(8)) {
+  # for (NP in c(12)) {
+  for (NP in c(20)) {
+    for (sparseLevel in 1:3) {
       
       # Load raw data
       load_dir <- paste0(
