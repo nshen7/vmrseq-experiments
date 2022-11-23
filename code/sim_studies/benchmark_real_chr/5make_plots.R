@@ -4,13 +4,16 @@ devtools::load_all("../vmrseq-package/vmrseq/")
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(tidyverse))
 
+N <- 2000
+
 NV <- 2000
 seed <- 2022
 chromosome <- "chr1"
 subtype <- "IT-L23_Cux1"
 NPs <- c(2,3,4,5,8,12,20)
 
-colors <- RColorBrewer::brewer.pal(n = 6, name = "RdYlBu")[-4]
+# colors <- RColorBrewer::brewer.pal(n = 6, name = "RdYlBu")[-4]
+colors <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")[-3]
 
 # ==== plot F1-like score, fdr and power at default threshold ====
 
@@ -39,13 +42,13 @@ getResultsDefaultSetting <- function(N) {
     do.call(rbind, lapply(NPs, getOneRow, N = N, sparseLevel = 3))
   )  %>% 
     mutate(sparseLevel = factor(sparseLevel),
-           method = factor(method, levels = c("vmrseq", "vmrseq_CR", "scbs", "scmet", "smallwood")),
+           method = factor(method, levels = c("vmrseq", "vmrseq_CR", "scbs", "smallwood", "scmet")),
            F1_like_site = 2/(1/power_site + 1/(1-fdr_site)),
            F1_like_region = 2/(1/power_region + 1/(1-fdr_region)))
   return(smr_dft)
 }
 
-smr_dft <- getResultsDefaultSetting(N = 200)
+smr_dft <- getResultsDefaultSetting(N = N)
 
 # site-level F1 score
 smr_dft %>% ggplot(aes(color = method)) +
@@ -53,7 +56,7 @@ smr_dft %>% ggplot(aes(color = method)) +
   geom_line(aes(NP, F1_like_site)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + scale_x_continuous(trans = "log2", breaks = NPs) +
   ggtitle(paste0("Modified real chromosome (",N," cells)")) + 
   theme_classic() + ylab("Site-level F1-like score") + xlab("Number of subpopulations") 
@@ -65,7 +68,7 @@ smr_dft %>% ggplot(aes(color = method)) +
   geom_boxplot(aes(method, F1_like_site)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + 
   theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 0.5)) +
   ggtitle(paste0("Modified real chromosome (",N," cells)")) +
@@ -83,7 +86,7 @@ smr_dft %>% ggplot(aes(color = method)) +
   geom_line(aes(NP, fdr_site)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + scale_x_continuous(trans = "log2", breaks = NPs) +
   ggtitle(paste0("Modified real chromosome (",N," cells)")) +
   theme_classic() + ylab("Site-level FDR") + xlab("Number of subpopulations") 
@@ -95,7 +98,7 @@ smr_dft %>% ggplot(aes(color = method)) +
   geom_boxplot(aes(method, fdr_site)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) +
   ggtitle(paste0("Modified real chromosome (",N," cells)")) +
   theme_classic() + 
@@ -112,7 +115,7 @@ smr_dft %>% ggplot(aes(color = method)) +
   geom_line(aes(NP, power_site)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + scale_x_continuous(trans = "log2", breaks = NPs) +
   ggtitle(paste0("Modified real chromosome (",N," cells)")) +
   theme_classic() + ylab("Site-level power") + xlab("Number of subpopulations") 
@@ -124,7 +127,7 @@ smr_dft %>% ggplot(aes(color = method)) +
   geom_boxplot(aes(method, power_site)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + 
   ggtitle(paste0("Modified real chromosome (",N," cells)")) +
   theme_classic() + 
@@ -141,7 +144,7 @@ smr_dft %>% ggplot(aes(color = method)) +
   geom_line(aes(NP, F1_like_region)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + scale_x_continuous(trans = "log2", breaks = NPs) +
   ggtitle(paste0("Modified real chromosome (",N," cells)")) +
   theme_classic() + ylab("Region-level F1-like score") + xlab("Number of subpopulations") 
@@ -153,7 +156,7 @@ smr_dft %>% ggplot(aes(color = method)) +
   geom_boxplot(aes(method, F1_like_region)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + 
   ggtitle(paste0("Modified real chromosome (",N," cells)")) +
   theme_classic() +
@@ -170,7 +173,7 @@ smr_dft %>% ggplot(aes(color = method)) +
   geom_line(aes(NP, fdr_region)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + scale_x_continuous(trans = "log2", breaks = NPs) +
   ggtitle(paste0("Modified real chromosome (",N," cells)")) +
   theme_classic() + ylab("Region-level FDR") + xlab("Number of subpopulations") 
@@ -182,7 +185,7 @@ smr_dft %>% ggplot(aes(color = method)) +
   geom_boxplot(aes(method, fdr_region)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + 
   ggtitle(paste0("Modified real chromosome (",N," cells)")) +
   theme_classic() + 
@@ -199,7 +202,7 @@ smr_dft %>% ggplot(aes(color = method)) +
   geom_line(aes(NP, power_region)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + scale_x_continuous(trans = "log2", breaks = NPs) +
   ggtitle(paste0("Modified real chromosome (",N," cells)")) +
   theme_classic() + ylab("Region-level power") + xlab("Number of subpopulations") 
@@ -211,7 +214,7 @@ smr_dft %>% ggplot(aes(color = method)) +
   geom_boxplot(aes(method, power_region)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + 
   ggtitle(paste0("Modified real chromosome (",N," cells)")) +
   theme_classic() + 
@@ -265,11 +268,11 @@ getRRA <- function(N) {
     do.call(rbind, lapply(NPs, computeRRAbyExpr, N = N, sparseLevel = 3))
   )  %>% 
     mutate(sparseLevel = factor(sparseLevel),
-           method = factor(method, levels = c("vmrseq", "vmrseq_CR", "scbs", "scmet", "smallwood")))
+           method = factor(method, levels = c("vmrseq", "vmrseq_CR", "scbs", "smallwood", "scmet")))
   return(smr_rra)
 }
 
-smr_rra <- getRRA(N = 200)
+smr_rra <- getRRA(N = N)
 
 # site-level RRA indicator
 smr_rra %>% ggplot(aes(color = method)) +
@@ -277,7 +280,7 @@ smr_rra %>% ggplot(aes(color = method)) +
   geom_line(aes(NP, rra_site)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + scale_x_continuous(trans = "log2", breaks = NPs) +
   ggtitle(paste0("Modified real chromosome (",N," cells)")) + 
   theme_classic() + ylab("Site-level RRA") + xlab("Number of subpopulations") 
@@ -289,7 +292,7 @@ smr_rra %>% ggplot(aes(color = method)) +
   geom_boxplot(aes(method, rra_site)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + 
   theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 0.5)) +
   ggtitle(paste0("Modified real chromosome (",N," cells)")) +
@@ -307,7 +310,7 @@ smr_rra %>% ggplot(aes(color = method)) +
   geom_line(aes(NP, rra_region)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + scale_x_continuous(trans = "log2", breaks = NPs) +
   ggtitle(paste0("Modified real chromosome (",N," cells)")) + 
   theme_classic() + ylab("Region-level RRA") + xlab("Number of subpopulations") 
@@ -319,7 +322,7 @@ smr_rra %>% ggplot(aes(color = method)) +
   geom_boxplot(aes(method, rra_region)) +
   facet_wrap(~ sparseLevel) +
   scale_color_manual(values = c("vmrseq" = colors[1], "vmrseq_CR" = colors[2], 
-                                "smallwood" = colors[3], "scbs" = colors[4], "scmet" = colors[5])) + 
+                                "scbs" = colors[3], "smallwood" = colors[4], "scmet" = colors[5])) + 
   scale_y_continuous(breaks = seq(0,1,0.1), limits = c(0,1)) + 
   theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 0.5)) +
   ggtitle(paste0("Modified real chromosome (",N," cells)")) +

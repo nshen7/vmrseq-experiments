@@ -10,10 +10,7 @@ n_cores <- 18
 NV <- 2000
 bp_size <- 20000
 
-for (N in c(200)) { 
-  # for (N in c(500)) { 
-  # for (N in c(500)) {
-  # for (N in c(1000)) {
+for (N in c(1000)) {
   # for (NP in c(2,3,4,5,8,12,20)) {
   for (NP in c(4)) {
     # for (sparseLevel in 1) {

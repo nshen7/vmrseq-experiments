@@ -171,412 +171,142 @@ Converting Y matrix to data.table.
 
 Sorting features.
 
-Total # of cells: 500.
+Total # of cells: 2000.
 
 Total # of features: 9603.
 
-Mon Oct  3 17:05:55 2022: Using EB to set model priors.
+Mon Oct 24 16:17:59 2022: Using EB to set model priors.
 
 Usin EB estimates as initial values for posterior inference.
 
-Mon Oct  3 17:16:24 2022: Finished EB.
+Mon Oct 24 17:00:07 2022: Finished EB.
 
-Mon Oct  3 17:16:24 2022: Starting inference.
+Mon Oct 24 17:00:07 2022: Starting inference.
 
-Warning: Pareto k diagnostic value is 19.35. Resampling is disabled. Decreasing tol_rel_obj may help if variational algorithm has terminated prematurely. Otherwise consider using sampling instead.
-Mon Oct  3 21:05:33 2022: Posterior inference finished.
+Warning: Pareto k diagnostic value is 32.82. Resampling is disabled. Decreasing tol_rel_obj may help if variational algorithm has terminated prematurely. Otherwise consider using sampling instead.
+Tue Oct 25 12:54:22 2022: Posterior inference finished.
 
-8 Features classified as highly variable using: 
+52 Features classified as highly variable using: 
 - The  99 percentile of variable genes 
-- Evidence threshold = 0.98375
-- EFDR = 1.07% 
-- EFNR = 1.8% 
+- Evidence threshold = 0.92525
+- EFDR = 1.03% 
+- EFNR = 0.58% 
 
-46 Features classified as highly variable using: 
+116 Features classified as highly variable using: 
 - The  98 percentile of variable genes 
-- Evidence threshold = 0.92425
+- Evidence threshold = 0.87975
 - EFDR = 1.99% 
-- EFNR = 2.87% 
-
-222 Features classified as highly variable using: 
-- The  95 percentile of variable genes 
-- Evidence threshold = 0.83925
-- EFDR = 5.02% 
-- EFNR = 5.35% 
+- EFNR = 1.07% 
 
 For HVF detection task:
 Evidence probability threshold chosen via EFDR valibration is too low. 
 Probability threshold set automatically equal to 'evidence_thresh'.
 
-546 Features classified as highly variable using: 
+338 Features classified as highly variable using: 
+- The  95 percentile of variable genes 
+- Evidence threshold = 0.8
+- EFDR = 3.47% 
+- EFNR = 2.06% 
+
+For HVF detection task:
+Evidence probability threshold chosen via EFDR valibration is too low. 
+Probability threshold set automatically equal to 'evidence_thresh'.
+
+733 Features classified as highly variable using: 
 - The  90 percentile of variable genes 
 - Evidence threshold = 0.8
-- EFDR = 5.5% 
-- EFNR = 8.64% 
+- EFDR = 2.87% 
+- EFNR = 3.65% 
 
 For HVF detection task:
 Evidence probability threshold chosen via EFDR valibration is too low. 
 Probability threshold set automatically equal to 'evidence_thresh'.
 
-1183 Features classified as highly variable using: 
+1544 Features classified as highly variable using: 
 - The  80 percentile of variable genes 
 - Evidence threshold = 0.8
-- EFDR = 4.63% 
-- EFNR = 14.48% 
+- EFDR = 2.42% 
+- EFNR = 6.91% 
 
 For HVF detection task:
 Evidence probability threshold chosen via EFDR valibration is too low. 
 Probability threshold set automatically equal to 'evidence_thresh'.
 
-1898 Features classified as highly variable using: 
+2381 Features classified as highly variable using: 
 - The  70 percentile of variable genes 
 - Evidence threshold = 0.8
-- EFDR = 4.23% 
-- EFNR = 19.52% 
+- EFDR = 2.17% 
+- EFNR = 10% 
 
 For HVF detection task:
 Evidence probability threshold chosen via EFDR valibration is too low. 
 Probability threshold set automatically equal to 'evidence_thresh'.
 
-2651 Features classified as highly variable using: 
+3269 Features classified as highly variable using: 
 - The  60 percentile of variable genes 
 - Evidence threshold = 0.8
-- EFDR = 3.83% 
-- EFNR = 24.42% 
+- EFDR = 2.02% 
+- EFNR = 13.16% 
 
 For HVF detection task:
 Evidence probability threshold chosen via EFDR valibration is too low. 
 Probability threshold set automatically equal to 'evidence_thresh'.
 
-3336 Features classified as highly variable using: 
+4128 Features classified as highly variable using: 
 - The  50 percentile of variable genes 
 - Evidence threshold = 0.8
-- EFDR = 3.5% 
-- EFNR = 29.68% 
+- EFDR = 1.64% 
+- EFNR = 17.39% 
 
 For HVF detection task:
 Evidence probability threshold chosen via EFDR valibration is too low. 
 Probability threshold set automatically equal to 'evidence_thresh'.
 
-4106 Features classified as highly variable using: 
+5006 Features classified as highly variable using: 
 - The  40 percentile of variable genes 
 - Evidence threshold = 0.8
-- EFDR = 3.24% 
-- EFNR = 34.88% 
+- EFDR = 1.5% 
+- EFNR = 22.11% 
 
 For HVF detection task:
 Evidence probability threshold chosen via EFDR valibration is too low. 
 Probability threshold set automatically equal to 'evidence_thresh'.
 
-4867 Features classified as highly variable using: 
+5875 Features classified as highly variable using: 
 - The  30 percentile of variable genes 
 - Evidence threshold = 0.8
-- EFDR = 3.04% 
-- EFNR = 40.07% 
+- EFDR = 1.39% 
+- EFNR = 27.81% 
 
 For HVF detection task:
 Evidence probability threshold chosen via EFDR valibration is too low. 
 Probability threshold set automatically equal to 'evidence_thresh'.
 
-5664 Features classified as highly variable using: 
+6733 Features classified as highly variable using: 
 - The  20 percentile of variable genes 
 - Evidence threshold = 0.8
-- EFDR = 2.88% 
-- EFNR = 46.19% 
+- EFDR = 1.26% 
+- EFNR = 35.12% 
 
 For HVF detection task:
 Evidence probability threshold chosen via EFDR valibration is too low. 
 Probability threshold set automatically equal to 'evidence_thresh'.
 
-6661 Features classified as highly variable using: 
+7637 Features classified as highly variable using: 
 - The  10 percentile of variable genes 
 - Evidence threshold = 0.8
-- EFDR = 2.91% 
-- EFNR = 53.41% 
+- EFDR = 1.21% 
+- EFNR = 45.46% 
 
 For HVF detection task:
 Evidence probability threshold chosen via EFDR valibration is too low. 
 Probability threshold set automatically equal to 'evidence_thresh'.
 
-9170 Features classified as highly variable using: 
+9063 Features classified as highly variable using: 
 - The  1 percentile of variable genes 
 - Evidence threshold = 0.8
-- EFDR = 2.14% 
-- EFNR = 61.75% 
-
-Converting Y matrix to data.table.
-
-Sorting features.
-
-Total # of cells: 500.
-
-Total # of features: 9603.
-
-Mon Oct  3 21:06:03 2022: Using EB to set model priors.
-
-Usin EB estimates as initial values for posterior inference.
-
-Mon Oct  3 21:18:28 2022: Finished EB.
-
-Mon Oct  3 21:18:28 2022: Starting inference.
-
-Warning: Pareto k diagnostic value is 18.95. Resampling is disabled. Decreasing tol_rel_obj may help if variational algorithm has terminated prematurely. Otherwise consider using sampling instead.
-Tue Oct  4 01:58:54 2022: Posterior inference finished.
-
-15 Features classified as highly variable using: 
-- The  99 percentile of variable genes 
-- Evidence threshold = 0.95725
-- EFDR = 0.93% 
-- EFNR = 1.55% 
-
-44 Features classified as highly variable using: 
-- The  98 percentile of variable genes 
-- Evidence threshold = 0.92925
-- EFDR = 2.05% 
-- EFNR = 2.7% 
-
-233 Features classified as highly variable using: 
-- The  95 percentile of variable genes 
-- Evidence threshold = 0.843
-- EFDR = 4.98% 
-- EFNR = 4.67% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-568 Features classified as highly variable using: 
-- The  90 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 4.91% 
-- EFNR = 7.63% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-1279 Features classified as highly variable using: 
-- The  80 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 4.26% 
-- EFNR = 13% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-2024 Features classified as highly variable using: 
-- The  70 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 3.79% 
-- EFNR = 17.88% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-2813 Features classified as highly variable using: 
-- The  60 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 3.37% 
-- EFNR = 23.1% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-3528 Features classified as highly variable using: 
-- The  50 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 3.02% 
-- EFNR = 28.42% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-4171 Features classified as highly variable using: 
-- The  40 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 2.83% 
-- EFNR = 33.79% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-4908 Features classified as highly variable using: 
-- The  30 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 2.85% 
-- EFNR = 38.77% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-5767 Features classified as highly variable using: 
-- The  20 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 2.72% 
-- EFNR = 45.22% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-6837 Features classified as highly variable using: 
-- The  10 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 2.65% 
-- EFNR = 52.79% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-9252 Features classified as highly variable using: 
-- The  1 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 1.88% 
-- EFNR = 59.15% 
-
-Converting Y matrix to data.table.
-
-Sorting features.
-
-Total # of cells: 500.
-
-Total # of features: 9603.
-
-Tue Oct  4 01:59:24 2022: Using EB to set model priors.
-
-Usin EB estimates as initial values for posterior inference.
-
-Tue Oct  4 02:13:11 2022: Finished EB.
-
-Tue Oct  4 02:13:11 2022: Starting inference.
-
-Warning: Pareto k diagnostic value is 18.95. Resampling is disabled. Decreasing tol_rel_obj may help if variational algorithm has terminated prematurely. Otherwise consider using sampling instead.
-Tue Oct  4 07:26:11 2022: Posterior inference finished.
-
-22 Features classified as highly variable using: 
-- The  99 percentile of variable genes 
-- Evidence threshold = 0.97125
-- EFDR = 0.97% 
-- EFNR = 1.29% 
-
-72 Features classified as highly variable using: 
-- The  98 percentile of variable genes 
-- Evidence threshold = 0.91575
-- EFDR = 2% 
-- EFNR = 2.15% 
-
-280 Features classified as highly variable using: 
-- The  95 percentile of variable genes 
-- Evidence threshold = 0.81775
-- EFDR = 4.98% 
-- EFNR = 3.84% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-614 Features classified as highly variable using: 
-- The  90 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 4.59% 
-- EFNR = 6.65% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-1315 Features classified as highly variable using: 
-- The  80 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 3.71% 
-- EFNR = 11.93% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-2082 Features classified as highly variable using: 
-- The  70 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 3.51% 
-- EFNR = 16.63% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-2819 Features classified as highly variable using: 
-- The  60 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 3.17% 
-- EFNR = 21.74% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-3563 Features classified as highly variable using: 
-- The  50 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 2.94% 
-- EFNR = 27.22% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-4294 Features classified as highly variable using: 
-- The  40 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 2.74% 
-- EFNR = 32.55% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-5038 Features classified as highly variable using: 
-- The  30 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 2.71% 
-- EFNR = 38.29% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-5810 Features classified as highly variable using: 
-- The  20 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 2.6% 
-- EFNR = 44.42% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-6937 Features classified as highly variable using: 
-- The  10 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 2.57% 
-- EFNR = 51.37% 
-
-For HVF detection task:
-Evidence probability threshold chosen via EFDR valibration is too low. 
-Probability threshold set automatically equal to 'evidence_thresh'.
-
-9208 Features classified as highly variable using: 
-- The  1 percentile of variable genes 
-- Evidence threshold = 0.8
-- EFDR = 1.73% 
-- EFNR = 59.48% 
+- EFDR = 1.09% 
+- EFNR = 61.18% 
 
 There were 50 or more warnings (use warnings() to see the first 50)
 INFO:    Cleaning up image...

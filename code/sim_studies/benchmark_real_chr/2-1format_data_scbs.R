@@ -32,10 +32,11 @@ chromosome <- "chr1"
 seed <- 2022
 NV <- 2000
 
-# for (N in c(200)) {
-for (N in c(500)) {
-  for (NP in c(2,3,4,5,8,12,20)) {
-    for (sparseLevel in 1:3) {
+for (N in c(2000)) {
+  for (NP in c(8)) {
+  # for (NP in c(2,3,4,5,8,12,20)) {
+    for (sparseLevel in 3) {
+    # for (sparseLevel in 1:3) {
       # Load raw data
       load_dir <- paste0(
         "data/interim/sim_studies/benchmark_real_chr/modified_real/pseudoChr_",

@@ -1,0 +1,34 @@
+#!/bin/bash
+
+#PBS -l walltime=6:00:00,select=1:ncpus=24:mem=64gb
+#PBS -N hetRunScbs
+#PBS -A st-kdkortha-1
+#PBS -m abe
+#PBS -M ning.shen@stat.ubc.ca
+#PBS -o pbs_error_and_output/3-1run_scbs_pbs_output.txt
+#PBS -e pbs_error_and_output/3-1run_scbs_pbs_error.txt
+
+################################################################################
+
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/interim/case_studies/luo2017mice_subset_het/scbs
+
+module load miniconda3
+source activate /home/nshen7/conda-env/
+
+n_cores=22
+vt=0.02
+
+dir_in="input/*.cov"
+dir_cpt="output/scbs_output_compact"
+
+scbs prepare $dir_in $dir_cpt
+scbs smooth $dir_cpt
+
+dir_out="output/scbs_output_${vt}vt.bed"
+scbs scan --threads $n_cores --var-threshold $vt $dir_cpt $dir_out
+
+dir_mat="output/vmr_methylation_fractions_${vt}vt.csv"
+scbs matrix $dir_out $dir_cpt $dir_mat
+
+conda deactivate
+

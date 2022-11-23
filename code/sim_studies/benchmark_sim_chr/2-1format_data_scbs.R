@@ -31,7 +31,7 @@ chromosome <- "chr1"
 seed <- 2022
 NV <- 2000
 
-for (N in c(500)) {
+for (N in c(2000)) {
   for (NP in c(2,3,4,5,8,12,20)) {
     for (sparseLevel in 1:3) {
       # Load raw data

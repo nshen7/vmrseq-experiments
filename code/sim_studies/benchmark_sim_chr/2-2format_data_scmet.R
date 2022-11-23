@@ -15,7 +15,7 @@ seed <- 2022
 bp_size <- 20000
 NV <- 2000
 
-for (N in c(500)) {
+for (N in c(2000)) {
   for (NP in c(2,3)) {
   # for (NP in c(4,5)) {
   # for (NP in c(8,12)) {

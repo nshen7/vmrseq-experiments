@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#PBS -l walltime=7:00:00,select=1:ncpus=24:mem=64gb
+#PBS -l walltime=10:00:00,select=1:ncpus=24:mem=64gb
 #PBS -N runScbsSim
 #PBS -A st-kdkortha-1
 #PBS -m abe
@@ -18,16 +18,16 @@ source activate /home/nshen7/conda-env/
 n_cores=22
 NV=2000
 
-for N in 500; do
+for N in 2000; do
   # for NP in 2; do
-  for NP in 3; do 
+  # for NP in 3; do
   # for NP in 4; do
   # for NP in 5; do
   # for NP in 8; do
   # for NP in 12; do
-  # for NP in 20; do
-    # for sparseLevel in 1 2 3; do
-    for sparseLevel in 3; do
+  for NP in 20; do
+    for sparseLevel in 1 2 3; do
+    # for sparseLevel in 3; do
   
       dir_in="input/simChr_IT-L23_Cux1_chr1_${N}cells_${NP}subpops_${NV}VMRs_sparseLevel${sparseLevel}_seed2022/*.cov"
       dir_cpt="output/simChr_IT-L23_Cux1_chr1_${N}cells_${NP}subpops_${NV}VMRs_sparseLevel${sparseLevel}_seed2022_compact"

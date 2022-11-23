@@ -1,5 +1,13 @@
 [1] "Finished finding hits."
-[1] "2022-10-05 12:08:58 PDT"
+[1] "2022-10-23 21:03:01 PDT"
 1  2  3  4  [1] "Finished computing features."
-[1] "2022-10-05 13:20:08 PDT"
-N = 500 ; NP = 3 
+[1] "2022-10-24 00:43:41 PDT"
+[1] "Finished finding hits."
+[1] "2022-10-24 03:01:40 PDT"
+1  2  3  4  [1] "Finished computing features."
+[1] "2022-10-24 08:07:19 PDT"
+[1] "Finished finding hits."
+[1] "2022-10-24 09:30:48 PDT"
+1  2  3  4  [1] "Finished computing features."
+[1] "2022-10-24 16:04:45 PDT"
+N = 2000 ; NP = 2 

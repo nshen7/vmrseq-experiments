@@ -8,6 +8,8 @@ suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(HDF5Array))
 suppressPackageStartupMessages(library(GenomicRanges))
 
+N <- 2000
+
 NV <- 2000
 seed <- 2022
 chromosome <- "chr1"
@@ -274,7 +276,6 @@ summarizeResScbs <- function(NV, sparseLevel) {
 }
 
 # ==== Compare methods ====
-N <- 200
 for (NP in c(2,3,4,5,8,12,20)){
   for (sparseLevel in 1:3) {
     smr_vseq <- summarizeResVseq(NV, sparseLevel)

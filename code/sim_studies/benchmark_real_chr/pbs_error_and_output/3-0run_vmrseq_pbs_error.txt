@@ -198,29 +198,13 @@ The following objects are masked from ‘package:matrixStats’:
 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
-...Chromosome pseudo: Variance computed (1.23 min). 
+...Chromosome pseudo: Variance computed (2.96 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.10 on variance.
-...Finished calling candidate regions - found 4659 candidate regions in total.
-  ...7.23% QC-passed sites are called to be in candidate regions.
+...Calling candidate regions with cutoff of 0.11 on variance.
+...Finished calling candidate regions - found 2623 candidate regions in total.
+  ...5.52% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 97.08 min and 3050 VMRs found in total.
-  ...5.78% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
-Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.09 on variance.
-...Finished calling candidate regions - found 6412 candidate regions in total.
-  ...8.64% QC-passed sites are called to be in candidate regions.
-Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 95.4 min and 3662 VMRs found in total.
-  ...6.14% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
-Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.08 on variance.
-...Finished calling candidate regions - found 8572 candidate regions in total.
-  ...10.52% QC-passed sites are called to be in candidate regions.
-Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 99.81 min and 4317 VMRs found in total.
-  ...6.52% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 1866.97 min and 2176 VMRs found in total.
+  ...5.1% QC-passed sites are called to be in VMRs.
 INFO:    Cleaning up image...

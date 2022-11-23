@@ -11,20 +11,17 @@ register(MulticoreParam(workers = n_cores))
 
 NV <- 2000
 
-for (N in c(500)) {
+for (N in c(2000)) {
+  # for (NP in c(12)) {
+  # for (NP in c(20)) {
   # for (NP in c(2)) {
   # for (NP in c(3)) {
   # for (NP in c(4)) {
-  # for (NP in c(5)) {
-  # for (NP in c(8)) {
-  # for (NP in c(12)) {
-  for (NP in c(20)) {
-  # for (NP in c(2,3)) {
-  # for (NP in c(4,5)) {
-  # for (NP in c(8)) {
-  # for (NP in c(12,20)) {
+  # for (NP in c(5)) { 
+  for (NP in c(8)) {
+    # for (sparseLevel in 1) {
+    # for (sparseLevel in 2) {
     for (sparseLevel in 3) {
-    # for (sparseLevel in 1:3) {
       cat("N =", N, "NP =", NP, "\n")
       cat("alpha = ")
 
@@ -45,10 +42,10 @@ for (N in c(500)) {
       SE <- subset(SE, total >= 3)
 
       gr <- vmrseq.smooth(SE)
-      # for (alpha in c(seq(0.001, 0.005, 0.001), seq(0.01, 0.1, 0.01))) {
+      for (alpha in c(0.1)){
+      # for (alpha in c(seq(0.001, 0.005, 0.001),
+      #                 seq(0.01, 0.1, 0.01))) {
       # for (alpha in c(0.12, 0.15, 0.2, 0.3, 0.4)) {
-      for (alpha in c(seq(0.03, 0.1, 0.01), 0.3, 0.4)) {
-      # for (alpha in c(0.4)) {
         # run model
         t1 <- proc.time()
         fit <- vmrseq.fit(gr, alpha)

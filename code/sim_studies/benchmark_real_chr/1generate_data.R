@@ -4,19 +4,21 @@ source("code/sim_studies/benchmark_real_chr/1helper_functions.R")
 devtools::load_all("../vmrseq-package/vmrseq/")
 suppressPackageStartupMessages(library(HDF5Array))
 suppressPackageStartupMessages(library(gamlss.dist))
-register(MulticoreParam(workers = 14))
+register(MulticoreParam(workers = 22))
 
 NV <- 2000
 
 out_dir <- paste0(getwd(), "/", "data/interim/sim_studies/benchmark_real_chr/modified_real/")
-# for (N in c(200)) {
-for (N in c(500)) {
-  # for (NP in c(2,3)) {
-  # for (NP in c(4)) {
-  # for (NP in c(5,8)) {
-  for (NP in c(12,20)) {
-    simPseudoChr(N, NP, NV, sparseLevel = 1, seed = 2022, out_dir)
-    simPseudoChr(N, NP, NV, sparseLevel = 2, seed = 2022, out_dir)
+for (N in c(2000)) {
+  # for (NP in 2) {
+  # for (NP in 3) {
+  # for (NP in 4) {
+  # for (NP in 5) {
+  for (NP in 8) {
+  # for (NP in 12) {
+  # for (NP in 20) {
+    # simPseudoChr(N, NP, NV, sparseLevel = 1, seed = 2022, out_dir)
+    # simPseudoChr(N, NP, NV, sparseLevel = 2, seed = 2022, out_dir)
     simPseudoChr(N, NP, NV, sparseLevel = 3, seed = 2022, out_dir)
     cat("N =", N, "; NP =", NP, "\n")
   }

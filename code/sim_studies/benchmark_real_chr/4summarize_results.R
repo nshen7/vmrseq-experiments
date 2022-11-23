@@ -8,6 +8,8 @@ suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(HDF5Array))
 suppressPackageStartupMessages(library(GenomicRanges))
 
+N <- 2000
+
 NV <- 2000
 seed <- 2022
 chromosome <- "chr1"
@@ -93,9 +95,8 @@ summarizeResVseq <- function(NV, sparseLevel) {
   
   smr_vseq <- data.frame(method = "vmrseq",
                          NV = NV,
-                         threshold = 0.05,
-                         # threshold = c(seq(0.002, 0.005, 0.001), seq(0.01, 0.1, 0.01), 
-                         #               0.12, 0.15, seq(0.2,0.4,0.1)),
+                         threshold = c(seq(0.002, 0.005, 0.001), seq(0.01, 0.1, 0.01),
+                                       0.12, 0.15, seq(0.2,0.4,0.1)),
                          total_n_site = NA,
                          power_site = NA,
                          fdr_site = NA,
@@ -121,7 +122,7 @@ summarizeResVseq <- function(NV, sparseLevel) {
       smr_vseq$power_region[i] <- smr$power_region
       smr_vseq$fdr_region[i] <- smr$fdr_region
     }
-    # cat(i, " ")
+    cat(i, " ")
   }
   
   return(smr_vseq)
@@ -130,9 +131,8 @@ summarizeResVseq <- function(NV, sparseLevel) {
 summarizeResVseqCr <- function(NV, sparseLevel) {
   smr_vseq_cr <- data.frame(method = "vmrseq_CR",
                             NV = NV,
-                            threshold = 0.05,
-                            # threshold = c(seq(0.002, 0.005, 0.001), seq(0.01, 0.1, 0.01), 
-                            #               0.12, 0.15, seq(0.2,0.4,0.1)),
+                            threshold = c(seq(0.002, 0.005, 0.001), seq(0.01, 0.1, 0.01),
+                                          0.12, 0.15, seq(0.2,0.4,0.1)),
                             total_n_site = NA,
                             power_site = NA,
                             fdr_site = NA,
@@ -146,7 +146,7 @@ summarizeResVseqCr <- function(NV, sparseLevel) {
         subtype, "_", chromosome, "_", 
         N, "cells_", NP, "subpops_", 
         NV, "VMRs_sparseLevel", sparseLevel, 
-        "_alpha", smr_vseq$threshold[i], "_seed", seed, "_vmrseqOutput.rds"
+        "_alpha", smr_vseq_cr$threshold[i], "_seed", seed, "_vmrseqOutput.rds"
       )
     )
     if (!is.null(res_vseq)) {
@@ -370,7 +370,6 @@ summarizeResScmet <- function(NV, sparseLevel) {
 # ), width = 8, height = 6)
 
 # ==== Compare methods ====
-N <- 500
 for (NP in c(2,3,4,5,8,12,20)){
   for (sparseLevel in 1:3) {
     smr_vseq <- summarizeResVseq(NV, sparseLevel)

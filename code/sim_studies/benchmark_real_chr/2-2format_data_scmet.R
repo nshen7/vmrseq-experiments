@@ -15,13 +15,16 @@ seed <- 2022
 bp_size <- 20000
 NV <- 2000
 
-# for (N in c(200)) {
-for (N in c(500)) {
-  # for (NP in c(2,3)) {
-  # for (NP in c(4,5)) {
-  # for (NP in c(8,12)) {
-  for (NP in c(20)) {
-    for (sparseLevel in 1:3) {
+for (N in c(2000)) {
+  # for (NP in c(2)) {
+  # for (NP in c(3)) {
+  # for (NP in c(4)) {
+  # for (NP in c(5)) {
+  for (NP in c(8)) {
+  # for (NP in c(12)) {
+  # for (NP in c(20)) {
+    for (sparseLevel in 3) {
+    # for (sparseLevel in 1:3) {
       
       # Load raw data
       load_dir <- paste0(

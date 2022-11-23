@@ -13,7 +13,7 @@ register(MulticoreParam(workers = n_cores))
 NV <- 2000
 
 
-for (N in c(500)) {
+for (N in c(2000)) {
   # for (NP in c(2,3,4,5)) {
   for (NP in c(8,12,20)) {
     for (sparseLevel in 1:3) {

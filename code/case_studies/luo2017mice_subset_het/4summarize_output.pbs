@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#PBS -l walltime=8:00:00,select=1:ncpus=8:mem=96gb
+#PBS -N hetSumm
+#PBS -A st-kdkortha-1
+#PBS -m abe
+#PBS -M ning.shen@stat.ubc.ca
+#PBS -o pbs_error_and_output/4summarize_output_pbs_output.txt
+#PBS -e pbs_error_and_output/4summarize_output_pbs_error.txt
+
+################################################################################
+
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/code/case_studies/luo2017mice_subset_het
+singularity exec \
+-B /scratch/st-kdkortha-1/nshen7 \
+-B /home/nshen7 /project/st-kdkortha-1/rstudio/nshen7_rstudio_4_2_0-biocon_3_15.sif \
+Rscript 4summarize_output.R

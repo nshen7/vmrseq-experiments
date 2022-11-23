@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#PBS -l walltime=6:00:00,select=1:ncpus=24:mem=64gb
+#PBS -l walltime=20:00:00,select=1:ncpus=24:mem=64gb
 #PBS -N runScbsReal
 #PBS -A st-kdkortha-1
 #PBS -m abe
@@ -19,7 +19,7 @@ n_cores=22
 seed=2022
 NV=2000
 
-for N in 500; do 
+for N in 2000; do 
   # for NP in 2; do
   # for NP in 3; do
   # for NP in 4; do
