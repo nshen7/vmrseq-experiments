@@ -4,7 +4,7 @@ devtools::load_all("../vmrseq-package/vmrseq/")
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(tidyverse))
 
-N <- 2000
+N <- 200
 
 NV <- 2000
 seed <- 2022
@@ -30,7 +30,7 @@ getResultsDefaultSetting <- function(N) {
       (method == "vmrseq" & threshold == 0.05) | 
         (method == "vmrseq_CR" & threshold == 0.05) | 
         (method == "scbs" & threshold == 0.02) | 
-        (method == "smallwood" & threshold == 0.05)
+        (method == "smallwood" & threshold == 0.02)
     )
     return(data.frame("N" = N, "NP" = NP, "sparseLevel" = sparseLevel, smr0_dft))
   }

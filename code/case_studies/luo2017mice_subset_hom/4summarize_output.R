@@ -11,5 +11,8 @@ if (!file.exists(write_dir)) dir.create(write_dir)
 
 # summarizeAllSites(read_dir, write_dir)
 # summarizeOutputRegion(read_dir, write_dir, methods = c("vmrseq", "scbs", "smallwood")) 
-summarizeOutputSite(read_dir, write_dir, methods = c("vmrseq", "scbs", "smallwood"))
+# summarizeOutputSite(read_dir, write_dir, methods = c("vmrseq", "scbs", "smallwood"))
+# summarizeOutputRegion(read_dir, write_dir, methods = c("smallwood"))
+summarizeOutputRegion(read_dir, write_dir, methods = c("vmrseq"))
+summarizeOutputSite(read_dir, write_dir, methods = c("vmrseq"))
 

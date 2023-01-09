@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#PBS -l walltime=18:00:00,select=1:ncpus=24:mem=96gb
+#PBS -N fullRunVseq
+#PBS -A st-kdkortha-1
+#PBS -m abe
+#PBS -M ning.shen@stat.ubc.ca
+#PBS -o pbs_error_and_output/3-0run_vmrseq_pbs_output.txt
+#PBS -e pbs_error_and_output/3-0run_vmrseq_pbs_error.txt
+
+################################################################################
+
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/code/case_studies/luo2017mice_full
+singularity exec \
+-B /scratch/st-kdkortha-1/nshen7 \
+-B /home/nshen7 /project/st-kdkortha-1/rstudio/nshen7_rstudio_4_2_0-biocon_3_15.sif \
+Rscript 3-0run_vmrseq.R

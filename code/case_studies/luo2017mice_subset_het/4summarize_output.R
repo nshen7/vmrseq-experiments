@@ -10,10 +10,8 @@ write_dir <- "data/interim/case_studies/luo2017mice_subset_het/result_summary/"
 if (!file.exists(write_dir)) dir.create(write_dir)
 
 # summarizeAllSites(read_dir, write_dir)
-# summarizeOutputRegion(read_dir, write_dir, methods = c("vmrseq", "scbs", "smallwood")) 
-# summarizeOutputSite(read_dir, write_dir, methods = c("vmrseq", "scbs", "smallwood")) 
+# summarizeOutputRegion(read_dir, write_dir, methods = c("vmrseq", "scbs", "smallwood", "scmet")) 
+# summarizeOutputSite(read_dir, write_dir, methods = c("vmrseq", "scbs", "smallwood", "scmet")) 
 
-summarizeOutputSite(read_dir, write_dir, methods = c("scmet"))
-summarizeOutputRegion(read_dir, write_dir, methods = c("scmet"))
-
-
+summarizeOutputRegion(read_dir, write_dir, methods = c("vmrseq"))
+summarizeOutputSite(read_dir, write_dir, methods = c("vmrseq"))

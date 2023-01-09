@@ -1,0 +1,19 @@
+INFO:    Converting SIF file to temporary sandbox...
+ℹ Loading vmrseq
+Registered S3 methods overwritten by 'registry':
+  method               from 
+  print.registry_field proxy
+  print.registry_entry proxy
+Warning messages:
+1: multiple methods tables found for ‘aperm’ 
+2: replacing previous import ‘BiocGenerics::aperm’ by ‘DelayedArray::aperm’ when loading ‘SummarizedExperiment’ 
+3: replacing previous import ‘BiocGenerics::aperm’ by ‘DelayedArray::aperm’ when loading ‘HDF5Array’ 
+4: replacing previous import ‘GenomicRanges::union’ by ‘dplyr::union’ when loading ‘vmrseq’ 
+5: replacing previous import ‘GenomicRanges::intersect’ by ‘dplyr::intersect’ when loading ‘vmrseq’ 
+6: replacing previous import ‘GenomicRanges::setdiff’ by ‘dplyr::setdiff’ when loading ‘vmrseq’ 
+Start processing chromosome-by-chromosome...
+...chr16: coordinates gathered; cells processed; processed file written out.
+...chr17: coordinates gathered; cells processed; processed file written out.
+...chr18: coordinates gathered; cells processed; processed file written out.
+...chr19: coordinates gathered; cells processed; processed file written out.
+INFO:    Cleaning up image...

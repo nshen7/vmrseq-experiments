@@ -23,8 +23,7 @@ formatDataScbs <- function(read_dir, write_dir, chrs, n_cores) {
         meth = M_vec,
         unmeth = 1-M_vec
       ) %>% filter(!is.na(MF))
-      print(head(chr.df))
-      
+
       append <- ifelse(chr != chrs[1], yes = TRUE, no = FALSE) 
       fwrite(chr.df, append = append,
              file = paste0(write_dir, "/cell_", i, ".cov"),
@@ -33,6 +32,5 @@ formatDataScbs <- function(read_dir, write_dir, chrs, n_cores) {
     
     formatChr(1)
     parallel::mclapply(1:ncol(se), formatChr, mc.cores = n_cores)
-    cat(chr, " finished. \n")
   }
 }

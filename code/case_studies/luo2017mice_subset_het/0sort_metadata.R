@@ -10,12 +10,13 @@ cell_file_dirs <- list.files(outer_path)
 
 # Take a subset of Luo 2017 for pilot study
 metadata <- fread("data/metadata/metadata_luo2017/sample_info_processed.csv")
-cell_counts <- metadata[, .(.N), by = .(Neuron_type1, Neuron_type3)] %>% arrange(desc(N)) 
-# 5:   Excitatory        mDL-2 272
-# 6:   Inhibitory          mPv 136
-# 8:   Inhibitory      mSst-12 123
-subtypes <- c("mDL-2", "mPv", "mSst-12")
-sub_metadata <- metadata[Neuron_type3 %in% subtypes, .(sample, specie, Neuron_type1, Neuron_type2, Neuron_type3)]
+cell_counts <- metadata[, .(.N), by = .(Neuron_type1, Neuron.type)] %>% arrange(desc(N)) 
+# 5:   Excitatory       mDL-2 272
+# 6:   Inhibitory         mPv 136
+# 9:   Inhibitory      mSst-1 101
+# 15:   Inhibitory      mSst-2  22
+subtypes <- c("mDL-2", "mPv", "mSst-1", "mSst-2")
+sub_metadata <- metadata[Neuron.type %in% subtypes, .(sample, specie, Neuron_type1, Neuron_type2, Neuron_type3, Neuron.type)]
 nrow(sub_metadata) # = 531 cells in total
 
 # cell file directoru

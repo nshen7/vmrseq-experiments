@@ -194,6 +194,6 @@ Warning messages:
 4: replacing previous import ‘GenomicRanges::union’ by ‘dplyr::union’ when loading ‘vmrseq’ 
 5: replacing previous import ‘GenomicRanges::intersect’ by ‘dplyr::intersect’ when loading ‘vmrseq’ 
 6: replacing previous import ‘GenomicRanges::setdiff’ by ‘dplyr::setdiff’ when loading ‘vmrseq’ 
-There were 18 warnings (use warnings() to see them)
-There were 18 warnings (use warnings() to see them)
+There were 36 warnings (use warnings() to see them)
+There were 50 or more warnings (use warnings() to see the first 50)
 INFO:    Cleaning up image...

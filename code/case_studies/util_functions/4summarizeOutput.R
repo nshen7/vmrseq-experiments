@@ -11,6 +11,7 @@ library(SummarizedExperiment)
 
 ### Concatenate GRanges of all CpG sites
 summarizeAllSites <- function(read_dir, write_dir) {
+  se_dirs <- paste0(read_dir, "vmrseq/input/chr", 1:19)
   sites.gr <- do.call(
     c, 
     lapply(se_dirs, function(dir) loadHDF5SummarizedExperiment(dir) %>% granges())
@@ -25,6 +26,7 @@ summarizeOutputSite <- function(read_dir, write_dir, methods) {
   
   ### vmrseq
   if ("vmrseq" %in% methods) {
+    # dirs_vseq <- paste0(read_dir, "vmrseq/output/chr", 1:19, ".rds")
     dirs_vseq <- paste0(read_dir, "vmrseq/output/chr", 1:19, ".rds")
     
     # Concatenate results from 19 chromosomes
@@ -71,11 +73,11 @@ summarizeOutputSite <- function(read_dir, write_dir, methods) {
     # Take top 2% windows with highest lower bound and merge them as VMRs
     n <- round(0.02 * length(all_smwd.gr))
     ind <- order(all_smwd.gr$var_lb, decreasing = TRUE)[1:n]
-    res_smwd.gr <- all_smwd.gr[ind] %>% GenomicRanges::reduce()
+    res_smwd.gr <- all_smwd.gr[ind]
     
     ss_smwd.se <- getSiteSummary(
       se_dirs = se_dirs,
-      regions.gr = res_smwd.gr
+      regions.gr = res_smwd.gr %>% GenomicRanges::reduce()
     )
     saveHDF5SummarizedExperiment(ss_smwd.se, paste0(write_dir, "smallwood_siteSummary_sparseRep_vmrs"), replace=TRUE)
     print("Finihsed smallwood.")
@@ -101,11 +103,11 @@ summarizeOutputSite <- function(read_dir, write_dir, methods) {
     seqlevels(hvf_scmet.gr) <- paste0("chr", 1:19)
     hvf_scmet.gr <- sort(hvf_scmet.gr)
     
-    ss_scmet.se <- getRegionSummary(
+    ss_scmet.se <- getSiteSummary(
       se_dirs = se_dirs,
       regions.gr = hvf_scmet.gr
     )
-    saveHDF5SummarizedExperiment(ss_scmet.se, paste0(write_dir, "scmet_siteSummary_sparseRep_vmrs"))
+    saveHDF5SummarizedExperiment(ss_scmet.se, paste0(write_dir, "scmet_siteSummary_sparseRep_vmrs"), replace=TRUE)
   }
 }
 
@@ -124,17 +126,17 @@ summarizeOutputRegion <- function(read_dir, write_dir, methods) {
       vmr.ranges = do.call(c, lapply(dirs_vseq, function(dir) readRDS(dir)$vmr.ranges)),
       cr.ranges = do.call(c, lapply(dirs_vseq, function(dir) readRDS(dir)$cr.ranges))
     )
-    
+
     rs_vseq1.se <- getRegionSummary(
-      se_dirs = se_dirs, 
+      se_dirs = se_dirs,
       regions.gr = res_vseq$vmr.ranges
     )
-    saveHDF5SummarizedExperiment(rs_vseq1.se, paste0(write_dir, "vmrseq_regionSummary_vmrs"))
+    saveHDF5SummarizedExperiment(rs_vseq1.se, paste0(write_dir, "vmrseq_regionSummary_vmrs"), replace=TRUE)
     rs_vseq2.se <- getRegionSummary(
       se_dirs = se_dirs, 
       regions.gr = res_vseq$cr.ranges
     )
-    saveHDF5SummarizedExperiment(rs_vseq2.se, paste0(write_dir, "vmrseq_regionSummary_crs"))
+    saveHDF5SummarizedExperiment(rs_vseq2.se, paste0(write_dir, "vmrseq_regionSummary_crs"), replace=TRUE)
   }
   
   ### scbs
@@ -150,23 +152,23 @@ summarizeOutputRegion <- function(read_dir, write_dir, methods) {
       se_dirs = se_dirs, 
       regions.gr = res_scbs.gr
     )
-    saveHDF5SummarizedExperiment(rs_scbs.se, paste0(write_dir, "scbs_regionSummary_vmrs"))
+    saveHDF5SummarizedExperiment(rs_scbs.se, paste0(write_dir, "scbs_regionSummary_vmrs"), replace=TRUE)
   }
   
   ### smallwood 
   if ("smallwood" %in% methods) {
     all_smwd.gr <- readRDS(paste0(read_dir, "smallwood/output/smallwood_output_varLowerBound.rds"))
     
-    # Take top 2% windows with highest lower bound and merge them as VMRs
+    # Take top 2% windows with highest lower bound (they might overlap)
     n <- round(0.02 * length(all_smwd.gr))
     ind <- order(all_smwd.gr$var_lb, decreasing = TRUE)[1:n]
-    res_smwd.gr <- all_smwd.gr[ind] %>% GenomicRanges::reduce()
+    res_smwd.gr <- all_smwd.gr[ind] 
     
     rs_smwd.se <- getRegionSummary(
       se_dirs = se_dirs,
       regions.gr = res_smwd.gr
     )
-    saveHDF5SummarizedExperiment(rs_smwd.se, paste0(write_dir, "smallwood_regionSummary_vmrs"))
+    saveHDF5SummarizedExperiment(rs_smwd.se, paste0(write_dir, "smallwood_regionSummary_vmrs"), replace=TRUE)
   }
   
   ### scMET
@@ -193,7 +195,7 @@ summarizeOutputRegion <- function(read_dir, write_dir, methods) {
       se_dirs = se_dirs,
       regions.gr = hvf_scmet.gr
     )
-    saveHDF5SummarizedExperiment(rs_scmet.se, paste0(write_dir, "scmet_regionSummary_vmrs"))
+    saveHDF5SummarizedExperiment(rs_scmet.se, paste0(write_dir, "scmet_regionSummary_vmrs"), replace=TRUE)
   }
 }
 

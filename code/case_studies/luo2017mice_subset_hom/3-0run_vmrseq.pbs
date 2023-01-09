@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#PBS -l walltime=10:00:00,select=1:ncpus=24:mem=96gb
+#PBS -l walltime=3:00:00,select=1:ncpus=24:mem=96gb
 #PBS -N homRunVseq
 #PBS -A st-kdkortha-1
 #PBS -m abe

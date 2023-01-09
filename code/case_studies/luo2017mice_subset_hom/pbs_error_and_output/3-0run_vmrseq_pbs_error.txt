@@ -197,134 +197,134 @@ The following objects are masked from ‘package:matrixStats’:
 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
-...Chromosome chr8: Variance computed (0.98 min). 
+...Chromosome chr8: Variance computed (0.94 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
 ...Calling candidate regions with cutoff of 0.12 on variance.
-...Finished calling candidate regions - found 1118 candidate regions in total.
-  ...0.86% QC-passed sites are called to be in candidate regions.
+...Finished calling candidate regions - found 1161 candidate regions in total.
+  ...0.9% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 0.9 min and 565 VMRs found in total.
-  ...0.39% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 0.88 min and 662 VMRs found in total.
+  ...0.48% QC-passed sites are called to be in VMRs.
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
-...Chromosome chr9: Variance computed (0.74 min). 
+...Chromosome chr9: Variance computed (0.72 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
 ...Calling candidate regions with cutoff of 0.12 on variance.
-...Finished calling candidate regions - found 1206 candidate regions in total.
-  ...1.06% QC-passed sites are called to be in candidate regions.
+...Finished calling candidate regions - found 1197 candidate regions in total.
+  ...1.07% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 1.43 min and 679 VMRs found in total.
-  ...0.53% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 1.33 min and 734 VMRs found in total.
+  ...0.61% QC-passed sites are called to be in VMRs.
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
-...Chromosome chr10: Variance computed (0.73 min). 
+...Chromosome chr10: Variance computed (0.75 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
 ...Calling candidate regions with cutoff of 0.12 on variance.
-...Finished calling candidate regions - found 1076 candidate regions in total.
-  ...0.84% QC-passed sites are called to be in candidate regions.
+...Finished calling candidate regions - found 1088 candidate regions in total.
+  ...0.85% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 0.88 min and 575 VMRs found in total.
-  ...0.42% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 0.86 min and 625 VMRs found in total.
+  ...0.47% QC-passed sites are called to be in VMRs.
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
-...Chromosome chr11: Variance computed (0.77 min). 
+...Chromosome chr11: Variance computed (0.74 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
 ...Calling candidate regions with cutoff of 0.12 on variance.
-...Finished calling candidate regions - found 920 candidate regions in total.
-  ...0.74% QC-passed sites are called to be in candidate regions.
+...Finished calling candidate regions - found 939 candidate regions in total.
+  ...0.77% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 1.4 min and 520 VMRs found in total.
-  ...0.38% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 1.36 min and 582 VMRs found in total.
+  ...0.46% QC-passed sites are called to be in VMRs.
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
-...Chromosome chr12: Variance computed (0.91 min). 
+...Chromosome chr12: Variance computed (0.94 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
 ...Calling candidate regions with cutoff of 0.12 on variance.
-...Finished calling candidate regions - found 1646 candidate regions in total.
-  ...1.61% QC-passed sites are called to be in candidate regions.
+...Finished calling candidate regions - found 1632 candidate regions in total.
+  ...1.63% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 1.51 min and 858 VMRs found in total.
-  ...0.75% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 1.37 min and 944 VMRs found in total.
+  ...0.88% QC-passed sites are called to be in VMRs.
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
 ...Chromosome chr13: Variance computed (0.71 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
 ...Calling candidate regions with cutoff of 0.12 on variance.
-...Finished calling candidate regions - found 1196 candidate regions in total.
-  ...1.07% QC-passed sites are called to be in candidate regions.
+...Finished calling candidate regions - found 1233 candidate regions in total.
+  ...1.13% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 1.08 min and 633 VMRs found in total.
-  ...0.51% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 1.06 min and 719 VMRs found in total.
+  ...0.62% QC-passed sites are called to be in VMRs.
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
-...Chromosome chr14: Variance computed (0.98 min). 
+...Chromosome chr14: Variance computed (0.99 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
 ...Calling candidate regions with cutoff of 0.12 on variance.
-...Finished calling candidate regions - found 1197 candidate regions in total.
-  ...1.09% QC-passed sites are called to be in candidate regions.
+...Finished calling candidate regions - found 1215 candidate regions in total.
+  ...1.12% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 0.91 min and 567 VMRs found in total.
+...Finished detecting VMRs - took 0.84 min and 656 VMRs found in total.
+  ...0.57% QC-passed sites are called to be in VMRs.
+Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
+Smoothing in progress...
+...Chromosome chr15: Variance computed (0.59 min). 
+Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
+Step 1: Detecting candidate regions...
+...Calling candidate regions with cutoff of 0.12 on variance.
+...Finished calling candidate regions - found 849 candidate regions in total.
+  ...0.86% QC-passed sites are called to be in candidate regions.
+Step 2: Detecting VMRs...
+...Finished detecting VMRs - took 1.41 min and 479 VMRs found in total.
   ...0.48% QC-passed sites are called to be in VMRs.
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
-...Chromosome chr15: Variance computed (0.61 min). 
-Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
-Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.12 on variance.
-...Finished calling candidate regions - found 861 candidate regions in total.
-  ...0.86% QC-passed sites are called to be in candidate regions.
-Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 1.72 min and 432 VMRs found in total.
-  ...0.42% QC-passed sites are called to be in VMRs.
-Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
-Smoothing in progress...
-...Chromosome chr16: Variance computed (0.54 min). 
+...Chromosome chr16: Variance computed (0.53 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
 ...Calling candidate regions with cutoff of 0.12 on variance.
 ...Finished calling candidate regions - found 1067 candidate regions in total.
-  ...1.26% QC-passed sites are called to be in candidate regions.
+  ...1.27% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 1.08 min and 533 VMRs found in total.
-  ...0.57% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 0.93 min and 604 VMRs found in total.
+  ...0.67% QC-passed sites are called to be in VMRs.
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
-...Chromosome chr17: Variance computed (0.74 min). 
+...Chromosome chr17: Variance computed (0.75 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
 ...Calling candidate regions with cutoff of 0.12 on variance.
-...Finished calling candidate regions - found 1268 candidate regions in total.
-  ...1.32% QC-passed sites are called to be in candidate regions.
+...Finished calling candidate regions - found 1267 candidate regions in total.
+  ...1.37% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 1.11 min and 615 VMRs found in total.
-  ...0.57% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 1.04 min and 707 VMRs found in total.
+  ...0.7% QC-passed sites are called to be in VMRs.
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
 ...Chromosome chr18: Variance computed (0.4 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
 ...Calling candidate regions with cutoff of 0.12 on variance.
-...Finished calling candidate regions - found 786 candidate regions in total.
-  ...0.96% QC-passed sites are called to be in candidate regions.
+...Finished calling candidate regions - found 788 candidate regions in total.
+  ...0.97% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 1.27 min and 424 VMRs found in total.
-  ...0.47% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 1.19 min and 472 VMRs found in total.
+  ...0.55% QC-passed sites are called to be in VMRs.
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
-...Chromosome chr19: Variance computed (0.33 min). 
+...Chromosome chr19: Variance computed (0.37 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
 ...Calling candidate regions with cutoff of 0.12 on variance.
-...Finished calling candidate regions - found 649 candidate regions in total.
-  ...1.08% QC-passed sites are called to be in candidate regions.
+...Finished calling candidate regions - found 646 candidate regions in total.
+  ...1.1% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 0.78 min and 374 VMRs found in total.
-  ...0.55% QC-passed sites are called to be in VMRs.
+...Finished detecting VMRs - took 0.79 min and 411 VMRs found in total.
+  ...0.63% QC-passed sites are called to be in VMRs.
 INFO:    Cleaning up image...

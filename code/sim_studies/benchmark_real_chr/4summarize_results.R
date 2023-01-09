@@ -8,7 +8,7 @@ suppressPackageStartupMessages(library(SummarizedExperiment))
 suppressPackageStartupMessages(library(HDF5Array))
 suppressPackageStartupMessages(library(GenomicRanges))
 
-N <- 2000
+N <- 200
 
 NV <- 2000
 seed <- 2022
@@ -191,7 +191,7 @@ summarizeResSmwd <- function(NV, sparseLevel) {
     top_idx <- order(res_smwd.gr$var_lb, decreasing = TRUE)[1:top_n] %>% sort
     hvf.gr <- res_smwd.gr[top_idx]
     hits <- findOverlaps(gr, hvf.gr)
-    gr$vmr_index <- NA # to store detected VMRs by scbs
+    gr$vmr_index <- NA 
     gr$vmr_index[queryHits(hits)] <- subjectHits(hits) 
     smr_smwd$power_site[i] <- with(gr, sum(is_vml&!is.na(vmr_index)) / sum(is_vml))
     smr_smwd$fdr_site[i] <- with(gr, sum(!is_vml&!is.na(vmr_index)) / sum(!is.na(vmr_index)))
