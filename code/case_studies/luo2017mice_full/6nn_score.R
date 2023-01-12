@@ -12,37 +12,74 @@ read_dir <- "data/interim/case_studies/luo2017mice_full/result_summary/"
 write_dir <- "data/interim/case_studies/luo2017mice_full/result_summary/"
 plot_dir <- "plots/case_studies/luo2017mice_full/comparison/"
 if (!file.exists(plot_dir)) dir.create(plot_dir)
-
 md <- fread("data/metadata/metadata_luo2017/sample_info_processed.csv")
 
-## Regional mean methyl
-nnScoreMethod <- function(method, top_n_regions = NULL, k = 100, theta = 0.9) {
+## Parameters for nearest neighbor score
+k <- 50; theta <- 0.9
+
+## Nearest neighbor score computed from regional mean methyl for each method
+nnScoreMethod <- function(method, top_n_regions = NULL) {
   
-  name_seg <- ifelse(is.null(top_n_regions), yes = "", no = paste0("_top", top_n_regions, "regions"))
-  d_mat <- fread(
-    paste0(write_dir, "dissimilarity_matrix_regional_methyl_", method, name_seg, "_seed2010.txt.gz"), 
-    drop = 1
-  )
+  name_seg <- ifelse(top_n_regions == '', yes = '', no = paste0("_top", top_n_regions, "regions"))
+  path <- paste0(write_dir, "dissimilarity_matrix_regional_methyl_", method, name_seg, ".txt.gz")
+  if (file.exists(path)) d_mat <- fread(path, drop = 1)
   
   stopifnot(all(md$sample == names(d_mat)))
   true_clust <- md$Neuron.type
-  
   return(nnScore(d_mat, true_clust, k, theta))
 }
 
-nnScoreMethod(method = "vseq") # = 0.5236233
-nnScoreMethod(method = "vseq_cr") # = 0.4991854
-nnScoreMethod(method = "scbs") # = 0.4095797
-nnScoreMethod(method = "smwd") # =  0
-# nnScoreMethod(method = "scmet") # = 
+## Summarize nn score from various top n regions
+score.df <- expand.grid(
+  Method = c('vseq', 'scbs', 'smwd'), 
+  NTopRegions = c('300', '1000', '3000', '10000', '20000', ''), # '' represents all regions
+  NNScore = 0
+) %>%
+  filter(!(Method == 'smwd' & NTopRegions == '20000')) %>%
+  add_row(Method = 'vseq_cr', NTopRegions = '')
+for (i in 1:nrow(score.df)){
+  score.df$NNScore[i] <- nnScoreMethod(
+    method = score.df$Method[i], 
+    top_n_regions = score.df$NTopRegions[i]
+  )
+  print(i)
+}
+score.df <- score.df %>% mutate(NTopRegions = as.integer(NTopRegions))
 
-nnScoreMethod(method = "vseq", top_n_regions = 1000) # = 0.4301075
-nnScoreMethod(method = "scbs", top_n_regions = 1000) # = 0.3515803
-nnScoreMethod(method = "smwd", top_n_regions = 1000) # = 0
-# nnScoreMethod(method = "scmet", top_n_regions = 1000) # = 
+## Add in total number of regions to summary (score.df)
+res_region <- list(
+  vseq = loadHDF5SummarizedExperiment(paste0(read_dir, "vmrseq_regionSummary_vmrs")),
+  vseq_cr = loadHDF5SummarizedExperiment(paste0(read_dir, "vmrseq_regionSummary_crs")),
+  scbs = loadHDF5SummarizedExperiment(paste0(read_dir, "scbs_regionSummary_vmrs")),
+  smwd = loadHDF5SummarizedExperiment(paste0(read_dir, "smallwood_regionSummary_vmrs"))#,
+  # scmet = loadHDF5SummarizedExperiment(paste0(read_dir, "scmet_regionSummary_vmrs"))
+)
+total_n_regions <- sapply(res_region, function(se) granges(se) %>% length())
+for (i in which(is.na(score.df$NTopRegions))){
+  score.df$NTopRegions[i] = total_n_regions[score.df$Method[i]]
+}
 
-nnScoreMethod(method = "vseq", top_n_regions = 300) # = 0.3796025
-nnScoreMethod(method = "scbs", top_n_regions = 300) # = 0.230694
-nnScoreMethod(method = "smwd", top_n_regions = 300) # = 0
-# nnScoreMethod(method = "scmet", top_n_regions = 300) # = 
+
+## Plots
+COLORS <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")[-3]
+COLORVALUES <- c("vseq" = COLORS[1], "vseq_cr" = COLORS[2],
+                 "scbs" = COLORS[3], "smwd" = COLORS[4])
+# COLORVALUES <- c("vseq" = COLORS[1], "vseq_cr" = COLORS[2],
+#                  "scbs" = COLORS[3], "smwd" = COLORS[4], "scmet" = COLORS[5])
+
+score.df %>%
+  ggplot(aes(x = NTopRegions, y = NNScore, color = Method)) +
+  geom_point() +
+  geom_path() + 
+  geom_point(data = score.df %>% filter(Method == 'vseq_cr'), 
+             aes(x = NTopRegions, y = NNScore, color = Method), 
+             size = 3) +
+  scale_color_manual(values = COLORVALUES) +
+  scale_x_log10() +
+  # scale_fill_manual(values = COLORVALUES) +
+  xlab("N Top Regions") + ylab("Nearest Neighbor Score") +
+  theme(panel.background = element_rect(fill = "white", color = "black"),
+        panel.grid = element_line(color = "light grey"))
+ggsave(paste0(plot_dir, "point_nnScore_vs_nTopRgions_k",k,"_theta",theta,".png"), height = 4, width = 5)
+
 

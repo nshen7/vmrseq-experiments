@@ -221,7 +221,7 @@ getSiteSummary <- function(se_dirs, regions.gr) {
     hits <- findOverlaps(granges(se), regions.gr)
     idx <- queryHits(hits)
     
-    temp_sites.se <- se[idx, ]
+    temp_sites.se <- se[idx, ] 
     temp_sites.gr <- granges(temp_sites.se)
     temp_M_mat <- assays(temp_sites.se)$M_mat %>% as("sparseMatrix")
     if (se_dir == se_dirs[1]) {
@@ -251,7 +251,7 @@ getRegionSummary <- function(se_dirs, regions.gr) {
     idx <- unique(subjectHits(hits))
     
     computeRegionStats <- function(i, type) { # i th feature/window
-      mat <- assays(se)$M_mat[queryHits(hits)[subjectHits(hits)==i], ] %>% as("sparseMatrix")
+      mat <- assays(se)$M_mat[queryHits(hits)[subjectHits(hits)==i], ] %>% matrix(ncol = ncol(se)) %>% as("sparseMatrix")
       if (type == "M") return(round(colSums(mat))) 
       else if (type == "Cov") return(colSums(mat > 0))
       else stop("Wrong 'type' value. Either 'Cov' or 'M'.")

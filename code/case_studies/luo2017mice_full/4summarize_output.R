@@ -19,5 +19,5 @@ if (!file.exists(write_dir)) dir.create(write_dir)
 # summarizeOutputRegion(read_dir, write_dir, methods = c("scbs"))
 # summarizeOutputSite(read_dir, write_dir, methods = c("scbs"))
 
-# summarizeOutputRegion(read_dir, write_dir, methods = c("smallwood"))
-summarizeOutputSite(read_dir, write_dir, methods = c("smallwood"))
+summarizeOutputRegion(read_dir, write_dir, methods = c("smallwood"))
+# summarizeOutputSite(read_dir, write_dir, methods = c("smallwood"))

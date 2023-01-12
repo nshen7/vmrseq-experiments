@@ -185,7 +185,12 @@ heatmapTopRegions <- function(n_top, method, dissim_metric = "manhattan", hclust
 # heatmapTopRegions(n_top = 1000, method = "smwd")
 # # heatmapTopRegions(n_top = 1000, method = "scmet")
 
-###################################################################
+# heatmapTopRegions(n_top = 3000, method = "vseq")
+# heatmapTopRegions(n_top = 3000, method = "scbs")
+# heatmapTopRegions(n_top = 3000, method = "smwd")
+# # heatmapTopRegions(n_top = 3000, method = "scmet")
+
+##################################################################
 ###### Clustering analysis based on regional mean methylation #####
 ###################################################################
 
@@ -225,7 +230,7 @@ umapRegionalMeanMethyl <- function(method,
   # Get dissimilarity matrix for columns (i.e., cells)
   d_mat_cols <- cluster::daisy(t(MF), metric = dissim_metric, stand = FALSE) %>% as.matrix()
   rownames(d_mat_cols) <- colnames(d_mat_cols) <- md$sample
-  fwrite(d_mat_cols, paste0(write_dir, "dissimilarity_matrix_regional_methyl_", method, name_seg, "_seed", seed, ".txt.gz"),
+  fwrite(d_mat_cols, paste0(write_dir, "dissimilarity_matrix_regional_methyl_", method, name_seg, ".txt.gz"),
          col.names = TRUE, row.names = TRUE, quote = F)
   
   # Get UMAP embedding
@@ -243,21 +248,49 @@ umapRegionalMeanMethyl <- function(method,
   ggsave(paste0(plot_dir, "umap_regional_methyl_", method, name_seg, "_seed", seed, ".png"), width = 7, height = 5.5)
 }
 
+
+# umapRegionalMeanMethyl("vseq")
+# umapRegionalMeanMethyl("vseq_cr")
+# umapRegionalMeanMethyl("scbs")
+umapRegionalMeanMethyl("smwd")
+# # umapRegionalMeanMethyl("scmet")
+#
 # umapRegionalMeanMethyl("vseq", top_n_regions = 300)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 300)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 300)
 # # umapRegionalMeanMethyl("scmet", top_n_regions = 300)
+# umapRegionalMeanMethyl("vseq", top_n_regions = 300, seed = 2022)
+# umapRegionalMeanMethyl("scbs", top_n_regions = 300, seed = 2022)
+# umapRegionalMeanMethyl("smwd", top_n_regions = 300, seed = 2022)
 # 
+#
 # umapRegionalMeanMethyl("vseq", top_n_regions = 1000)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 1000)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 1000)
 # # umapRegionalMeanMethyl("scmet", top_n_regions = 1000)
-# 
-# umapRegionalMeanMethyl("vseq")
-# umapRegionalMeanMethyl("vseq_cr")
-# umapRegionalMeanMethyl("scbs")
-# umapRegionalMeanMethyl("smwd")
-# # umapRegionalMeanMethyl("scmet")
+# umapRegionalMeanMethyl("vseq", top_n_regions = 1000, seed = 2022)
+# umapRegionalMeanMethyl("scbs", top_n_regions = 1000, seed = 2022)
+# umapRegionalMeanMethyl("smwd", top_n_regions = 1000, seed = 2022)
+
+
+# umapRegionalMeanMethyl("vseq", top_n_regions = 3000)
+# umapRegionalMeanMethyl("scbs", top_n_regions = 3000)
+# umapRegionalMeanMethyl("smwd", top_n_regions = 3000)
+# # umapRegionalMeanMethyl("scmet", top_n_regions = 3000)
+# # umapRegionalMeanMethyl("vseq", top_n_regions = 3000, seed = 2022)
+# umapRegionalMeanMethyl("scbs", top_n_regions = 3000, seed = 2022)
+# umapRegionalMeanMethyl("smwd", top_n_regions = 3000, seed = 2022)
+# # umapRegionalMeanMethyl("scmet", top_n_regions = 3000, seed = 2022)
+
+
+# umapRegionalMeanMethyl("vseq", top_n_regions = 10000)
+# umapRegionalMeanMethyl("scbs", top_n_regions = 10000)
+# umapRegionalMeanMethyl("smwd", top_n_regions = 10000)
+# # umapRegionalMeanMethyl("scmet", top_n_regions = 10000)
+
+# umapRegionalMeanMethyl("vseq", top_n_regions = 20000)
+# umapRegionalMeanMethyl("scbs", top_n_regions = 20000)
+#
 
 #################################################################
 ###### Clustering analysis based on single-site methylation #####
@@ -302,6 +335,6 @@ umapSiteMethyl <- function(method, dissim_metric = "manhattan", umap_metric = "e
 
 # umapSiteMethyl("vseq")
 # umapSiteMethyl("vseq_cr")
-umapSiteMethyl("scbs")
+# umapSiteMethyl("scbs")
 # umapSiteMethyl("smwd")
 # umapSiteMethyl("scmet")
