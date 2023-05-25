@@ -197,13 +197,11 @@ The following objects are masked from ‘package:matrixStats’:
 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Smoothing in progress...
-...Chromosome chr4: Variance computed (8.63 min). 
+...Chromosome chr19: Variance computed (2.09 min). 
 Parallel: Parallelizing using 22 workers/cores (backend: BiocParallel:MulticoreParam).
 Step 1: Detecting candidate regions...
-...Calling candidate regions with cutoff of 0.119 on variance.
-...Finished calling candidate regions - found 3266 candidate regions in total.
-  ...2.88% QC-passed sites are called to be in candidate regions.
+...Calling candidate regions with cutoff of 0.120 on variance.
+...Finished calling candidate regions - found 1244 candidate regions in total.
+  ...2.56% QC-passed sites are called to be in candidate regions.
 Step 2: Detecting VMRs...
-...Finished detecting VMRs - took 229.68 min and 2129 VMRs found in total.
-  ...1.72% QC-passed sites are called to be in VMRs.
 INFO:    Cleaning up image...

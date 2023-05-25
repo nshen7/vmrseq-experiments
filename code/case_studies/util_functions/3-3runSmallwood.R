@@ -1,7 +1,4 @@
-.libPaths("/home/nshen7/R/rstudio_4_2_0-biocon_3_15")
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
-library(tidyverse)
-library(data.table)
+source("code/SETPATHS.R")
 library(HDF5Array)
 library(SummarizedExperiment)
 library(BiocParallel)

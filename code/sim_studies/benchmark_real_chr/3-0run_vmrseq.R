@@ -1,4 +1,4 @@
-.libPaths("/home/nshen7/R/rstudio_4_2_0-biocon_3_15")
+source("code/SETPATHS.R")
 setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
 devtools::load_all("../vmrseq-package/vmrseq/")
 library(tidyverse)
@@ -6,23 +6,35 @@ library(data.table)
 library(HDF5Array)
 library(SummarizedExperiment)
 library(BiocParallel)
+library(argparse)
 n_cores <- 22
 register(MulticoreParam(workers = n_cores))
 
 NV <- 2000
 
-for (N in c(500)) {
-  # for (NP in c(12)) {
-  # for (NP in c(20)) {
-  # for (NP in c(2)) {
-  # for (NP in c(3)) {
-  # for (NP in c(4)) {
-  # for (NP in c(5)) {
-  for (NP in c(8)) {
-    for (sparseLevel in 1:3) {
-    # for (sparseLevel in 1) {
-    # for (sparseLevel in 2) {
-    # for (sparseLevel in 3) {
+p <- ArgumentParser(description = 'Run vmrseq on modified real chromosome')
+p$add_argument('--N',           type = "integer",      help = 'Number of cells')
+p$add_argument('--NP',          type = "integer",      help = 'Number of subpopulation')
+p$add_argument('--sparseLevel', type = "integer",      help = 'Sparse level')
+p$add_argument('--alpha',       type = "double",       help = 'Alpha level')
+args <- p$parse_args(commandArgs(TRUE))
+N           <- args$N
+NP          <- args$NP
+sparseLevel <- args$sparseLevel
+alpha       <- as.numeric(args$alpha)
+
+# for (N in c(500)) {
+#   # for (NP in c(12)) {
+#   # for (NP in c(20)) {
+#   # for (NP in c(2)) {
+#   # for (NP in c(3)) {
+#   # for (NP in c(4)) {
+#   # for (NP in c(5)) {
+#   for (NP in c(8)) {
+#     for (sparseLevel in 1:3) {
+#     # for (sparseLevel in 1) {
+#     # for (sparseLevel in 2) {
+#     # for (sparseLevel in 3) {
       cat("N =", N, "NP =", NP, "\n")
       cat("alpha = ")
 
@@ -43,11 +55,12 @@ for (N in c(500)) {
       SE <- subset(SE, total >= 3)
 
       gr <- vmrseq.smooth(SE)
-      for (alpha in c(seq(0.001, 0.005, 0.001),
-                      seq(0.01, 0.1, 0.01),
-                      c(0.12, 0.15, 0.2, 0.3, 0.4))){
-      # for (alpha in c(seq(0.001, 0.005, 0.001))) {
-      # for (alpha in c(seq(0.01, 0.1, 0.01), 0.12, 0.15, 0.2, 0.3, 0.4)) {
+      # for (alpha in c(seq(0.001, 0.005, 0.001),
+      #                 seq(0.01, 0.1, 0.01),
+      #                 c(0.12, 0.15, 0.2, 0.3, 0.4))){
+      # for (alpha in c(seq(0.001, 0.005, 0.001), seq(0.01, 0.1, 0.01), 0.12)) {
+      # for (alpha in c(0.15, 0.2, 0.3, 0.4)) {
+      # for (alpha in c(0.04)) {
         # run model
         t1 <- proc.time()
         fit <- vmrseq.fit(gr, alpha)
@@ -73,11 +86,11 @@ for (N in c(500)) {
         ))
 
         cat(paste0(alpha, ", "))
-      }
-    }
-    cat("\n\n")
-  }
-}
+      # }
+    # }
+    # cat("\n\n")
+#   }
+# }
 
 
 # for (N in c(200)) {

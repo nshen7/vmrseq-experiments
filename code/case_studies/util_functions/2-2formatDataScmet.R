@@ -1,6 +1,4 @@
-.libPaths("/home/nshen7/R/rstudio_4_2_0-biocon_3_15/")
-library(tidyverse)
-library(data.table)
+source("code/SETPATHS.R")
 library(HDF5Array)
 library(DelayedArray)
 library(DelayedMatrixStats)

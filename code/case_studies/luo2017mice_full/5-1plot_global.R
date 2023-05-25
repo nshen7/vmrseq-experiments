@@ -1,5 +1,4 @@
-.libPaths("/home/nshen7/R/rstudio_4_2_0-biocon_3_15")
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
+source("code/SETPATHS.R")
 devtools::load_all("../vmrseq-package/vmrseq/")
 library(tidyverse)
 library(data.table)
@@ -8,7 +7,6 @@ library(DelayedMatrixStats)
 library(SummarizedExperiment)
 library(scales)
 library(pheatmap)
-
 read_dir <- "data/interim/case_studies/luo2017mice_full/result_summary/"
 write_dir <- "data/interim/case_studies/luo2017mice_full/result_summary/"
 plot_dir <- "plots/case_studies/luo2017mice_full/comparison/"
@@ -23,31 +21,29 @@ res_region <- list(
   vseq = loadHDF5SummarizedExperiment(paste0(read_dir, "vmrseq_regionSummary_vmrs")),
   vseq_cr = loadHDF5SummarizedExperiment(paste0(read_dir, "vmrseq_regionSummary_crs")),
   scbs = loadHDF5SummarizedExperiment(paste0(read_dir, "scbs_regionSummary_vmrs")),
-  smwd = loadHDF5SummarizedExperiment(paste0(read_dir, "smallwood_regionSummary_vmrs"))#,
-  # scmet = loadHDF5SummarizedExperiment(paste0(read_dir, "scmet_regionSummary_vmrs"))
+  smwd = loadHDF5SummarizedExperiment(paste0(read_dir, "smallwood_regionSummary_vmrs")),
+  scmet = loadHDF5SummarizedExperiment(paste0(read_dir, "scmet_regionSummary_vmrs"))
 )
 res_site <- list(
   vseq = loadHDF5SummarizedExperiment(paste0(read_dir, "vmrseq_siteSummary_sparseRep_vmrs")),
   vseq_cr = loadHDF5SummarizedExperiment(paste0(read_dir, "vmrseq_siteSummary_sparseRep_crs")),
   scbs = loadHDF5SummarizedExperiment(paste0(read_dir, "scbs_siteSummary_sparseRep_vmrs")),
-  smwd = loadHDF5SummarizedExperiment(paste0(read_dir, "smallwood_siteSummary_sparseRep_vmrs"))#,
-  # scmet = loadHDF5SummarizedExperiment(paste0(read_dir, "scmet_siteSummary_sparseRep_vmrs"))
+  smwd = loadHDF5SummarizedExperiment(paste0(read_dir, "smallwood_siteSummary_sparseRep_vmrs")),
+  scmet = loadHDF5SummarizedExperiment(paste0(read_dir, "scmet_siteSummary_sparseRep_vmrs"))
 )
 
-methods <- c("vmrseq", "CR in vmrseq", "scbs", "smallwood")
-# methods <- c("vmrseq", "CR in vmrseq", "scbs", "smallwood", "scMET")
+# methods <- c("vmrseq", "CR in vmrseq", "scbs", "smallwood")
+methods <- c("vmrseq", "CR in vmrseq", "scbs", "smallwood", "scMET")
 methods <- factor(methods, levels = methods)
+# Color settings
+COLORS <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")[-3]
+COLORVALUES <- c("vmrseq" = COLORS[1], "CR in vmrseq" = COLORS[2],
+                 "scbs" = COLORS[3], "smallwood" = COLORS[4], "scMET" = COLORS[5])
+
 
 ################################
 ###### General exploration #####
 ################################
-
-# Color settings
-COLORS <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")[-3]
-# COLORVALUES <- c("vmrseq" = COLORS[1], "CR in vmrseq" = COLORS[2], 
-#                  "scbs" = COLORS[3], "smallwood" = COLORS[4])
-COLORVALUES <- c("vmrseq" = COLORS[1], "CR in vmrseq" = COLORS[2],
-                  "scbs" = COLORS[3], "smallwood" = COLORS[4], "scMET" = COLORS[5])
 
 # # Number of detected regions
 # n_regions <- sapply(res_region, function(se) granges(se) %>% GenomicRanges::reduce() %>% length())
@@ -95,7 +91,7 @@ COLORVALUES <- c("vmrseq" = COLORS[1], "CR in vmrseq" = COLORS[2],
 #   geom_density(aes(n_sites_avail[[2]], color = names(COLORVALUES)[2])) +
 #   geom_density(aes(n_sites_avail[[3]], color = names(COLORVALUES)[3])) +
 #   geom_density(aes(n_sites_avail[[4]], color = names(COLORVALUES)[4])) +
-#   # geom_density(aes(n_sites_avail[[5]], color = names(COLORVALUES)[5])) +
+#   geom_density(aes(n_sites_avail[[5]], color = names(COLORVALUES)[5])) +
 #   scale_x_continuous(limits = c(0, 400), name = "Number of CpG per detected region") +
 #   theme(panel.background = element_rect(fill = "white", color = "black"), panel.grid = element_line(color = "light grey")) +
 #   scale_color_manual(name = "Methods", breaks = names(COLORVALUES), values = COLORVALUES)
@@ -109,11 +105,19 @@ COLORVALUES <- c("vmrseq" = COLORS[1], "CR in vmrseq" = COLORS[2],
 #   geom_density(aes(n_regn_avail[[2]], color = names(COLORVALUES)[2])) +
 #   geom_density(aes(n_regn_avail[[3]], color = names(COLORVALUES)[3])) +
 #   geom_density(aes(n_regn_avail[[4]], color = names(COLORVALUES)[4])) +
-#   # geom_density(aes(n_regn_avail[[5]], color = names(COLORVALUES)[5])) +
+#   geom_density(aes(n_regn_avail[[5]], color = names(COLORVALUES)[5])) +
 #   scale_x_continuous(labels = percent, limits = c(0, 1), name = "Percentage of covered regions per cell") +
 #   theme(panel.background = element_rect(fill = "white", color = "black"), panel.grid = element_line(color = "light grey")) +
 #   scale_color_manual(name = "Methods", breaks = names(COLORVALUES), values = COLORVALUES)
 # ggsave(paste0(plot_dir, "densityplot_pctCoveredRegionPerCell.png"), height = 4, width = 7)
+# 
+# 
+# # Overlap between detected regions from methods
+# res.gr.list <- lapply(res_region, granges)
+# comb_mat <- ComplexHeatmap::make_comb_mat(res.gr.list)
+# png(here(plot_dir, "UpSetPlot_allMethods_overlapWindowSize.png"), width = 400, height = 300)
+# ComplexHeatmap::UpSet(comb_mat)
+# dev.off()
 
 
 ###############################################################
@@ -173,22 +177,22 @@ heatmapTopRegions <- function(n_top, method, dissim_metric = "manhattan", hclust
 # heatmapTopRegions(n_top = 100, method = "vseq")
 # heatmapTopRegions(n_top = 100, method = "scbs")
 # heatmapTopRegions(n_top = 100, method = "smwd")
-# # heatmapTopRegions(n_top = 100, method = "scmet")
+# heatmapTopRegions(n_top = 100, method = "scmet")
 # 
 # heatmapTopRegions(n_top = 300, method = "vseq")
 # heatmapTopRegions(n_top = 300, method = "scbs")
 # heatmapTopRegions(n_top = 300, method = "smwd")
-# # heatmapTopRegions(n_top = 300, method = "scmet")
+# heatmapTopRegions(n_top = 300, method = "scmet")
 # 
 # heatmapTopRegions(n_top = 1000, method = "vseq")
 # heatmapTopRegions(n_top = 1000, method = "scbs")
 # heatmapTopRegions(n_top = 1000, method = "smwd")
-# # heatmapTopRegions(n_top = 1000, method = "scmet")
+# heatmapTopRegions(n_top = 1000, method = "scmet")
 
 # heatmapTopRegions(n_top = 3000, method = "vseq")
 # heatmapTopRegions(n_top = 3000, method = "scbs")
 # heatmapTopRegions(n_top = 3000, method = "smwd")
-# # heatmapTopRegions(n_top = 3000, method = "scmet")
+# heatmapTopRegions(n_top = 3000, method = "scmet")
 
 ##################################################################
 ###### Clustering analysis based on regional mean methylation #####
@@ -252,41 +256,45 @@ umapRegionalMeanMethyl <- function(method,
 # umapRegionalMeanMethyl("vseq")
 # umapRegionalMeanMethyl("vseq_cr")
 # umapRegionalMeanMethyl("scbs")
-umapRegionalMeanMethyl("smwd")
-# # umapRegionalMeanMethyl("scmet")
+# umapRegionalMeanMethyl("smwd")
+umapRegionalMeanMethyl("scmet")
 #
 # umapRegionalMeanMethyl("vseq", top_n_regions = 300)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 300)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 300)
-# # umapRegionalMeanMethyl("scmet", top_n_regions = 300)
+umapRegionalMeanMethyl("scmet", top_n_regions = 300)
+
 # umapRegionalMeanMethyl("vseq", top_n_regions = 300, seed = 2022)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 300, seed = 2022)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 300, seed = 2022)
+umapRegionalMeanMethyl("scmet", top_n_regions = 300, seed = 2022)
 # 
 #
 # umapRegionalMeanMethyl("vseq", top_n_regions = 1000)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 1000)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 1000)
-# # umapRegionalMeanMethyl("scmet", top_n_regions = 1000)
+umapRegionalMeanMethyl("scmet", top_n_regions = 1000)
+
 # umapRegionalMeanMethyl("vseq", top_n_regions = 1000, seed = 2022)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 1000, seed = 2022)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 1000, seed = 2022)
+umapRegionalMeanMethyl("scmet", top_n_regions = 1000, seed = 2022)
 
 
 # umapRegionalMeanMethyl("vseq", top_n_regions = 3000)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 3000)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 3000)
-# # umapRegionalMeanMethyl("scmet", top_n_regions = 3000)
+umapRegionalMeanMethyl("scmet", top_n_regions = 3000)
 # # umapRegionalMeanMethyl("vseq", top_n_regions = 3000, seed = 2022)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 3000, seed = 2022)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 3000, seed = 2022)
-# # umapRegionalMeanMethyl("scmet", top_n_regions = 3000, seed = 2022)
+umapRegionalMeanMethyl("scmet", top_n_regions = 3000, seed = 2022)
 
 
 # umapRegionalMeanMethyl("vseq", top_n_regions = 10000)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 10000)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 10000)
-# # umapRegionalMeanMethyl("scmet", top_n_regions = 10000)
+umapRegionalMeanMethyl("scmet", top_n_regions = 10000)
 
 # umapRegionalMeanMethyl("vseq", top_n_regions = 20000)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 20000)

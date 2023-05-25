@@ -1,0 +1,6 @@
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/argelaguet2019
+
+wget ftp://ftp.ebi.ac.uk/pub/databases/scnmt_gastrulation/scnmt_gastrulation.tar.gz
+
+mkdir -p scnmt_gastrulation
+tar -xvf scnmt_gastrulation.tar.gz -C scnmt_gastrulation/

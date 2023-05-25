@@ -1,8 +1,5 @@
-.libPaths("/home/nshen7/R/rstudio_4_2_0-biocon_3_15")
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
+source("code/SETPATHS.R")
 devtools::load_all("../vmrseq-package/vmrseq/")
-library(tidyverse)
-library(data.table)
 library(GenomicRanges)
 library(HDF5Array)
 library(SummarizedExperiment)
@@ -86,7 +83,7 @@ summarizeOutputSite <- function(read_dir, write_dir, methods) {
   ### scMET
   if ("scmet" %in% methods) {
     # Read in HVF detecetd by scmet
-    hvf_scmet <- fread(paste0(read_dir, "scmet/output/scmet_summary_output_efdr0.1.csv")) %>% 
+    hvf_scmet <- fread(here(read_dir, "scmet/output/scmet_summary_output_defaultEfdr.csv")) %>% 
       filter(is_variable) %>%
       mutate(chr = gsub("chr(.*)_window_.*", replacement = "\\1", x = feature_name) %>% as.integer()) %>%
       mutate(feat_index = gsub("chr.*_window_(.*)", replacement = "\\1", x = feature_name) %>% as.integer())
@@ -174,7 +171,7 @@ summarizeOutputRegion <- function(read_dir, write_dir, methods) {
   ### scMET
   if ("scmet" %in% methods) {
     # Read in HVF detecetd by scmet
-    hvf_scmet <- fread(paste0(read_dir, "scmet/output/scmet_summary_output_efdr0.1.csv")) %>% 
+    hvf_scmet <- fread(here(read_dir, "scmet/output/scmet_summary_output_defaultEfdr.csv")) %>% 
       filter(is_variable) %>%
       mutate(chr = gsub("chr(.*)_window_.*", replacement = "\\1", x = feature_name) %>% as.integer()) %>%
       mutate(feat_index = gsub("chr.*_window_(.*)", replacement = "\\1", x = feature_name) %>% as.integer())
@@ -200,15 +197,15 @@ summarizeOutputRegion <- function(read_dir, write_dir, methods) {
 }
 
 
-preparePDclustInput <- function(se, sparse) {
-  if (sparse) {
-    
-  } else {
-    break
-  }
-}
-
-
+# preparePDclustInput <- function(se, sparse) {
+#   if (sparse) {
+#     
+#   } else {
+#     break
+#   }
+# }
+# 
+# 
 
 
 # ==== utils ====

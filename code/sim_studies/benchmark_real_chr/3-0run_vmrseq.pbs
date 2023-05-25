@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#PBS -l walltime=48:00:00,select=1:ncpus=24:mem=64gb
+#PBS -l walltime=30:00:00,select=1:ncpus=24:mem=64gb
 #PBS -N runVseqReal
 #PBS -A st-kdkortha-1
 #PBS -m abe
@@ -10,8 +10,17 @@
 
 ################################################################################
 
-cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/code/sim_studies/benchmark_real_chr
+echo ${N}
+echo ${NP}
+echo ${sparseLevel}
+echo ${alpha}
+echo ""
+# my_command="Rscript fit_scmet_window.R --anno ${ANNO} --chr ${CHR} --outdir ${OUTDIR} ${MCMC}"
+# eval $my_command
+
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/
+
 singularity exec \
 -B /scratch/st-kdkortha-1/nshen7 \
--B /home/nshen7 /project/st-kdkortha-1/rstudio/nshen7_rstudio_4_2_0-biocon_3_15.sif \
-Rscript 3-0run_vmrseq.R
+-B /home/nshen7 /project/st-kdkortha-1/rstudio/nshen7_rstudio_4_2_0.sif \
+Rscript code/sim_studies/benchmark_real_chr/3-0run_vmrseq.R --N ${N} --NP ${NP} --sparseLevel ${sparseLevel} --alpha ${alpha}

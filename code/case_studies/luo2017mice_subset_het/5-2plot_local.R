@@ -1,4 +1,4 @@
-.libPaths("/home/nshen7/R/rstudio_4_2_0-biocon_3_15")
+source("code/SETPATHS.R")
 setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
 devtools::load_all("../vmrseq-package/vmrseq/")
 library(tidyverse)
@@ -244,18 +244,42 @@ ggsave(paste0(plot_dir, "example_region_7.png"), width = 12, height = 6)
 vmrs.gr <- granges(res_region$vseq)
 crs.gr <- granges(res_region$vseq_cr)
 crs_novmr.gr <- crs.gr[countOverlaps(crs.gr, vmrs.gr) == 0]
+order(crs_novmr.gr$num_cpg, decreasing = T) %>% head(n = 20)
 
+idx <- 3
 r.gr <- GRanges(
-  seqnames = "chr4",
-  ranges = IRanges(start = 113739235, end = 113747793)
+  seqnames = seqnames(crs_novmr.gr)[idx],
+  ranges = IRanges(start = start(crs_novmr.gr)[idx], end = end(crs_novmr.gr)[idx])
 ) 
-plotTargetRegion(regions = as.data.frame(r.gr), extend = 20000)
+plotTargetRegion(regions = as.data.frame(r.gr))
 
+idx <- 3281
 r.gr <- GRanges(
-  seqnames = "chr7",
-  ranges = IRanges(start = 42425702, end = 42436954)
+  seqnames = seqnames(crs_novmr.gr)[idx],
+  ranges = IRanges(start = start(crs_novmr.gr)[idx], end = end(crs_novmr.gr)[idx])
 ) 
-plotTargetRegion(regions = as.data.frame(r.gr), extend = 20000)
+plotTargetRegion(regions = as.data.frame(r.gr))
+
+idx <- 6008
+r.gr <- GRanges(
+  seqnames = seqnames(crs_novmr.gr)[idx],
+  ranges = IRanges(start = start(crs_novmr.gr)[idx], end = end(crs_novmr.gr)[idx])
+) 
+plotTargetRegion(regions = as.data.frame(r.gr))
+
+idx <- 12433
+r.gr <- GRanges(
+  seqnames = seqnames(crs_novmr.gr)[idx],
+  ranges = IRanges(start = start(crs_novmr.gr)[idx], end = end(crs_novmr.gr)[idx])
+) 
+plotTargetRegion(regions = as.data.frame(r.gr))
+
+idx <- 2747
+r.gr <- GRanges(
+  seqnames = seqnames(crs_novmr.gr)[idx],
+  ranges = IRanges(start = start(crs_novmr.gr)[idx], end = end(crs_novmr.gr)[idx])
+) 
+plotTargetRegion(regions = as.data.frame(r.gr))
 
 # ==== plot subtype marker genes ====
 
@@ -291,4 +315,5 @@ r.gr <- GRanges(
 ) 
 plotTargetRegion(regions = as.data.frame(r.gr), extend = 20000)
 
-                  
+
+

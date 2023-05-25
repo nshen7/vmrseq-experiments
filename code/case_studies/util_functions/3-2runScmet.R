@@ -38,7 +38,7 @@ library(BiocParallel)
 # }
 
 
-### Run 1 chromosomes at one time ## TODO!!
+### Run 1 chromosomes at one time 
 runScmet1Chr <- function(read_dir, write_dir, plot_dir, chr, n_cores, min_read = 3, min_cell = 5) {
   
   dt <- fread(read_dir, col.names = c("Feature", "Cell", "total_reads", "met_reads")) %>% 
@@ -50,7 +50,7 @@ runScmet1Chr <- function(read_dir, write_dir, plot_dir, chr, n_cores, min_read =
   
   # Run model
   fit_obj <- scmet(Y = dt, L = 4, iter = 50000, seed = 12, n_cores = n_cores)
-  saveRDS(fit_obj, paste0("fit_obj_", chr, ".rds"))
+  saveRDS(fit_obj, paste0(write_dir, "fit_obj_", chr, ".rds"))
   
   # plot mean-overdispersion
   gg1 <- scmet_plot_mean_var(obj = fit_obj, y = "gamma", 
@@ -61,15 +61,20 @@ runScmet1Chr <- function(read_dir, write_dir, plot_dir, chr, n_cores, min_read =
   ggsave(paste0(plot_dir, "mean_overdisp_relationship_", chr, ".png"), width = 10, height = 5)
 }
 
-hvfScmet <- function() { #TODO
+hvfScmet <- function(read_dir, write_dir) { 
   
-  # How to combine feature specific estimates for HVF selection?
-  fit_obj <- scmet_hvf(scmet_obj = fit_obj, delta_e = 1-efdr, efdr = efdr)
+  # combine feature specific estimates for HVF selection
+  chrs <- paste0('chr', 1:19)
+  hvf_all_chr <- map_dfr(chrs, function(chr) {
+    fit_obj <- readRDS(paste0(read_dir, "fit_obj_", chr, ".rds"))
+    hvf <- scmet_hvf(scmet_obj = fit_obj)$hvf$summary %>% filter(is_variable) # default settings in scmet
+    return(hvf)
+  })
+  # hvf_all_chr <- hvf_all_chr %>% arrange(desc(gamma))
   
   fwrite(
-    fit_obj$hvf$summary, 
-    paste0(write_dir, "scmet_summary_output_efdr",efdr,".csv"), 
+    hvf_all_chr, 
+    paste0(write_dir, "scmet_summary_output_defaultEfdr.csv"), 
     row.names = FALSE, col.names = TRUE
   )
-  
 }

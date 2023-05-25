@@ -166,9 +166,6 @@ Warning messages:
 1: multiple methods tables found for ‘aperm’ 
 2: replacing previous import ‘BiocGenerics::aperm’ by ‘DelayedArray::aperm’ when loading ‘HDF5Array’ 
 3: replacing previous import ‘BiocGenerics::aperm’ by ‘DelayedArray::aperm’ when loading ‘SummarizedExperiment’ 
-Warning message:
-In dir.create(plot_dir) :
-  cannot create dir 'plots/case_studies/luo2017mice_full/scmet', reason 'No such file or directory'
 Converting Y matrix to data.table.
 
 Sorting features.
@@ -177,6 +174,16 @@ Total # of cells: 3069.
 
 Total # of features: 9603.
 
-Thu Dec  8 13:37:01 2022: Using EB to set model priors.
+Thu Jan 12 13:42:14 2023: Using EB to set model priors.
 
+Usin EB estimates as initial values for posterior inference.
+
+Thu Jan 12 14:23:50 2023: Finished EB.
+
+Thu Jan 12 14:23:51 2023: Starting inference.
+
+Warning: Pareto k diagnostic value is 41.13. Resampling is disabled. Decreasing tol_rel_obj may help if variational algorithm has terminated prematurely. Otherwise consider using sampling instead.
+Fri Jan 13 11:52:39 2023: Posterior inference finished.
+
+There were 50 or more warnings (use warnings() to see the first 50)
 INFO:    Cleaning up image...
