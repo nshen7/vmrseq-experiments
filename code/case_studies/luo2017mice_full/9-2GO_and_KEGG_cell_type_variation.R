@@ -132,7 +132,7 @@ performGO(method = 'smwd', cutoff = 0.02, lower_tail = TRUE)
 performGO(method = 'scmet', cutoff = 0.02, lower_tail = TRUE)
 
 
-# ---- KEGG ORA on VMRs with low variance across cell types ----
+# ---- (failed due to package issue) KEGG ORA on VMRs with low variance across cell types ----
 
 ## Need to be run outside of singularity Rstudio!
 performKEGG <- function(method, cutoff, lower_tail, top_n_regions = NULL) {

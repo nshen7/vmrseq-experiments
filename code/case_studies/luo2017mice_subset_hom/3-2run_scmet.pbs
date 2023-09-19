@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#PBS -l walltime=24:00:00,select=1:ncpus=30:mem=96gb
+#PBS -l walltime=36:00:00,select=1:ncpus=30:mem=96gb
 #PBS -N homRunScmet
 #PBS -A st-kdkortha-1
 #PBS -m abe
@@ -10,8 +10,8 @@
 
 ################################################################################
 
-cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/code/case_studies/luo2017mice_subset_hom
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/
 singularity exec \
 -B /scratch/st-kdkortha-1/nshen7 \
--B /home/nshen7 /project/st-kdkortha-1/rstudio/nshen7_rstudio_4_2_0-biocon_3_15.sif \
-Rscript 3-2run_scmet.R
+-B /home/nshen7 /project/st-kdkortha-1/rstudio/nshen7_rstudio_4_2_0.sif \
+Rscript code/case_studies/luo2017mice_subset_hom/3-2run_scmet.R

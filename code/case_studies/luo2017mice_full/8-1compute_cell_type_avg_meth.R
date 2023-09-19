@@ -57,23 +57,23 @@ cellTypeMeanMethyl <- function(se, metric, save_dir) {
   saveRDS(types_smr.se, save_dir)
 }
 
-## Run
-# for (method in names(res.se)) {
-#   
-#   se <- res.se[[method]]
-#   colData(se) <- DataFrame(md)
-#   
-#   if (method != "vseq_cr") {
-#     metric <- switch(method,
-#                      "vseq" = granges(se)$loglik_diff,
-#                      "scbs" = granges(se)$mcols.var,
-#                      "smwd" = granges(se)$var_lb,
-#                      "scmet" = granges(se)$gamma)
-#   }
-#   
-#   save_dir <- here(write_dir, paste0('SummarizedExperiment_cellType_regionalMean_', method, '.rds'))
-#   cellTypeMeanMethyl(se = se, metric = metric, save_dir = save_dir)
-# }
+# Run
+for (method in names(res.se)) {
+
+  se <- res.se[[method]]
+  colData(se) <- DataFrame(md)
+
+  if (method != "vseq_cr") {
+    metric <- switch(method,
+                     "vseq" = granges(se)$loglik_diff,
+                     "scbs" = granges(se)$mcols.var,
+                     "smwd" = granges(se)$var_lb,
+                     "scmet" = granges(se)$gamma)
+  }
+
+  save_dir <- here(write_dir, paste0('SummarizedExperiment_cellType_regionalMean_', method, '.rds'))
+  cellTypeMeanMethyl(se = se, metric = metric, save_dir = save_dir)
+}
 
 # ---- Shuffle cell type labels and summarize fake cell type average regional methylation ----
 
@@ -120,7 +120,7 @@ if (!file.exists(write_dir_2)) dir.create(write_dir_2)
 for (method in names(res.se)) {
   se <- res.se[[method]]
   colData(se) <- DataFrame(md)
-  
+
   if (method != "vseq_cr") {
     metric <- switch(method,
                      "vseq" = granges(se)$loglik_diff,
@@ -128,7 +128,7 @@ for (method in names(res.se)) {
                      "smwd" = granges(se)$var_lb,
                      "scmet" = granges(se)$gamma)
   }
-  
+
   for (seed in 1:10) {
     save_dir <- here(write_dir_2, paste0('SummarizedExperiment_shuffledCellType_regionalMean_', method, '_seed', seed, '.rds'))
     shuffledCellTypeMeanMethyl(se = se, metric = metric, save_dir = save_dir, seed = seed)

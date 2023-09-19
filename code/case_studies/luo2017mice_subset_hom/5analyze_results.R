@@ -1,8 +1,5 @@
 source('code/SETPATHS.R')
-setwd('/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/')
 devtools::load_all('../vmrseq-package/vmrseq/')
-library(tidyverse)
-library(data.table)
 library(HDF5Array)
 library(DelayedMatrixStats)
 library(SummarizedExperiment)
@@ -20,13 +17,13 @@ rownames(md) <- md$sample
 
 # ==== read in results from various methods ====
 sites.gr <- readRDS(paste0(read_dir, 'cpg_sites.rds'))
-res <- list(
+res_region <- list(
   vseq = loadHDF5SummarizedExperiment(paste0(read_dir, 'vmrseq_regionSummary_vmrs')),
   vseq_cr = loadHDF5SummarizedExperiment(paste0(read_dir, 'vmrseq_regionSummary_crs')),
   scbs = loadHDF5SummarizedExperiment(paste0(read_dir, 'scbs_regionSummary_vmrs')),
   smwd = loadHDF5SummarizedExperiment(paste0(read_dir, 'smallwood_regionSummary_vmrs'))
 )
-res.gr <- map(res, granges)
+res.gr <- map(res_region, granges)
 
 methods <- c('vmrseq', 'CR in vmrseq', 'scbs', 'smallwood')
 methods <- factor(methods, levels = methods)
@@ -61,9 +58,8 @@ ggplot() +
   scale_color_manual(values = COLORVALUES) + 
   scale_fill_manual(values = COLORVALUES) + 
   xlab('Methods') + 
-  theme(legend.position = 'none',
-        panel.background = element_rect(fill = 'white', color = 'black'),
-        panel.grid = element_line(color = 'light grey'))
+  theme_classic() +
+  theme(legend.position = 'none')
 ggsave(paste0(plot_dir, 'barplot_pctSites_vs_methods.png'), height = 4, width = 4)  
 
 

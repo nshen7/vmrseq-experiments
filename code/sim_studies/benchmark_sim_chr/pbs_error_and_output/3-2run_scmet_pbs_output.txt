@@ -1,0 +1,200 @@
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+
+Chain 1: ------------------------------------------------------------
+Chain 1: EXPERIMENTAL ALGORITHM:
+Chain 1:   This procedure has not been thoroughly tested and may be unstable
+Chain 1:   or buggy. The interface is subject to change.
+Chain 1: ------------------------------------------------------------
+Chain 1: 
+Chain 1: 
+Chain 1: Unrecoverable error evaluating the log probability at the initial value.
+Chain 1: Exception: Error transforming variable w_gamma: lub_free: Bounded variable is -10.6763, but must be in the interval [-10, 10]  (in 'model_scmet' at line 86)
+

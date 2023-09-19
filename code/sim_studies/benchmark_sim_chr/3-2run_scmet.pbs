@@ -10,8 +10,8 @@
 
 ################################################################################
 
-cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/code/sim_studies/benchmark_sim_chr
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/
 singularity exec \
 -B /scratch/st-kdkortha-1/nshen7 \
--B /home/nshen7 /project/st-kdkortha-1/rstudio/nshen7_rstudio_4_2_0-biocon_3_15.sif \
-Rscript 3-2run_scmet.R
+-B /home/nshen7 /project/st-kdkortha-1/rstudio/nshen7_rstudio_4_2_0.sif \
+Rscript code/sim_studies/benchmark_sim_chr/3-2run_scmet.R

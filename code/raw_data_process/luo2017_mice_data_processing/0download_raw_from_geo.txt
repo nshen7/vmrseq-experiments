@@ -1,0 +1,8 @@
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/data/raw_counts/
+mkdir luo2017_from_geo
+cd luo2017_from_geo
+
+wget https://ftp.ncbi.nlm.nih.gov/geo/series/GSE97nnn/GSE97179/suppl/GSE97179_RAW.tar
+mkdir GSE97179
+tar -xvf GSE97179_RAW.tar -C GSE97179
+rm GSE97179_RAW.tar

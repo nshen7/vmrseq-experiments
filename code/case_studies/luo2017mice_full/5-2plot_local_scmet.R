@@ -16,12 +16,12 @@ colData(se) <- DataFrame(md)
 
 plotCellTypeMeth <- function(top_i) {
   # index of the top ith region in se
-  idx <- order(granges(res_region$scmet)$gamma, decreasing = T)[top_i]
-  gr <- granges(res_region$scmet)[idx]
+  idx <- order(granges(se)$gamma, decreasing = T)[top_i]
+  gr <- granges(se)[idx]
   # summarize phenotypic info and methylation value per cell type
   df <- data.frame(
     colData(se),
-    MF = assays(res_region$scmet)$M[idx,] / assays(res_region$scmet)$Cov[idx,]
+    MF = assays(se)$M[idx,] / assays(se)$Cov[idx,]
   ) %>% 
     filter(!is.na(MF))
   

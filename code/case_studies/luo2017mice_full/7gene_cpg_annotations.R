@@ -4,7 +4,6 @@ library(annotatr)
 library(TxDb.Mmusculus.UCSC.mm10.knownGene)
 library(org.Mm.eg.db)
 library(HDF5Array)
-library(tidyverse)
 
 read_dir <- "data/interim/case_studies/luo2017mice_full/result_summary/"
 write_dir <- "data/interim/case_studies/luo2017mice_full/result_summary/"
@@ -32,6 +31,7 @@ methodName <- function(method)
     'smwd' = 'Smallwood',
     'scmet' = 'scMET'
   )
+
 # ==== load gene annotations ====
 
 types_gene <- grep("mm10_genes.*", builtin_annotations(), value = T)
@@ -111,20 +111,20 @@ plotGeneAnnotDist <- function(method, top_n_regions = NULL) {
          width = 8, height = 6)
 }
 
-# plotGeneAnnotDist(method = "vseq")
-# plotGeneAnnotDist(method = "vseq_cr")
-# plotGeneAnnotDist(method = "scbs")
-# plotGeneAnnotDist(method = "smwd")
+plotGeneAnnotDist(method = "vseq")
+plotGeneAnnotDist(method = "vseq_cr")
+plotGeneAnnotDist(method = "scbs")
+plotGeneAnnotDist(method = "smwd")
 plotGeneAnnotDist(method = "scmet")
 
-# plotGeneAnnotDist(method = "vseq", top_n_regions = 1000)
-# plotGeneAnnotDist(method = "scbs", top_n_regions = 1000)
-# plotGeneAnnotDist(method = "smwd", top_n_regions = 1000)
+plotGeneAnnotDist(method = "vseq", top_n_regions = 1000)
+plotGeneAnnotDist(method = "scbs", top_n_regions = 1000)
+plotGeneAnnotDist(method = "smwd", top_n_regions = 1000)
 plotGeneAnnotDist(method = "scmet", top_n_regions = 1000)
 
-# plotGeneAnnotDist(method = "vseq", top_n_regions = 5000)
-# plotGeneAnnotDist(method = "scbs", top_n_regions = 5000)
-# plotGeneAnnotDist(method = "smwd", top_n_regions = 5000)
+plotGeneAnnotDist(method = "vseq", top_n_regions = 5000)
+plotGeneAnnotDist(method = "scbs", top_n_regions = 5000)
+plotGeneAnnotDist(method = "smwd", top_n_regions = 5000)
 plotGeneAnnotDist(method = "scmet", top_n_regions = 5000)
 
 
@@ -215,20 +215,20 @@ plotCpgAnnotDist <- function(method, top_n_regions = NULL) {
          width = 8, height = 6)
 }
 
-# plotCpgAnnotDist(method = "vseq")
-# plotCpgAnnotDist(method = "vseq_cr")
-# plotCpgAnnotDist(method = "scbs")
-# plotCpgAnnotDist(method = "smwd")
+plotCpgAnnotDist(method = "vseq")
+plotCpgAnnotDist(method = "vseq_cr")
+plotCpgAnnotDist(method = "scbs")
+plotCpgAnnotDist(method = "smwd")
 plotCpgAnnotDist(method = "scmet")
 
-# plotCpgAnnotDist(method = "vseq", top_n_regions = 1000)
-# plotCpgAnnotDist(method = "scbs", top_n_regions = 1000)
-# plotCpgAnnotDist(method = "smwd", top_n_regions = 1000)
+plotCpgAnnotDist(method = "vseq", top_n_regions = 1000)
+plotCpgAnnotDist(method = "scbs", top_n_regions = 1000)
+plotCpgAnnotDist(method = "smwd", top_n_regions = 1000)
 plotCpgAnnotDist(method = "scmet", top_n_regions = 1000)
 
-# plotCpgAnnotDist(method = "vseq", top_n_regions = 5000)
-# plotCpgAnnotDist(method = "scbs", top_n_regions = 5000)
-# plotCpgAnnotDist(method = "smwd", top_n_regions = 5000)
+plotCpgAnnotDist(method = "vseq", top_n_regions = 5000)
+plotCpgAnnotDist(method = "scbs", top_n_regions = 5000)
+plotCpgAnnotDist(method = "smwd", top_n_regions = 5000)
 plotCpgAnnotDist(method = "scmet", top_n_regions = 5000)
 
 
@@ -368,16 +368,16 @@ plotBothAnnotDist <- function(method, top_n_regions = NULL) {
 # plotBothAnnotDist(method = "vseq_cr")
 # plotBothAnnotDist(method = "scbs")
 # plotBothAnnotDist(method = "smwd")
-plotBothAnnotDist(method = "scmet")
-
+# plotBothAnnotDist(method = "scmet")
+# 
 # plotBothAnnotDist(method = "vseq", top_n_regions = 1000)
 # plotBothAnnotDist(method = "scbs", top_n_regions = 1000)
 # plotBothAnnotDist(method = "smwd", top_n_regions = 1000)
-plotBothAnnotDist(method = "scmet", top_n_regions = 1000)
-
+# plotBothAnnotDist(method = "scmet", top_n_regions = 1000)
+# 
 # plotBothAnnotDist(method = "vseq", top_n_regions = 5000)
 # plotBothAnnotDist(method = "scbs", top_n_regions = 5000)
 # plotBothAnnotDist(method = "smwd", top_n_regions = 5000)
-plotBothAnnotDist(method = "scmet", top_n_regions = 5000)
+# plotBothAnnotDist(method = "scmet", top_n_regions = 5000)
 
  

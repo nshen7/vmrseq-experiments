@@ -17,7 +17,7 @@ res.gr <- list(
   'vseq' = granges(loadHDF5SummarizedExperiment(paste0(read_dir, "vmrseq_regionSummary_vmrs"))),
   'vseq_cr' = granges(loadHDF5SummarizedExperiment(paste0(read_dir, "vmrseq_regionSummary_crs"))),
   'scbs' = granges(loadHDF5SummarizedExperiment(paste0(read_dir, "scbs_regionSummary_vmrs"))),
-  'smwd' = granges(loadHDF5SummarizedExperiment(paste0(read_dir, "smallwood_regionSummary_vmrs"))),
+  'smwd' = granges(loadHDF5SummarizedExperiment(paste0(read_dir, "Smallwood_regionSummary_vmrs"))),
   'scmet' = granges(loadHDF5SummarizedExperiment(paste0(read_dir, "scmet_regionSummary_vmrs")))
 )
 
@@ -115,21 +115,21 @@ pct_in_genes.df <- rbind(
 ) %>%
   mutate(method = factor(method)) %>%
   mutate(method = fct_recode(method, 
-                             "vmrseq" = "vseq", "CR in vmrseq" = "vseq_cr", 
-                             "scbs" = "scbs", "smallwood" = "smwd",
+                             "vmrseq" = "vseq", "vmrseq CRs" = "vseq_cr", 
+                             "scbs" = "scbs", "Smallwood" = "smwd",
                              "scMET" = "scmet")) 
 
 # Color settings
 COLORS <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")[-3]
-COLORVALUES <- c("vmrseq" = COLORS[1], "CR in vmrseq" = COLORS[2],
-                 "scbs" = COLORS[3], "smallwood" = COLORS[4], "scMET" = COLORS[5])
+COLORVALUES <- c("vmrseq" = COLORS[1], "vmrseq CRs" = COLORS[2],
+                 "scbs" = COLORS[3], "Smallwood" = COLORS[4], "scMET" = COLORS[5])
 
 
 pct_in_genes.df %>%
   ggplot(aes(top_n_regions, pct_in_genes, color = method)) + 
   geom_point() +
   geom_path() + 
-  geom_point(data = pct_in_genes.df %>% filter(method == 'CR in vmrseq'), 
+  geom_point(data = pct_in_genes.df %>% filter(method == 'vmrseq CRs'), 
              aes(top_n_regions, pct_in_genes, color = method), 
              size = 3) +
   scale_color_manual(values = COLORVALUES) +

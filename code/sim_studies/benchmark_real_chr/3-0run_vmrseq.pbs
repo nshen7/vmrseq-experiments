@@ -1,10 +1,9 @@
 #!/bin/bash
 
-#PBS -l walltime=30:00:00,select=1:ncpus=24:mem=64gb
+#PBS -l walltime=72:00:00,select=1:ncpus=24:mem=64gb
 #PBS -N runVseqReal
 #PBS -A st-kdkortha-1
 #PBS -m abe
-#PBS -M ning.shen@stat.ubc.ca
 #PBS -o pbs_error_and_output/3-0run_vmrseq_pbs_output.txt
 #PBS -e pbs_error_and_output/3-0run_vmrseq_pbs_error.txt
 
@@ -15,8 +14,6 @@ echo ${NP}
 echo ${sparseLevel}
 echo ${alpha}
 echo ""
-# my_command="Rscript fit_scmet_window.R --anno ${ANNO} --chr ${CHR} --outdir ${OUTDIR} ${MCMC}"
-# eval $my_command
 
 cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/
 

@@ -57,11 +57,11 @@ var.df <- do.call(
 ) %>% 
   mutate(method = factor(method)) %>%
   mutate(method = fct_recode(method, 
-                             "vmrseq" = "vseq", "CR in vmrseq" = "vseq_cr", 
-                             "scbs" = "scbs", "smallwood" = "smwd",
+                             "vmrseq" = "vseq", "vmrseq CRs" = "vseq_cr", 
+                             "scbs" = "scbs", "Smallwood" = "smwd",
                              "scMET" = "scmet"))
 
-methods <- c("vmrseq", "CR in vmrseq", "scbs", "smallwood", "scMET")
+methods <- c("vmrseq", "vmrseq CRs", "scbs", "Smallwood", "scMET")
 var.df$method <- factor(var.df$method, levels = methods)
 
 var.df %>%
@@ -183,8 +183,9 @@ plotMarkerRegions <- function(method, direction) {
   heatmap_palette <- colorRampPalette(RColorBrewer::brewer.pal(4, name = 'PuOr'))(21)
   
   # Set palette for heatmap annotations
+  ct <- unique(colData(marker.se)$Neuron.type)
   ann_palette <- colorRampPalette(RColorBrewer::brewer.pal(8, name = 'Set3'))(length(ct))
-  names(ann_palette) <- unique(colData(marker.se)$Neuron.type)
+  names(ann_palette) <- ct
   ann_colors = list(
     Neuron.type = ann_palette
   )

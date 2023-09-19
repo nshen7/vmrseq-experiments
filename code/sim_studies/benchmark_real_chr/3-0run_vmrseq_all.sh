@@ -9,12 +9,12 @@ declare -a NPs=(12 20 2 3 4 5 8)
 # declare -a NPs=(12 20 2 5 8)
 npslength=${#NPs[@]}
 
-# declare -a sparseLevels=(1 2 3)
-declare -a sparseLevels=(3)
+declare -a sparseLevels=(1 2 3)
+# declare -a sparseLevels=(3)
 slslength=${#sparseLevels[@]}
 
-# declare -a alpha=($(seq 0.001 0.001 0.005) $(seq 0.01 0.01 0.1) 0.12 0.15 0.2 0.3 0.4)
-declare -a alpha=(0.4)
+declare -a alpha=($(seq 0.001 0.001 0.005) $(seq 0.01 0.01 0.1) 0.12 0.15 0.2 0.3 0.4)
+# declare -a alpha=(0.4)
 alplength=${#alpha[@]}
 
 echo $npslength

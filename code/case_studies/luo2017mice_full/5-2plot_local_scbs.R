@@ -1,7 +1,5 @@
 source("code/SETPATHS.R")
 # devtools::load_all("../vmrseq-package/vmrseq/")
-library(tidyverse)
-library(data.table)
 library(HDF5Array)
 library(DelayedMatrixStats)
 library(SummarizedExperiment)

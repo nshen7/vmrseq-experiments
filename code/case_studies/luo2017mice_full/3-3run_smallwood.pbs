@@ -13,5 +13,5 @@
 cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/
 singularity exec \
 -B /scratch/st-kdkortha-1/nshen7 \
--B /home/nshen7 /project/st-kdkortha-1/rstudio/nshen7_rstudio_4_2_0-biocon_3_15.sif \
+-B /home/nshen7 /project/st-kdkortha-1/rstudio/nshen7_rstudio_4_2_0.sif \
 Rscript code/case_studies/luo2017mice_full/3-3run_smallwood.R

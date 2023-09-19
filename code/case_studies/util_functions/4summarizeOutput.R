@@ -3,6 +3,7 @@ devtools::load_all("../vmrseq-package/vmrseq/")
 library(GenomicRanges)
 library(HDF5Array)
 library(SummarizedExperiment)
+library(biomaRt)
 
 # ==== main ====
 
@@ -110,30 +111,30 @@ summarizeOutputSite <- function(read_dir, write_dir, methods) {
 
 
 ### Summarize region methylation
-summarizeOutputRegion <- function(read_dir, write_dir, methods) {
+summarizeOutputRegion <- function(read_dir, write_dir, methods, chr_names = paste0('chr', 1:19)) {
   
-  se_dirs <- paste0(read_dir, "vmrseq/input/chr", 1:19)
+  se_dirs <- here(read_dir, "vmrseq", "input", chr_names)
   
   ### vmrseq
   if ("vmrseq" %in% methods) {
-    dirs_vseq <- paste0(read_dir, "vmrseq/output/chr", 1:19, ".rds")
+    dirs_vseq <- here(read_dir, "vmrseq", "output", paste0(chr_names, ".rds"))
     
     # Concatenate results from 19 chromosomes
     res_vseq <- list(
       vmr.ranges = do.call(c, lapply(dirs_vseq, function(dir) readRDS(dir)$vmr.ranges)),
       cr.ranges = do.call(c, lapply(dirs_vseq, function(dir) readRDS(dir)$cr.ranges))
     )
-
+    
     rs_vseq1.se <- getRegionSummary(
       se_dirs = se_dirs,
       regions.gr = res_vseq$vmr.ranges
     )
-    saveHDF5SummarizedExperiment(rs_vseq1.se, paste0(write_dir, "vmrseq_regionSummary_vmrs"), replace=TRUE)
+    saveHDF5SummarizedExperiment(rs_vseq1.se, here(write_dir, "vmrseq_regionSummary_vmrs"), replace=TRUE)
     rs_vseq2.se <- getRegionSummary(
       se_dirs = se_dirs, 
       regions.gr = res_vseq$cr.ranges
     )
-    saveHDF5SummarizedExperiment(rs_vseq2.se, paste0(write_dir, "vmrseq_regionSummary_crs"), replace=TRUE)
+    saveHDF5SummarizedExperiment(rs_vseq2.se, here(write_dir, "vmrseq_regionSummary_crs"), replace=TRUE)
   }
   
   ### scbs
@@ -149,7 +150,7 @@ summarizeOutputRegion <- function(read_dir, write_dir, methods) {
       se_dirs = se_dirs, 
       regions.gr = res_scbs.gr
     )
-    saveHDF5SummarizedExperiment(rs_scbs.se, paste0(write_dir, "scbs_regionSummary_vmrs"), replace=TRUE)
+    saveHDF5SummarizedExperiment(rs_scbs.se, here(write_dir, "scbs_regionSummary_vmrs"), replace=TRUE)
   }
   
   ### smallwood 
@@ -165,7 +166,7 @@ summarizeOutputRegion <- function(read_dir, write_dir, methods) {
       se_dirs = se_dirs,
       regions.gr = res_smwd.gr
     )
-    saveHDF5SummarizedExperiment(rs_smwd.se, paste0(write_dir, "smallwood_regionSummary_vmrs"), replace=TRUE)
+    saveHDF5SummarizedExperiment(rs_smwd.se, here(write_dir, "smallwood_regionSummary_vmrs"), replace=TRUE)
   }
   
   ### scMET
@@ -175,14 +176,14 @@ summarizeOutputRegion <- function(read_dir, write_dir, methods) {
       filter(is_variable) %>%
       mutate(chr = gsub("chr(.*)_window_.*", replacement = "\\1", x = feature_name) %>% as.integer()) %>%
       mutate(feat_index = gsub("chr.*_window_(.*)", replacement = "\\1", x = feature_name) %>% as.integer())
-
+    
     # Convert into GRanges object
     feat_md_scmet <- readRDS(paste0(read_dir, "scmet/input/scmet_feature_metadata.rds"))
     hvf_scmet.gr <- do.call(c, lapply(
       1:nrow(hvf_scmet), 
       function(i) feat_md_scmet[[hvf_scmet$chr[i]]][hvf_scmet$feat_index[i]]
     ))
-     
+    
     # Add metadata info to GRanges object
     values(hvf_scmet.gr) <- hvf_scmet[,c("mu", "gamma", "epsilon", "tail_prob")]
     seqlevels(hvf_scmet.gr) <- paste0("chr", 1:19)
@@ -272,3 +273,45 @@ getRegionSummary <- function(se_dirs, regions.gr) {
   }
   return(regions.se)
 }
+
+
+# ---- Functions for obtaining biomart annotations ----
+## Code adapted from: https://github.com/Dunjanik/PromoterOntology/tree/master
+getBiomartCanonicalGene <- function(mart) {
+  
+  biomart_genes <- getBM(
+    mart = mart,
+    attributes = c("ensembl_gene_id",
+                   "ensembl_transcript_id",
+                   "external_gene_name",
+                   "chromosome_name",
+                   "transcript_start",
+                   "transcript_end",
+                   "strand",
+                   "gene_biotype"),
+    filters = c("biotype", "transcript_is_canonical"),
+    values = list("protein_coding", TRUE)
+  )
+  
+  biomart_genes$strand <- ifelse(biomart_genes$strand == 1, "+", 
+                                 ifelse(biomart_genes$strand == -1, "-", "*"))
+  biomart_genes.gr <- makeGRangesFromDataFrame(biomart_genes,
+                                               start.field = "transcript_start",
+                                               end.field = "transcript_end",
+                                               keep.extra.columns = TRUE)
+  seqlevelsStyle(biomart_genes.gr) <- "UCSC"
+  
+  return(biomart_genes.gr)
+}
+
+getBiomartCanonicalPromoters <- function(biomart_genes.gr, upstream, downstream) {
+  
+  # make promoters using coordinates upstream, downstream
+  biomart_promoters <- promoters(biomart_genes.gr,
+                                 upstream = upstream,
+                                 downstream = downstream)
+  biomart_promoters <- unique(biomart_promoters)
+  
+  return(biomart_promoters)
+}
+

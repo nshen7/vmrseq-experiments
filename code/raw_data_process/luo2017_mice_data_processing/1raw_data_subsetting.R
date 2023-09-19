@@ -1,10 +1,10 @@
+source("code/SETPATHS.R")
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(parallel))
 suppressPackageStartupMessages(library(readr))
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
 
-read_from <- "../../DXM_extend_chr1/data/raw_counts/"
-write_to <- "data/raw_counts/raw_counts_Luo2021_mice/"
+read_from <- "data/raw_counts/luo2017_from_geo/GSE97179"
+write_to <- "data/raw_counts/raw_counts_Luo2017_mice/"
 
 # ==== helper functions ====
 subsetAndStrandFlip_1chr <- function(chr_file) {
@@ -43,18 +43,35 @@ subsetAndStrandFlip_1cell <- function(cell_folder_name, chr_num, mc.cores) {
 
 # ==== raw data subsetting ====
 
-folder_list <- list.files(read_from)
+# folder_list <- list.files(read_from)
+# 
+# ### folder_list_modified are samples names but is kept in the same order as folder_list
+# folder_list_modified <- gsub("-", "_", folder_list)
+# folder_list_modified <- gsub("(nuclei_.*)_.*_.*$", "\\1", folder_list_modified)
+# folder_list_modified <- gsub("(.*_indexed).*", "\\1", folder_list_modified) 
+# 
+# metadata <- fread("data/metadata/metadata_luo2017/luo_supp_tables/NIHMS893063-supplement-Table_S1_csv.csv", skip = 1, header = T)
+# all(metadata$Sample %in% folder_list_modified) # = TRUE
+# 
+# folder_list_mice <- folder_list[which(folder_list_modified %in% metadata$Sample)]
+# 
+# for (cell_folder_name in folder_list_mice[1348:length(folder_list_mice)]) {
+#   subsetAndStrandFlip_1cell(cell_folder_name, chr_num = 1:19, mc.cores = 16)
+# }
 
-### folder_list_modified are samples names but is kept in the same order as folder_list
-folder_list_modified <- gsub("-", "_", folder_list)
-folder_list_modified <- gsub("(nuclei_.*)_.*_.*$", "\\1", folder_list_modified)
-folder_list_modified <- gsub("(.*_indexed).*", "\\1", folder_list_modified) 
+# ==== collapse counts of deplicated CpGs due to strand flipping ====
 
-metadata <- fread("data/metadata/metadata_luo2017/NIHMS893063-supplement-Table_S1_csv.csv", skip = 1, header = T)
-all(metadata$Sample %in% folder_list_modified) # = TRUE
-
-folder_list_mice <- folder_list[which(folder_list_modified %in% metadata$Sample)]
-
-for (cell_folder_name in folder_list_mice[1348:length(folder_list_mice)]) {
-  subsetAndStrandFlip_1cell(cell_folder_name, chr_num = 1:19, mc.cores = 16)
+file_list <- list.files(write_to)
+for (file in file_list) {
+  # cell.df <- fread(here(write_to, file)) 
+  # cell_collapsed.df <- cell.df %>%
+  #   group_by(chr, strand, pos) %>%
+  #   summarise(mc_count = sum(mc_count), 
+  #             total = sum(total))
+  # fwrite(cell_collapsed.df, here(write_to, file), sep = '\t')
+  
+  cell.df <- fread(here(write_to, file)) %>%
+    mutate(strand = '*') %>%
+    select(chr, pos, strand, mc_count, total)
+  fwrite(cell.df, here(write_to, file), sep = '\t')
 }

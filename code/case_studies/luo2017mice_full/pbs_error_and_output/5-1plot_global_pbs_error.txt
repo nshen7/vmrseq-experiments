@@ -195,4 +195,16 @@ The following objects are masked from ‘package:matrixStats’:
 
     anyMissing, rowMedians
 
+
+Attaching package: ‘scales’
+
+The following object is masked from ‘package:purrr’:
+
+    discard
+
+The following object is masked from ‘package:readr’:
+
+    col_factor
+
+x being coerced from class: matrix to data.table
 INFO:    Cleaning up image...

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#PBS -l walltime=1:00:00,select=1:ncpus=4:mem=48gb
+#PBS -N 6nn_score
+#PBS -A st-kdkortha-1
+#PBS -m abe
+#PBS -M ning.shen@stat.ubc.ca
+#PBS -o pbs_error_and_output/6nn_score_pbs_output.txt
+#PBS -e pbs_error_and_output/6nn_score_pbs_error.txt
+
+################################################################################
+
+cd /scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/
+singularity exec \
+-B /scratch/st-kdkortha-1/nshen7 \
+-B /home/nshen7 /project/st-kdkortha-1/rstudio/nshen7_rstudio_4_2_0.sif \
+Rscript code/case_studies/luo2017mice_full/6nn_score.R

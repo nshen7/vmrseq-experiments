@@ -1,5 +1,4 @@
-.libPaths("/home/nshen7/R/rstudio_4_2_0-biocon_3_15/")
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/") 
+source('code/SETPATHS.R')
 library(tidyverse)
 library(data.table)
 library(HDF5Array)
@@ -14,11 +13,11 @@ write_dir <- "data/interim/case_studies/luo2017mice_subset_hom/smallwood/input/"
 if (!file.exists(write_dir)) dir.create(write_dir)
 
 read_dir <- "data/interim/case_studies/luo2017mice_subset_hom/vmrseq/input/"
-# for (chr in paste0("chr", 1:2)) {
+for (chr in paste0("chr", 1:2)) {
 # for (chr in paste0("chr", 3:5)) {
 # for (chr in paste0("chr", 6:10)) {
 # for (chr in paste0("chr", 11:15)) {
-for (chr in paste0("chr", 16:19)) {
+# for (chr in paste0("chr", 16:19)) {
   # Load raw data
   se <- loadHDF5SummarizedExperiment(dir = paste0(read_dir, chr))
   

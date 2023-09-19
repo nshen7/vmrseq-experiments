@@ -43,7 +43,7 @@ wrapper <- function(subtype, mc.cores){
   metadata <- fread("../../DXM_extend_chr1/data/metadata/sample_info_processed.csv")
   
   ### input arguments
-  outer_path <- "data/raw_counts/raw_counts_Luo2021_mice/"
+  outer_path <- "data/raw_counts/raw_counts_Luo2017_mice/"
   cell_file_dirs <- list.files(outer_path)
   sub_metadata <- metadata[Neuron_type3 == subtype, .(sample, specie, Neuron_type1, Neuron_type2, Neuron_type3)]
   

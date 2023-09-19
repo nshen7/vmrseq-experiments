@@ -15,14 +15,10 @@ if (!file.exists(write_dir)) dir.create(plot_dir)
 # summarizeOutputSite(read_dir, write_dir, methods = c("vmrseq", "scbs", "smallwood", "scmet")) 
 
 # summarizeOutputRegion(read_dir, write_dir, methods = c("vmrseq"))
-# summarizeOutputSite(read_dir, write_dir, methods = c("vmrseq"))
 
 # summarizeOutputRegion(read_dir, write_dir, methods = c("scbs"))
-# summarizeOutputSite(read_dir, write_dir, methods = c("scbs"))
 
 # summarizeOutputRegion(read_dir, write_dir, methods = c("smallwood"))
-# summarizeOutputSite(read_dir, write_dir, methods = c("smallwood"))
 
-# summarizeOutputRegion(read_dir, write_dir, methods = c("scmet"))
-summarizeOutputSite(read_dir, write_dir, methods = c("scmet"))
+summarizeOutputRegion(read_dir, write_dir, methods = c("scmet"))
 
