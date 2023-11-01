@@ -4,7 +4,7 @@ suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(parallel))
 
 setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
-source("code/liu2021_data_processing/data_processing_subtypeAcrossSample_helper_functions.R")
+source("code/raw_data_process/liu2021_data_processing/data_processing_subtypeAcrossSample_helper_functions.R")
 
 ## import metadata
 metadata <- fread("data/metadata/metadata_liu2021/Liu2021_cell_full_metadata_processed.csv") %>%

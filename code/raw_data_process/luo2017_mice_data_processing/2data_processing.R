@@ -6,7 +6,7 @@ source("code/luo2017_mice_data_processing/helper_functions.R")
 #### Luo2017 ref: Luo et al. Single-cell methylomes identify neuronal subtypes and regulatory elements in mammalian cortex. Science. 2017 Aug 11;357(6351):600-604. doi: 10.1126/science.aan3351. PMID: 28798132; PMCID: PMC5570439.
 
 metadata <- fread("../../DXM_extend_chr1/data/metadata/sample_info_processed.csv")
-cell_counts <- metadata[, .(.N), by = .(Neuron_type1, Neuron_type3)] %>% arrange(desc(N)) 
+cell_counts <- metadata[, .(.N), by = .(Neuron_type1, Neuron_type3)] %>% arrange(desc(N))  %>% filter(N >= 100)
 #     Neuron_type1 Neuron_type3   N
 #  1:   Excitatory        mL6-2 686 (processed)
 #  2:   Excitatory        mL2/3 649 (processed)
@@ -14,13 +14,9 @@ cell_counts <- metadata[, .(.N), by = .(Neuron_type1, Neuron_type3)] %>% arrange
 #  4:   Excitatory        mL5-1 284 (processed)
 #  5:   Excitatory        mDL-2 272 (processed)
 #  6:   Inhibitory          mPv 136 (processed)
-#  7:   Excitatory        mL5-2 128
+#  7:   Excitatory        mL5-2 128 (processed)
 #  8:   Inhibitory      mSst-12 123 (processed)
-#  9:   Excitatory        mDL-1 122
-# 10:   Inhibitory     mNdnf-12  96
-# 11:   Excitatory        mL6-1  80
-# 12:   Inhibitory         mVip  69
-# 13:   Excitatory        mDL-3  54
+#  9:   Excitatory        mDL-1 122 (processed)
 
 
 

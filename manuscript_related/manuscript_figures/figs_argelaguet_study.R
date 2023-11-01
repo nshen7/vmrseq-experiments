@@ -6,6 +6,7 @@ source('manuscript_related/manuscript_figures/utils.R')
 
 read_dir <- "data/interim/case_studies/argelaguet2019_full/"
 plot_dir <- "manuscript_related/manuscript_figures/argelaguet_study"
+write_dir <- here("manuscript_related", "manuscript_tables")
 if (!file.exists(plot_dir)) dir.create(plot_dir)
 
 df_umap <- fread(here(read_dir, "05_plot_global_met", "metadata_umap_regional_methyl_vseq_seed2010.txt.gz"))
@@ -238,7 +239,21 @@ plot.df <- granges(vmr_near_gene.se) %>%
   as.data.frame() %>%
   arrange(desc(loglik_diff)) %>%
   filter(vmr_n_avail_cell >= 10 & promoter_n_avail_cell >= 10) ## ensure min 10 available cells covered
+fwrite(plot.df %>% select(-loglik_diff.1), here(write_dir, 'supp_table_argelaguet_gene_vmr_corr.csv'))
 
+
+# proportion of VMRs exhibiting positive corr
+plot.df %>%
+  group_by(context) %>%
+  summarise(prop_positive = sum(vmr_rna_corr > 0)/n())
+#   context                                       prop_positive
+#   <chr>                                                 <dbl>
+# 1 VMRs outside gene but within 1000-bp distance        0.160 
+# 2 VMRs overlapping with gene body                      0.113 
+# 3 VMRs overlapping with promoter                       0.0629
+
+
+# plot correlation
 cutoff <- 0.2
 enrich_go_BP <- readRDS(here(read_dir, '06_met_rna_corr', paste0('enrichGO_ontBP_vmrCorrWithRNA_positive_cutoff', abs(cutoff), '.rds')))
 gene_in_BP <- enrich_go_BP@result %>% filter(p.adjust < go_p_cutoff) %>% pull(geneID) %>% strsplit('/') %>% unlist() %>% unique()

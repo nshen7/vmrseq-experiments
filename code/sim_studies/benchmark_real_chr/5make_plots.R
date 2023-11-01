@@ -251,3 +251,12 @@ ggsave(paste0(
   NV, "VMRs_seed", seed, "_downsized.png"
 ), width = 5, height = 3) # downsized pic
 
+
+# ==== size of spiked-in true VMRs ====
+
+gr <- granges(loadHDF5SummarizedExperiment("data/interim/sim_studies/benchmark_real_chr/modified_real/pseudoChr_IT-L23_Cux1_chr1_1000cells_12subpops_2000VMRs_sparseLevel2_seed2022/"))
+ind_start <- which(diff(gr$is_vml) == 1)
+ind_end <- which(diff(gr$is_vml) == -1)
+vmr_width <- start(gr)[ind_end] - start(gr)[ind_start]
+quantile(vmr_width)
+

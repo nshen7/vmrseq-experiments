@@ -167,4 +167,3 @@ ggplot() +
   theme(legend.position = 'none')
 ggsave(here(plot_dir, 'barplot_pctSites_vs_methods.png'), height = 3, width = 3)  
 
-

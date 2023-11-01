@@ -4,7 +4,7 @@ suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(parallel))
 
 setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
-source("code/liu2021_data_processing/data_processing_subtypeAcrossSample_helper_functions.R")
+source("code/raw_data_process/liu2021_data_processing/data_processing_subtypeAcrossSample_helper_functions.R")
 
 ## import metadata
 metadata <- fread("data/metadata/metadata_liu2021/Liu2021_cell_full_metadata_processed.csv") %>%
@@ -14,6 +14,7 @@ subtype_smr <- metadata[, .(.N), by = .(CellClass, SubType)] %>%
   filter(!grepl("Outlier", SubType)) %>%
   mutate(Bin = cut(N, breaks = seq(0, ceiling(max(N)/100)*100, 100), labels = F)) %>%
   group_by(Bin) %>% mutate(nSubTypeInBin = n())
+fwrite(subtype_smr, "data/metadata/metadata_liu2021/Liu2021_subtypes_cellCount_binnedBy100CellCount.csv")
 
 hist(subtype_smr$N, breaks = seq(0, ceiling(max(subtype_smr$N)/100)*100, 100))
 
@@ -28,8 +29,8 @@ subtype_smr_sel <- rbind(subtype_smr %>%
                            mutate(nSubTypeInBin = n())
                          ) %>% 
   arrange(desc(N))
-
 # nrow(subtype_smr_sel) # = 53 subtypes
+fwrite(subtype_smr_sel, "data/metadata/metadata_liu2021/Liu2021_subtypes_cellCount_binnedBy100CellCount_selectedForParamTraining.csv")
 
 # > subtype_smr_sel$SubType
 # [1] "IT-L23 Cux1"      "DG dg-all"        "CT-L6 Il1rap"     "OLF-Exc Bmpr1b"  

@@ -75,3 +75,16 @@ for (file in file_list) {
     select(chr, pos, strand, mc_count, total)
   fwrite(cell.df, here(write_to, file), sep = '\t')
 }
+
+
+# ----- misc -----
+# Distribution of proportion of sites with intermediate methylation level
+countItmdProportion <- function(file) {
+  cell.df <- fread(here(write_to, file))
+  mf <- cell.df$mc_count/cell.df$total 
+  return(sum(mf > 0 & mf < 1)/length(mf))
+}
+itmd_prop <- unlist(parallel::mclapply(list.files(write_to), countItmdProportion, mc.cores = 8))
+quantile(itmd_prop)
+#          0%         25%         50%         75%        100% 
+# 0.001550225 0.003440104 0.004358966 0.005245920 0.021427392 

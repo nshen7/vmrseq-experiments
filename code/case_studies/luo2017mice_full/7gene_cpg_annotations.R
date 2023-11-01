@@ -1,4 +1,3 @@
-# setwd("~/Volumes/sockeye_scratch/vmrseq/vmrseq-experiments/")
 source("code/SETPATHS.R")
 library(annotatr)
 library(TxDb.Mmusculus.UCSC.mm10.knownGene)

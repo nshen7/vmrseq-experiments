@@ -30,7 +30,7 @@ COLORS <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")[-3]
 COLORVALUES <- c("vmrseq" = COLORS[1], "vmrseq CRs" = COLORS[2],
                  "scbs" = COLORS[3], "Smallwood" = COLORS[4], "scMET" = COLORS[5])
 
-methods <- c('vmrseq', 'vmrseq CRs', 'scbs', 'Smallwood')
+methods <- c('vmrseq', 'vmrseq CRs', 'scbs', 'Smallwood', 'scMET')
 methods <- factor(methods, levels = methods)
 
 ## Colors for cell subtype
@@ -48,6 +48,25 @@ names(BTCOLORS) <- c('Excitatory', 'Inhibitory')
 
 # ---- Get legend for cell types ----
 df_umap <- fread(here(read_dir, paste0("metadata_umap_regional_methyl_vseq_seed2010.txt.gz")))
+
+# For UMAPs
+(p <- df_umap %>% 
+    ggplot() +
+    # geom_point(aes(fill = Neuron.type, shape = Neuron_type1), size = 1.5, alpha = 0.8, stroke = 0.3, color = 'grey16') +
+    # scale_fill_manual(values = CTCOLORS, name = "") +
+    geom_point(aes(umap_1, umap_2, color = Neuron.type, shape = Neuron_type1), size = 1.5, alpha = 0.8) +
+    scale_color_manual(values = CTCOLORS, name = "") +
+    scale_shape_manual(values = c(21,23), name = "") + 
+    theme_void() + 
+    guides(color = guide_legend(override.aes = list(size=4)), shape = guide_legend(override.aes = list(size=4)))
+  )
+legend <- cowplot::get_legend(p)
+png(here(plot_dir, "legend_subtypes_umap.png"), width = 300, height = 1800, res = 350)
+grid::grid.newpage()
+grid::grid.draw(legend)
+dev.off()
+
+# For heatmap
 (p <- df_umap %>% 
   ggplot(aes(umap_1, umap_2)) +
   geom_point(aes(color = Neuron.type), size = 1.5, shape = 16, alpha = 0.5) +
@@ -55,7 +74,7 @@ df_umap <- fread(here(read_dir, paste0("metadata_umap_regional_methyl_vseq_seed2
   theme_void() + 
   guides(colour = guide_legend(override.aes = list(size=4))))
 legend <- cowplot::get_legend(p)
-png(here(plot_dir, "legend_subtypes.png"), width = 300, height = 1200, res = 320)
+png(here(plot_dir, "legend_subtypes_heatmap.png"), width = 300, height = 1200, res = 320)
 grid::grid.newpage()
 grid::grid.draw(legend)
 dev.off()
@@ -255,7 +274,7 @@ ggsave(here(plot_dir, 'barplot_pctSites_vs_methods_homStudy.png'), height = 4, w
 # ---- cell type markers ----
 
 
-plotCellTypeMeth <- function(method, idx) {
+plotCellTypeMeth <- function(method, idx, cell_type) {
   
   se <- res_region[[method]][idx,]
   gr <- granges(se)
@@ -266,6 +285,11 @@ plotCellTypeMeth <- function(method, idx) {
     MF = assays(se)$M / assays(se)$Cov
   ) %>% 
     filter(!is.na(MF))
+  mean_meth_tg <- mean(df %>% filter(Neuron_type == cell_type) %>% pull(MF))
+  mean_meth_bg <- mean(df %>% filter(Neuron_type != cell_type) %>% pull(MF))
+  message('Average methylation in target cell type: ', round(mean_meth_tg, 2))
+  message('Average methylation in background cell type: ', round(mean_meth_bg, 2))
+  message('Difference in average methylation in traget and background cell type: ', round(mean_meth_bg - mean_meth_tg, 2))
   
   main_title <- methodName(method)
   sub_title <- paste0(seqnames(gr), ": ", 
@@ -308,14 +332,26 @@ plotTopCellTypeMarker <- function(method, cell_type, dmr_direction) {
   
   idx <- mr_indices[which.max(metric[mr_indices])]
   
-  plotCellTypeMeth(method, idx) 
+  plotCellTypeMeth(method, idx, cell_type) 
   ggsave(here(plot_dir, paste0("violin_topRankedCellTypeMarker_", cell_type, "_", dmr_direction, "_", method,".png")), width = 8, height = 3)
 }
 
 plotTopCellTypeMarker(method = 'vseq', cell_type = 'mL4', dmr_direction = 'hypo')
+# Average methylation in target cell type: 0.13
+# Average methylation in background cell type: 0.75
+# Difference in average methylation in traget and background cell type: 0.62
 plotTopCellTypeMarker(method = 'scbs', cell_type = 'mL4', dmr_direction = 'hypo')
+# Average methylation in target cell type: 0.1
+# Average methylation in background cell type: 0.6
+# Difference in average methylation in traget and background cell type: 0.5
 plotTopCellTypeMarker(method = 'smwd', cell_type = 'mL4', dmr_direction = 'hypo')
+# Average methylation in target cell type: 0.37
+# Average methylation in background cell type: 0.73
+# Difference in average methylation in traget and background cell type: 0.37
 plotTopCellTypeMarker(method = 'scmet', cell_type = 'mL4', dmr_direction = 'hypo')
+# Average methylation in target cell type: 0.55
+# Average methylation in background cell type: 0.88
+# Difference in average methylation in traget and background cell type: 0.33
 
 
 
@@ -400,7 +436,7 @@ ggsave(here(plot_dir, "densityplot_nCpGsPerRegion.png"), height = 3, width = 5)
 
 
 # Distribution of width of detected region
-region_width <- lapply(res_region, function(se) width(granges(se)))
+region_width <- lapply(res_region, function(se) width(GenomicRanges::reduce(granges(se), min.gapwidth = 0)))
 df <- map_df(region_width, 
              function(x) data.frame(Width = x), 
              .id = "Method") %>%
@@ -408,10 +444,12 @@ df <- map_df(region_width,
 df %>%
   ggplot(aes(Method, Width, color = Method)) +
   geom_boxplot() +
-  scale_y_continuous(labels = scales::scientific, name = "Width of detected regions (bp)", limits = c(0, 40000)) +
-  theme(panel.background = element_rect(fill = "white", color = "black"), panel.grid = element_line(color = "light grey")) +
+  scale_y_continuous(name = "Width of detected regions (bp)", limits = c(0, 40000)) +
+  theme(legend.position = "none",
+        panel.background = element_rect(fill = "white", color = "black"), 
+        panel.grid = element_line(color = "light grey")) +
   scale_color_manual(name = "Methods", breaks = names(COLORVALUES), values = COLORVALUES)
-ggsave(here(plot_dir, "densityplot_regionWidth.png"), height = 4, width = 6)
+ggsave(here(plot_dir, "densityplot_regionWidth.png"), height = 4, width = 4.5)
 
 # Overlap between detected regions from methods
 res.gr.list <- lapply(res_region, granges)

@@ -93,4 +93,15 @@ formatCellFiles <- function(cell_file_name) {
 # Run (took several mins)
 foreach (file_name = met_files) %dopar% formatCellFiles(file_name)
 
+# ----- misc -----
+# Distribution of proportion of sites with intermediate methylation level
+countItmdProportion <- function(file) {
+  cell.df <- fread(here(write_dir_met, file))
+  mf <- cell.df$meth_read/cell.df$total_read 
+  return(sum(mf > 0 & mf < 1)/length(mf))
+}
+itmd_prop <- unlist(parallel::mclapply(list.files(write_dir_met), countItmdProportion, mc.cores = 8))
+quantile(itmd_prop)
+#          0%         25%         50%         75%        100% 
+# 0.000000000 0.002869492 0.004985169 0.008636923 0.322671732 
 

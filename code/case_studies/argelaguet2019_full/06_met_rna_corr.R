@@ -87,7 +87,7 @@ clusterProfiler::dotplot(enrich_go,
                          label_format = 50) +
   scale_color_gradient(low = 'darkblue', high = 'yellow') +
   ggtitle(paste0('Gene Ratio in GO Analysis'),
-          subtitle = paste0('Ontology Category: ', ont)) +
+          subtitle = paste0('Ontology Category: BP, MF, CC')) +
   theme(plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust = 0.5))
 ggsave(here(plot_dir, paste0('enrichGO_dotplot_ontALL_topVarGenesInRNA.png')), width = 7, height = 12)
@@ -115,7 +115,7 @@ promoter.mtx <- (assays(promoter_near.se)$M / assays(promoter_near.se)$Cov) %>% 
 
 N <- nrow(vmr.mtx)
 corr_vmr      <- map_dbl(.x = 1:N, 
-                         .f = ~ cor(vmr.mtx[.x, ], rna.mtx[.x, ], method = 'spearman', use = 'pairwise.complete.obs'))
+                         .f = ~ cor(vmr.mtx[.x, ], rna.mtx[.x, ], method = corr_method, use = 'pairwise.complete.obs'))
 corr_promoter <- map_dbl(.x = 1:N, 
                          .f = ~ cor(promoter.mtx[.x, ], rna.mtx[.x, ], method = corr_method, use = 'pairwise.complete.obs'))
 

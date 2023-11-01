@@ -12,6 +12,7 @@ chromosome <- "chr1"
 subtype <- "IT-L23_Cux1"
 min_olap <- 3 # minimum number of sites that overlaps with true VMR to be counted as true positive
 
+
 # ==== vmrseq ====
 
 .vmrseqEval <- function(res_vseq) {

@@ -224,11 +224,46 @@ plotRRA(experiment = 'real')
 plotRRA(experiment = 'sim')
 
 
+# ---- Distribution of spiked-in VMRs in simulation studies ----
+summarySpikedInVMRs <- function(N, NP, sparseLevel) {
+  dir <- paste0("data/interim/sim_studies/benchmark_real_chr/modified_real/pseudoChr_",
+                subtype, "_", chromosome, "_",
+                N, "cells_", NP, "subpops_",
+                NV, "VMRs_sparseLevel", sparseLevel,
+                "_seed", seed)
+  gr <- granges(loadHDF5SummarizedExperiment(dir))
+  h5closeAll()
+  idx_vmr_start <- which(gr$is_vml==TRUE & lag(gr$is_vml)==FALSE)
+  idx_vmr_end <- which(gr$is_vml==FALSE & lag(gr$is_vml)==TRUE) - 1
+  vmr_n_cpg <- idx_vmr_end - idx_vmr_start
+  vmr_width <- start(gr)[idx_vmr_end] - start(gr)[idx_vmr_start]
+  return(data.frame(N, NP, sparseLevel, vmr_n_cpg, vmr_width))
+}
 
+Ns <- c(200, 500, 1000, 2000)
+sparseLevels <- 1:3
+params.df <- expand_grid(Ns, NP, sparseLevels)
+smr.df <- with(params.df,  
+               map_dfr(
+                 1:nrow(params.df), 
+                 ~ summarySpikedInVMRs(Ns[.x], 2, sparseLevels[.x])
+               ))
 
-
-
-
+smr.df %>%  
+  mutate(
+    N = factor(paste0('N cells = ', N), levels = c('N cells = 200', 'N cells = 500', 'N cells = 1000', 'N cells = 2000')),
+    sparseLevel = factor(sparseLevel, labels = c('high', 'medium', 'low'))
+  ) %>% 
+  ggplot(aes(sparseLevel, vmr_width)) +
+  geom_boxplot() +
+  facet_wrap(~ N, nrow = 1) +
+  scale_y_continuous(labels = scales::comma, 
+                     limits = c(0, 25000), 
+                     name = "Width of spiked-in VMRs in synthetic dataset (bp)") +
+  xlab("Relative sparsity") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) 
+ggsave(here(plot_dir, paste0("boxplot_vmr_width_in_simulations.png")), width = 6, height = 5)
 
 
 
