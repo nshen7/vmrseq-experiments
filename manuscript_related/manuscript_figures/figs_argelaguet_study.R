@@ -226,44 +226,60 @@ plotVmrGenePair(positive_corr = FALSE, top_i = 7) # VMR No. 7477 in vmr_near_gen
 # ---- Correlation with genes ----
 max_dist <- 1000
 corr_method <- 'spearman'
-upstream <- 2000; downstream <- 2000
+upstream <- 2000; downstream <- 0
 top_pct_var_genes <- 0.1 # Percentage of top variable genes
 
 go_p_cutoff <- 0.01 # adjusted p-val cutoff in GO enrichment analysis
 go_q_cutoff <- 0.05 # adjusted q-val cutoff in GO enrichment analysis
 
 read_dir_met <- here('data', 'interim', 'case_studies', 'argelaguet2019_full', '06_met_rna_corr')
-vmr_near_gene.se <- loadHDF5SummarizedExperiment(here(read_dir_met, paste0('SummarizedExperiment_correlation_spearman_metNrna_vmrsAsRef_maxDist1000bp')))
+vmr_near_gene.se <- loadHDF5SummarizedExperiment(
+  here(read_dir_met, paste0('SummarizedExperiment_correlation_spearman_metNrna_vmrsAsRef_maxDist1000bp_promotorUp2kb'))
+)
 
 plot.df <- granges(vmr_near_gene.se) %>%
   as.data.frame() %>%
   arrange(desc(loglik_diff)) %>%
-  filter(vmr_n_avail_cell >= 10 & promoter_n_avail_cell >= 10) ## ensure min 10 available cells covered
+  mutate(context = factor(context, levels = c("VMRs overlapping with promoter", "VMRs overlapping with gene body", "VMRs outside gene but within 1000-bp distance"))) %>%
+  filter(vmr_n_avail_cell >= 10 & promoter_n_avail_cell >= 10) 
 fwrite(plot.df %>% select(-loglik_diff.1), here(write_dir, 'supp_table_argelaguet_gene_vmr_corr.csv'))
 
+
+with(plot.df %>% filter(context == "VMRs overlapping with promoter"),
+     ks.test(x = vmr_rna_corr, y = promoter_rna_corr)) # D = 0.12463, p-value = 0.01066
+with(plot.df %>% filter(context == "VMRs overlapping with gene body"),
+     ks.test(x = vmr_rna_corr, y = promoter_rna_corr)) # D = 0.39422, p-value < 2.2e-16
+with(plot.df %>% filter(context == "VMRs outside gene but within 1000-bp distance"),
+     ks.test(x = vmr_rna_corr, y = promoter_rna_corr)) # D = 0.35385, p-value = 4.984e-11
 
 # proportion of VMRs exhibiting positive corr
 plot.df %>%
   group_by(context) %>%
   summarise(prop_positive = sum(vmr_rna_corr > 0)/n())
 #   context                                       prop_positive
-#   <chr>                                                 <dbl>
-# 1 VMRs outside gene but within 1000-bp distance        0.160 
-# 2 VMRs overlapping with gene body                      0.113 
-# 3 VMRs overlapping with promoter                       0.0629
+#   <fct>                                                 <dbl>
+# 1 VMRs overlapping with promoter                       0.0356
+# 2 VMRs overlapping with gene body                      0.111 
+# 3 VMRs outside gene but within 1000-bp distance        0.159 
+
 
 
 # plot correlation
 cutoff <- 0.2
-enrich_go_BP <- readRDS(here(read_dir, '06_met_rna_corr', paste0('enrichGO_ontBP_vmrCorrWithRNA_positive_cutoff', abs(cutoff), '.rds')))
+enrich_go_BP <- readRDS(here(read_dir, '06_met_rna_corr', paste0('enrichGO_ontBP_vmrCorrWithRNA_positive_cutoff', abs(cutoff), '_promotorUp2kb.rds')))
 gene_in_BP <- enrich_go_BP@result %>% filter(p.adjust < go_p_cutoff) %>% pull(geneID) %>% strsplit('/') %>% unlist() %>% unique()
-enrich_go_MF <- readRDS(here(read_dir, '06_met_rna_corr', paste0('enrichGO_ontMF_vmrCorrWithRNA_positive_cutoff', abs(cutoff), '.rds')))
+enrich_go_MF <- readRDS(here(read_dir, '06_met_rna_corr', paste0('enrichGO_ontMF_vmrCorrWithRNA_positive_cutoff', abs(cutoff), '_promotorUp2kb.rds')))
 gene_in_MF <- enrich_go_MF@result %>% filter(p.adjust < go_p_cutoff) %>% pull(geneID) %>% strsplit('/') %>% unlist() %>% unique()
 
-hightlight.df <- fread(here(read_dir, '06_met_rna_corr', paste0('hightlighGenes_vmrCorrWithRNA_positive_cutoff', abs(cutoff), '.txt'))) %>%
+hightlight.df <- fread(here(read_dir, '06_met_rna_corr', paste0('hightlighGenes_vmrCorrWithRNA_positive_cutoff', abs(cutoff), '_promotorUp2kb.txt'))) %>%
+  mutate(context = factor(context, levels = c("VMRs overlapping with promoter", "VMRs overlapping with gene body", "VMRs outside gene but within 1000-bp distance"))) %>%
   mutate(in_go = rna_gene_name %in% c(gene_in_BP, gene_in_MF))
 
-examples.df <- data.frame(granges(vmr_near_gene.se))[c(3841, 5241, 5305, 7477), ]
+examples.df <- data.frame(granges(vmr_near_gene.se)) %>% 
+  filter(rna_gene_name %in% c('Prtg', 'Ccnd2', 'Slc7a7', 'Dppa5a')) %>%
+  mutate(context = factor(context, levels = c("VMRs overlapping with promoter", "VMRs overlapping with gene body", "VMRs outside gene but within 1000-bp distance"))) %>%
+  group_by(rna_gene_name) %>%
+  slice(which.max(abs(vmr_rna_corr)))
 
 bg_color_1 <- 'steelblue'
 bg_color_2 <- 'darkgrey'
@@ -271,6 +287,7 @@ highlight_color <- 'black'
 text_annt.df <- plot.df %>%
   group_by(context) %>%
   summarise(
+    n = n(),
     pct_dots_in_bg_1 = sum(
       (vmr_rna_corr < 0) & (promoter_rna_corr < 0) & (abs(vmr_rna_corr) > abs(promoter_rna_corr))
     ) / length(vmr_rna_corr),
@@ -279,14 +296,39 @@ text_annt.df <- plot.df %>%
     ) / length(vmr_rna_corr),
     pct_dots_above_line = sum(
       (vmr_rna_corr > cutoff)
+    ) / length(vmr_rna_corr),
+    pct_vmr_pos_corr = sum(
+      (vmr_rna_corr > cutoff)
     ) / length(vmr_rna_corr)
   ) %>% 
-  mutate(text_bg_1 = paste0(round(pct_dots_in_bg_1*100, 1), '% dots in blue area'),
-         text_bg_2 = paste0(round(pct_dots_in_bg_2*100, 1), '% dots in grey area'),
-         text_above_line = paste0(round(pct_dots_above_line*100, 1), '% dots above dashed line')) 
+  mutate(text_total_n = paste0('# (VMR-gene pairs) = ', n),
+         text_bg_1 = paste0(round(pct_dots_in_bg_1*100, 1), '% in blue area'),
+         text_bg_2 = paste0(round(pct_dots_in_bg_2*100, 1), '% in grey area'),
+         text_above_line = paste0(round(pct_dots_above_line*100, 1), '% above dashed line')) 
+text_annt.df %>% select(context, pct_vmr_pos_corr)
+# # A tibble: 3 × 2
+#   context                                        pct_vmr_pos_corr
+#   <fct>                                                     <dbl>
+# 1 VMRs overlapping with promoter                           0.0119
+# 2 VMRs overlapping with gene body                          0.0301
+# 3 VMRs outside gene but within 1000-bp distance            0.0410
+
+## Proportion of promoters exceeding correlation > 0.2
+plot.df %>%
+  filter(!duplicated(rna_gene_name)) %>%
+  summarise(
+    pct_promoter_pos_corr = sum(
+      (promoter_rna_corr > cutoff)
+    ) / length(promoter_rna_corr)
+  )
+#   pct_promoter_pos_corr
+# 1           0.007081039
+
+
 set.seed(2020)
 plot.df %>%
   ggplot(aes(promoter_rna_corr, vmr_rna_corr)) +
+  facet_grid(~ context) +
   geom_polygon(data = data.frame(x = c(-1, 0, 0), y = c(-1, -1, 0)), 
                aes(x, y), fill = bg_color_1, alpha = 0.2) +
   geom_polygon(data = data.frame(x = c(-1, -1, 0), y = c(-1, 0, 0)), 
@@ -301,19 +343,19 @@ plot.df %>%
                             aes(label = rna_gene_name, fill = in_go),
                             color         = highlight_color,
                             size          = 2,
-                            box.padding   = 0.3, 
+                            box.padding   = 0.3,
                             point.padding = 0,
                             nudge_y       = 0.2,
                             max.overlaps  = 80,
                             segment.color = 'grey50') +
+  geom_text(data = text_annt.df, aes(label = text_total_n), x = 0.5, y = -0.6) +
   geom_text(data = text_annt.df, aes(label = text_bg_1), x = 0.5, y = -0.7, color = bg_color_1) +
   geom_text(data = text_annt.df, aes(label = text_bg_2), x = 0.5, y = -0.8, color = bg_color_2) +
   # geom_text(data = text_annt.df, aes(label = text_above_line), x = 0.5, y = -0.9, color = 'black') +
   geom_flat_violin_x(aes(promoter_rna_corr, -1, color = context), alpha = 0.5, width = 0.3) +
   geom_flat_violin_y(aes(-1, vmr_rna_corr,      color = context), alpha = 0.5, width = 0.3) + 
-  facet_wrap(~ context, nrow = 1) +
   # scale_color_manual(values = c('#CC6666', '#9999CC', '#66CC99')) +
-  scale_color_manual(values = wesanderson::wes_palette("IsleofDogs1")[c(1,2,3)]) +
+  scale_color_manual(values = wesanderson::wes_palette("IsleofDogs1")[1:3]) +
   scale_fill_manual(values = c('white', 'lightgrey')) + # color for gene name boxes
   scale_x_continuous(expand = c(0, 0), limits = c(-1, 1)) +
   scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
@@ -321,72 +363,72 @@ plot.df %>%
   xlab('Spearman correlation of gene expression with promoter methylation') +
   theme_classic() +
   theme(legend.position = 'none',
-        panel.spacing.x = unit(c(0.1, 0.1), 'null'))
-ggsave(here(plot_dir, paste0('correlation_', corr_method, '_metNrna_vmrsAsRef_maxDist', max_dist, 'bp_cutoff', abs(cutoff), '.png')), width = 15, height = 5)
+        panel.spacing.x = unit(c(0.05, 0.05), 'null'))
+ggsave(here(plot_dir, paste0('correlation_', corr_method, '_metNrna_vmrsAsRef_maxDist', max_dist, 'bp_cutoff', abs(cutoff), '.png')), width = 18, height = 6)
 
 
 
-## Same plot but without gene annotation
-plot.df %>%
-  ggplot(aes(promoter_rna_corr, vmr_rna_corr)) +
-  geom_polygon(data = data.frame(x = c(-1, 0, 0), y = c(-1, -1, 0)), 
-               aes(x, y), fill = bg_color_1, alpha = 0.2) +
-  geom_polygon(data = data.frame(x = c(-1, -1, 0), y = c(-1, 0, 0)), 
-               aes(x, y), fill = bg_color_2, alpha = 0.2) +
-  geom_path(data = data.frame(x = c(0, 0), y = c(0, 1)), aes(x, y), color = 'grey', linetype = 3) +
-  geom_path(data = data.frame(x = c(0, 1), y = c(0, 0)), aes(x, y), color = 'grey', linetype = 3) +
-  geom_point(aes(color = context), shape = 3, size = 1.5, stroke = 1, alpha = 0.6) +
-  geom_point(data = examples.df, color = 'palegreen4', size = 3) +
-  geom_text(data = text_annt.df, aes(label = text_bg_1), x = 0.5, y = -0.7, color = bg_color_1) +
-  geom_text(data = text_annt.df, aes(label = text_bg_2), x = 0.5, y = -0.8, color = bg_color_2) +
-  geom_flat_violin_x(aes(promoter_rna_corr, -1, color = context), alpha = 0.5, width = 0.3) +
-  geom_flat_violin_y(aes(-1, vmr_rna_corr,      color = context), alpha = 0.5, width = 0.3) + 
-  facet_wrap(~ context, nrow = 1) +
-  scale_color_manual(values = wesanderson::wes_palette("IsleofDogs1")[c(1,2,3)]) +
-  scale_fill_manual(values = c('white', 'lightgrey')) + # color for gene name boxes
-  scale_x_continuous(expand = c(0, 0), limits = c(-1, 1)) +
-  scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
-  ylab('Spearman correlation of gene expression with VMR methylation') +
-  xlab('Spearman correlation of gene expression with promoter methylation') +
-  theme_classic() +
-  theme(legend.position = 'none',
-        panel.spacing.x = unit(c(0.1, 0.1), 'null'))
-ggsave(here(plot_dir, paste0('correlation_', corr_method, '_metNrna_vmrsAsRef_maxDist', max_dist, 'bp_cutoff', abs(cutoff), '_noGeneAnnot.png')), width = 15, height = 5)
-
-
-
-
-# ---- global methylation level ----
-
-read_dir_raw <- here('data', 'raw_counts', 'argelaguet2019', 'scnmt_gastrulation_formatted', 'met_formatted')
-cell_file_names <- list.files(read_dir_met)
-
-# Read in metadata
-md <- fread(here('data', 'metadata', 'argelaguet2019', 'argelaguet2019_full_met&rna_sample_metadata_processed.csv'))
-md$cell_file_dirs <- here(read_dir_met, md$file_met)
-
-computeGlobalMet <- function(dir) {
-  df <- fread(dir)
-  mf <- df$meth_read / df$total_read
-  return(mean(mf))
-}
-
-md$global_met <- do.call(c, parallel::mclapply(md$cell_file_dirs, computeGlobalMet, mc.cores = 8))
-
-# colored by linearge
-md %>% 
-  ggplot(aes(lineage10x_2, global_met)) +
-  geom_jitter(height = 0.02, size = 0.05) +
-  geom_violin(aes(fill = lineage10x_2), alpha = 0.5, width = 1) +
-  scale_fill_manual(values = CTCOLORS) + 
-  scale_y_continuous(breaks = c(0,1)) +
-  facet_grid(~ stage, scales = "free_x", space = "free_x") + 
-  guides(fill = "none") +
-  xlab('Lineage commitment') +
-  ylab('Global methylation level') +
-  theme_classic() + 
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
-        plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust = 0.5))
-ggsave(here(plot_dir, paste0("violin_globalMet_vs_lineage.png")), width = 6, height = 4)
-
+# ## Same plot but without gene annotation
+# plot.df %>%
+#   ggplot(aes(promoter_rna_corr, vmr_rna_corr)) +
+#   geom_polygon(data = data.frame(x = c(-1, 0, 0), y = c(-1, -1, 0)), 
+#                aes(x, y), fill = bg_color_1, alpha = 0.2) +
+#   geom_polygon(data = data.frame(x = c(-1, -1, 0), y = c(-1, 0, 0)), 
+#                aes(x, y), fill = bg_color_2, alpha = 0.2) +
+#   geom_path(data = data.frame(x = c(0, 0), y = c(0, 1)), aes(x, y), color = 'grey', linetype = 3) +
+#   geom_path(data = data.frame(x = c(0, 1), y = c(0, 0)), aes(x, y), color = 'grey', linetype = 3) +
+#   geom_point(aes(color = context), shape = 3, size = 1.5, stroke = 1, alpha = 0.6) +
+#   geom_point(data = examples.df, color = 'palegreen4', size = 3) +
+#   geom_text(data = text_annt.df, aes(label = text_bg_1), x = 0.5, y = -0.7, color = bg_color_1) +
+#   geom_text(data = text_annt.df, aes(label = text_bg_2), x = 0.5, y = -0.8, color = bg_color_2) +
+#   geom_flat_violin_x(aes(promoter_rna_corr, -1, color = context), alpha = 0.5, width = 0.3) +
+#   geom_flat_violin_y(aes(-1, vmr_rna_corr,      color = context), alpha = 0.5, width = 0.3) + 
+#   facet_wrap(~ context, nrow = 1) +
+#   scale_color_manual(values = wesanderson::wes_palette("IsleofDogs1")[c(1,2,3)]) +
+#   scale_fill_manual(values = c('white', 'lightgrey')) + # color for gene name boxes
+#   scale_x_continuous(expand = c(0, 0), limits = c(-1, 1)) +
+#   scale_y_continuous(expand = c(0, 0), limits = c(-1, 1)) +
+#   ylab('Spearman correlation of gene expression with VMR methylation') +
+#   xlab('Spearman correlation of gene expression with promoter methylation') +
+#   theme_classic() +
+#   theme(legend.position = 'none',
+#         panel.spacing.x = unit(c(0.1, 0.1), 'null'))
+# ggsave(here(plot_dir, paste0('correlation_', corr_method, '_metNrna_vmrsAsRef_maxDist', max_dist, 'bp_cutoff', abs(cutoff), '_noGeneAnnot.png')), width = 15, height = 5)
+# 
+# 
+# 
+# 
+# # ---- global methylation level ----
+# 
+# read_dir_raw <- here('data', 'raw_counts', 'argelaguet2019', 'scnmt_gastrulation_formatted', 'met_formatted')
+# cell_file_names <- list.files(read_dir_met)
+# 
+# # Read in metadata
+# md <- fread(here('data', 'metadata', 'argelaguet2019', 'argelaguet2019_full_met&rna_sample_metadata_processed.csv'))
+# md$cell_file_dirs <- here(read_dir_met, md$file_met)
+# 
+# computeGlobalMet <- function(dir) {
+#   df <- fread(dir)
+#   mf <- df$meth_read / df$total_read
+#   return(mean(mf))
+# }
+# 
+# md$global_met <- do.call(c, parallel::mclapply(md$cell_file_dirs, computeGlobalMet, mc.cores = 8))
+# 
+# # colored by linearge
+# md %>% 
+#   ggplot(aes(lineage10x_2, global_met)) +
+#   geom_jitter(height = 0.02, size = 0.05) +
+#   geom_violin(aes(fill = lineage10x_2), alpha = 0.5, width = 1) +
+#   scale_fill_manual(values = CTCOLORS) + 
+#   scale_y_continuous(breaks = c(0,1)) +
+#   facet_grid(~ stage, scales = "free_x", space = "free_x") + 
+#   guides(fill = "none") +
+#   xlab('Lineage commitment') +
+#   ylab('Global methylation level') +
+#   theme_classic() + 
+#   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+#         plot.title = element_text(hjust = 0.5),
+#         plot.subtitle = element_text(hjust = 0.5))
+# ggsave(here(plot_dir, paste0("violin_globalMet_vs_lineage.png")), width = 6, height = 4)
+# 

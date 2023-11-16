@@ -88,3 +88,22 @@ itmd_prop <- unlist(parallel::mclapply(list.files(write_to), countItmdProportion
 quantile(itmd_prop)
 #          0%         25%         50%         75%        100% 
 # 0.001550225 0.003440104 0.004358966 0.005245920 0.021427392 
+itmd_prop_all <- c(itmd_prop, itmd_prop_argelaguet) # concatenate with argelaguet study
+quantile(itmd_prop_all)
+#          0%         25%         50%         75%        100% 
+# 0.000000000 0.003325643 0.004421386 0.005558797 0.322671732 
+
+
+# Distribution of proportion of sites with <=2 reads
+countUnder2readProportion <- function(file) {
+  cell.df <- fread(here(write_to, file))
+  return(sum(cell.df$total <= 2)/nrow(cell.df))
+}
+under2read_prop <- unlist(parallel::mclapply(list.files(write_to), countUnder2readProportion, mc.cores = 8))
+quantile(under2read_prop)
+#        0%       25%       50%       75%      100% 
+# 0.7006976 0.9546422 0.9668191 0.9772215 0.9943490
+under2read_prop_all <- c(under2read_prop, under2read_prop_argelaguet) # concatenate with argelaguet study
+quantile(under2read_prop_all)
+#        0%       25%       50%       75%      100% 
+# 0.3783257 0.9413365 0.9620004 0.9754822 1.0000000 

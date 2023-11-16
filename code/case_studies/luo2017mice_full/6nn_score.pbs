@@ -1,12 +1,12 @@
 #!/bin/bash
 
-#PBS -l walltime=1:00:00,select=1:ncpus=4:mem=48gb
+#PBS -l walltime=3:00:00,select=1:ncpus=4:mem=48gb
 #PBS -N 6nn_score
 #PBS -A st-kdkortha-1
 #PBS -m abe
 #PBS -M ning.shen@stat.ubc.ca
-#PBS -o pbs_error_and_output/6nn_score_pbs_output.txt
-#PBS -e pbs_error_and_output/6nn_score_pbs_error.txt
+#PBS -o pbs_error_and_output/6nn_score_pbs_output
+#PBS -e pbs_error_and_output/6nn_score_pbs_error
 
 ################################################################################
 

@@ -100,8 +100,17 @@ countItmdProportion <- function(file) {
   mf <- cell.df$meth_read/cell.df$total_read 
   return(sum(mf > 0 & mf < 1)/length(mf))
 }
-itmd_prop <- unlist(parallel::mclapply(list.files(write_dir_met), countItmdProportion, mc.cores = 8))
-quantile(itmd_prop)
+itmd_prop_argelaguet <- unlist(parallel::mclapply(list.files(write_dir_met), countItmdProportion, mc.cores = 8))
+quantile(itmd_prop_argelaguet)
 #          0%         25%         50%         75%        100% 
 # 0.000000000 0.002869492 0.004985169 0.008636923 0.322671732 
+
+
+# Distribution of proportion of sites with <=2 reads
+countUnder2readProportion <- function(file) {
+  cell.df <- fread(here(write_dir_met, file))
+  return(sum(cell.df$total <= 2)/nrow(cell.df))
+}
+under2read_prop_argelaguet <- unlist(parallel::mclapply(list.files(write_dir_met), countUnder2readProportion, mc.cores = 8))
+quantile(under2read_prop_argelaguet)
 

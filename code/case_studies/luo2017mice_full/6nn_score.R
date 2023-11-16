@@ -87,7 +87,11 @@ computeScoreForAll <- function(k, theta, cell_type) {
 # computeScoreForAll(k = 100, theta = 0.7, cell_type = 'broad')
 # computeScoreForAll(k = 100, theta = 0.7, cell_type = 'sub')
 # computeScoreForAll(k = 100, theta = 0.9, cell_type = 'broad')
-computeScoreForAll(k = 100, theta = 0.9, cell_type = 'sub')
+# computeScoreForAll(k = 100, theta = 0.9, cell_type = 'sub')
+# computeScoreForAll(k = 50, theta = 0.7, cell_type = 'sub')
+# computeScoreForAll(k = 50, theta = 0.7, cell_type = 'broad')
+computeScoreForAll(k = 50, theta = 0.9, cell_type = 'sub')
+computeScoreForAll(k = 50, theta = 0.9, cell_type = 'broad')
 
 # ---- Plotting ----
 
@@ -121,7 +125,9 @@ nnScorePlot <- function(k, theta, ylim, ybreaks) {
   return(p)
 }
 
-nnScorePlot(k = 100, theta = 0.7, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5))
-nnScorePlot(k = 100, theta = 0.9, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5))
+# nnScorePlot(k = 100, theta = 0.7, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5))
+# nnScorePlot(k = 100, theta = 0.9, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5))
+# nnScorePlot(k = 50, theta = 0.7, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5))
+nnScorePlot(k = 50, theta = 0.9, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5))
 
 
