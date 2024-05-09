@@ -1,6 +1,5 @@
 # ref: Smallwood, S., Lee, H., Angermueller, C. et al. https://doi.org/10.1038/nmeth.3035
-.libPaths("/home/nshen7/R/rstudio_4_2_0-biocon_3_15")
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
+source("code/SETPATHS.R")
 devtools::load_all("../vmrseq-package/vmrseq/")
 library(tidyverse)
 library(data.table)

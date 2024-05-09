@@ -1,5 +1,4 @@
-.libPaths("/home/nshen7/R/rstudio_4_2_0-biocon_3_15/")
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/") # path folder is vmrseq-experiments
+source("code/SETPATHS.R")
 source("code/sim_studies/benchmark_sim_chr/helper_functions_generate_chr.R")
 devtools::load_all("../vmrseq-package/vmrseq/")
 suppressPackageStartupMessages(library(HDF5Array))

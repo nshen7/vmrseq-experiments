@@ -1,4 +1,4 @@
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
+source("code/SETPATHS.R")
 source("code/luo2017_human_data_processing/helper_functions.R")
 
 #### NOTICE: Cells are selected according to Table S2 reported by scMET paper (partial cells removed compared to Luo2017 Table S1)

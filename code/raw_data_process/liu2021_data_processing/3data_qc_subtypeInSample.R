@@ -7,7 +7,7 @@ suppressPackageStartupMessages(library(DelayedMatrixStats))
 suppressPackageStartupMessages(library(tidyverse))
 setAutoBlockSize(size=1e9)
 
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
+source("code/SETPATHS.R")
 
 qcOnSE <- function(se_dir, min_cell_cov = 5, rm_allel_var = T){
   cells0.se <- loadHDF5SummarizedExperiment(dir = se_dir)

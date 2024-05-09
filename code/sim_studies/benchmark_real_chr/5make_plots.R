@@ -1,5 +1,4 @@
-.libPaths("/home/nshen7/R/rstudio_4_2_0/")
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/") # path folder is vmrseq-experiments
+source("code/SETPATHS.R")
 devtools::load_all("../vmrseq-package/vmrseq/")
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(tidyverse))

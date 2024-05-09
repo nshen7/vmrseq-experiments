@@ -1,7 +1,7 @@
 library(data.table)
 library(readxl)
 library(tidyverse)
-setwd(here::here())
+source("code/SETPATHS.R")
 # source("code/liu2021_data_processing/helper_functions.R")
 
 ### import and clean metadata

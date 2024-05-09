@@ -4,7 +4,7 @@ suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(parallel))
 suppressPackageStartupMessages(library(readr))
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
+source("code/SETPATHS.R")
 
 # ==== helper functions ====
 subsetAndStrandFlip <- function(file_dir) {

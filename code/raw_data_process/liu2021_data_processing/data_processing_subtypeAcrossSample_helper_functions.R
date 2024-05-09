@@ -3,7 +3,7 @@ suppressPackageStartupMessages(library(readxl))
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(parallel))
 
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
+source("code/SETPATHS.R")
 
 metadata <- fread("data/metadata/metadata_liu2021/Liu2021_cell_full_metadata_processed.csv") %>%
   filter(!is.na(GEO_accession) & !is.na(SubType) & !is.na(FilePath))

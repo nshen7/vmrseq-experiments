@@ -4,7 +4,7 @@ suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(readxl))
 suppressPackageStartupMessages(library(tidyverse))
 
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
+source("code/SETPATHS.R")
 source("code/liu2021_data_processing/data_processing_subtypeInSample_helper_functions.R")
 
 ### import metadata

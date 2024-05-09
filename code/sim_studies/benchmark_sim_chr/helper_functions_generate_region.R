@@ -4,8 +4,7 @@
 #   - Methylation info missing rate $\gamma$ (hence average across-cell coverage should be $N\gamma$ )
 #   - Noise level $\sigma$
 #   - Prevalence of the methylated grouping $\pi_1$ (only for 2-grouping case)
-.libPaths("/home/nshen7/R/rstudio_4_2_0-biocon_3_15/")
-# here::i_am("code/sim_studies/helper_functions/helper_functions_generate_region.R")
+source("code/SETPATHS.R")
 
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(gamlss.dist))

@@ -1,5 +1,4 @@
-.libPaths("/home/nshen7/R/rstudio_4_2_0-biocon_3_15/")
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/") # path folder is vmrseq-experiments
+source("code/SETPATHS.R")
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(BiocParallel))

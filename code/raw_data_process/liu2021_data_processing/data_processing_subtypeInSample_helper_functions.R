@@ -3,6 +3,7 @@ suppressPackageStartupMessages(library(bsseq))
 suppressPackageStartupMessages(library(parallel))
 suppressPackageStartupMessages(library(HDF5Array))
 suppressPackageStartupMessages(library(DelayedArray))
+source("code/SETPATHS.R")
 
 # ==== sub function ====
 convertToBSseq <- function(file_dir, cell_id) {

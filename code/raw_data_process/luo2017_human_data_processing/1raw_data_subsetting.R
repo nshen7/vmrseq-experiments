@@ -1,7 +1,7 @@
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(parallel))
 suppressPackageStartupMessages(library(readr))
-setwd("/scratch/st-kdkortha-1/nshen7/vmrseq/vmrseq-experiments/")
+source("code/SETPATHS.R")
 
 read_from <- "../../DXM_extend_chr1/data/raw_counts/"
 write_to <- "data/raw_counts/raw_counts_Luo2021_human/"

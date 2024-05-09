@@ -1,5 +1,4 @@
-.libPaths("/home/nshen7/R/rstudio_4_2_0-biocon_3_15/")
-# here::i_am("code/sim_studies/helper_functions/helper_functions_generate_chr.R")
+source("code/SETPATHS.R")
 source("code/sim_studies/benchmark_sim_chr/helper_functions_generate_region.R")
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(BiocParallel))
