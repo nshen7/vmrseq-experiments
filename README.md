@@ -1,6 +1,6 @@
-# Scripts for vmrseq Paper
+# Scripts for experiments in vmrseq paper
 
-This repository contains the code to reproduce the analyses and figures in "vmrseq: Probabilistic Modeling of Single-cell Methylation Heterogeneity". These scripts rely on the package dmrseq from [github](https://github.com/nshen7/vmrseq) (v0.99.0).
+This repository contains the code to reproduce the analyses and figures in "vmrseq: Probabilistic Modeling of Single-cell Methylation Heterogeneity". These scripts rely on the package vmrseq from [github](https://github.com/nshen7/vmrseq) (v0.99.0).
 
 The directory contains three folders:
 
