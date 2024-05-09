@@ -1,6 +1,0 @@
-[1] "2022-04-20 14:00:11 PDT"
-Total 122 cells are in subtype mDL-1 
-[1] "Finished combining cells."
-[1] "Finished creating SummarizedExperiment object."
-[1] "Finished writing HDF5 file."
-[1] "2022-04-20 14:17:12 PDT"

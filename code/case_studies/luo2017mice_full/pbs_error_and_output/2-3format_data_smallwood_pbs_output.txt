@@ -1,5 +1,0 @@
-[1] "chr2"
-[1] "Finished finding hits."
-[1] "2023-07-26 12:33:34 PDT"
-[1] "Finished computing features."
-[1] "2023-07-26 18:29:08 PDT"

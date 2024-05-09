@@ -1,6 +1,0 @@
-`summarise()` has grouped output by 'DataSource', 'SubType'. You can override
-using the `.groups` argument.
-Fontconfig error: No writable cache directories
-Fontconfig error: No writable cache directories
-Fontconfig error: No writable cache directories
-Fontconfig error: No writable cache directories

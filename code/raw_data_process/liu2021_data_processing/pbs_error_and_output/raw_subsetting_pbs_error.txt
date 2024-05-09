@@ -1,4 +1,0 @@
-Warning message:
-In mclapply(file_dirs, subsetAndStrandFlip, mc.cores = mc.cores) :
-  scheduled core 14 did not deliver a result, all values of the job will be affected
-Cgroup mem limit exceeded: Task in /pbspro.service/jobid/3816891.pbsha.ib.sockeye killed as a result of limit of /pbspro.service/jobid/3816891.pbsha.ib.sockeye

@@ -1,5 +1,0 @@
-`summarise()` has grouped output by 'DataSource', 'CellClass', 'SubType'. You can override using the `.groups` argument.
-Warning message:
-Removed 27 rows containing missing values (geom_point). 
-Warning message:
-Removed 27 rows containing missing values (geom_point). 
