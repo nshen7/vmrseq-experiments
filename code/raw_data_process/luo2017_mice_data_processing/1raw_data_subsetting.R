@@ -21,7 +21,7 @@ subsetAndStrandFlip_1chr <- function(chr_file) {
   return(chr)
 }
 
-subsetAndStrandFlip_1cell <- function(cell_folder_name, chr_num, mc.cores) { 
+subsetAndStrandFlip_1cell <- function(write_to, cell_folder_name, chr_num, mc.cores) { 
   # `cell_folder_name` -- folder for chromosome files for 1 cell
   # `chr_num` -- chromosome numbers, vector of integer number and/or single characters (e.g., c(1,2,3,X,Y))
   
@@ -59,7 +59,7 @@ subsetAndStrandFlip_1cell <- function(cell_folder_name, chr_num, mc.cores) {
 #   subsetAndStrandFlip_1cell(cell_folder_name, chr_num = 1:19, mc.cores = 16)
 # }
 
-# ==== collapse counts of deplicated CpGs due to strand flipping ====
+# ==== collapse counts of duplicated CpGs due to strand flipping ====
 
 file_list <- list.files(write_to)
 for (file in file_list) {
