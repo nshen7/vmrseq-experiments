@@ -7,14 +7,18 @@ library(BiocParallel)
 n_cores <- 22
 register(MulticoreParam(workers = n_cores))
 
-read_dir <- "data/interim/case_studies/luo2017mice_full/vmrseq/input/"
-write_dir <- "data/interim/case_studies/luo2017mice_full/vmrseq/output/"
-
 p <- ArgumentParser(description = 'Run vmrseq on Luo 2017 full dataset')
 p$add_argument('--chr', type = "integer", help = 'Chromosome number')
+p$add_argument('--alpha', type = "double", help = 'Alpha')
 args <- p$parse_args(commandArgs(TRUE))
 chr <- paste0("chr", args$chr)
-print(chr)
+alpha <- args$alpha
+print(paste0("chr = ", chr, "   alpha = ", alpha))
+print(str(alpha))
+
+read_dir <- "data/interim/case_studies/luo2017mice_full/vmrseq/input/"
+write_dir <- paste0("data/interim/case_studies/luo2017mice_full_sens_analysis/alpha/alpha", alpha, "/vmrseq/output/")
+if (!file.exists(write_dir)) dir.create(write_dir, recursive = T)
 
 # load input
 SE <- loadHDF5SummarizedExperiment(paste0(read_dir, chr))
@@ -25,7 +29,7 @@ SE <- subset(SE, total >= 3)
 
 # run vmrseq
 gr <- vmrseq.smooth(SE)
-fit <- vmrseq.fit(gr, alpha = 0.05)
+fit <- vmrseq.fit(gr, alpha = alpha)
 
 # save model output
 saveRDS(fit, paste0(write_dir, chr, ".rds"))
