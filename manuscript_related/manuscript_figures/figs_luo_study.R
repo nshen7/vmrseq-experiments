@@ -190,7 +190,7 @@ nnScorePlot <- function(k, theta, ylim, ybreaks) {
   score_sub.df   <- fread(here(read_dir, paste0("nearest_neighbor_score_subCellType_k", k, "_theta", theta, ".csv")))
   score.df <- rbind(data.frame(score_broad.df, Label = 'Broad\nClasses'),
                     data.frame(score_sub.df,   Label = 'Subtypes'))
-  p <- score.df %>%
+  score.df %>%
     filter(Method != 'vmrseq CRs') %>%
     ggplot(aes(x = NTopRegions, y = NNScore, color = Method, shape = Label, linetype = Label)) +
     geom_point(size = 3) +
@@ -201,15 +201,46 @@ nnScorePlot <- function(k, theta, ylim, ybreaks) {
     scale_color_manual(values = COLORVALUES) +
     scale_shape_manual(values = c(1, 16)) +
     scale_linetype_manual(values = c(2, 1)) +
+    # scale_x_continuous(labels = scales::comma) +
     scale_x_log10(breaks = c(300, 1000, 3000, 10000, 30000, 100000), labels = scales::comma) +
     scale_y_continuous(breaks = ybreaks, limits = ylim) +
-    xlab("N Top Regions") + ylab("Nearest Neighbor Count Score") +
+    xlab("# Top Regions") + ylab("Nearest Neighbor Count Score") +
     guides(shape = guide_legend(title = 'Labeled by'),
            linetype = guide_legend(title = 'Labeled by')) +
     theme_classic()
-  p
   ggsave(here(plot_dir, paste0("point_nnScore_vs_nTopRgions_k",k,"_theta",theta,".png")), height = 3.5, width = 4.5)
-  return(p)
+  
+  p <- score.df %>%
+    filter(Method != 'vmrseq CRs') %>%
+    ggplot(aes(x = NSites, y = NNScore, color = Method, shape = Label, linetype = Label)) +
+    geom_point(aes(size = NTopRegions)) +
+    # geom_point(size = 3) +
+    geom_path() + 
+    geom_point(data = score.df %>% filter(Method == 'vmrseq CRs'), 
+               aes(x = NSites, y = NNScore, color = Method, shape = Label, size = NTopRegions)) +
+    # aes(x = NSites, y = NNScore, color = Method, shape = Label), size = 3) +
+    scale_size_continuous(
+      name = "# top regions",
+      breaks = c(300, 1000, 3000, 10000, 30000, 100000)
+    ) +
+    scale_color_manual(values = COLORVALUES) +
+    scale_shape_manual(values = c(1, 16)) +
+    scale_linetype_manual(values = c(2, 1)) +
+    # scale_x_continuous(labels = scales::comma) +
+    scale_x_log10(labels = scales::comma) +
+    scale_y_continuous(breaks = ybreaks, limits = ylim) +
+    xlab("# CpGs") + ylab("Nearest Neighbor Count Score") +
+    guides(shape = guide_legend(title = 'Labeled by'),
+           linetype = guide_legend(title = 'Labeled by')) +
+    theme_classic()
+  p + theme(legend.position = "none")
+  ggsave(here(plot_dir, paste0("point_nnScore_vs_nSites_k",k,"_theta",theta,".png")), height = 3.5, width = 3.5)
+  
+  png(here(plot_dir, "point_nnScore_vs_nSites_subtype_legend.png"), height = 1000, width = 300, res = 200)
+  legend <- cowplot::get_legend(p)
+  grid::grid.newpage()
+  grid::grid.draw(legend)
+  dev.off()
 }
 
 nnScorePlot(k = 100, theta = 0.7, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5))

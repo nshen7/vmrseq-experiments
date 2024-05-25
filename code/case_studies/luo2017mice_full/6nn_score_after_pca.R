@@ -12,7 +12,13 @@ if (!file.exists(plot_dir)) dir.create(plot_dir)
 md <- fread("data/metadata/metadata_luo2017/sample_info_processed.csv")
 sites.gr <- readRDS(paste0(read_dir, "cpg_sites.rds"))
 
+dissim_metric <- "manhattan"
+
 # ---- utils ----
+
+bins_filtered.gr <- do.call(c, readRDS(here(read_dir, "..", "100kbins", "input", "100kbins_feature_metadata.rds")))
+bins_nregions <- bins_filtered.gr %>% length()
+bins_nsites <- findOverlaps(GenomicRanges::reduce(bins_filtered.gr), sites.gr) %>% length()
 
 res_region <- list(
   vseq = loadHDF5SummarizedExperiment(paste0(read_dir, "vmrseq_regionSummary_vmrs")),
@@ -26,14 +32,16 @@ methodName <- function(method) switch (method,
                                        'vseq_cr' = 'vmrseq CRs',
                                        'scbs' = 'scbs',
                                        'smwd' = 'Smallwood',
-                                       'scmet' = 'scMET')
+                                       'scmet' = 'scMET',
+                                       '100kbins' = '100kb bins')
 COLORS <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")[-3]
 COLORVALUES <- c("vmrseq" = COLORS[1], "vmrseq CRs" = COLORS[2],
-                 "scbs" = COLORS[3], "Smallwood" = COLORS[4], "scMET" = COLORS[5])
+                 "scbs" = COLORS[3], "Smallwood" = COLORS[4], "scMET" = COLORS[5],
+                 '100kb bins' = 'darkgreen')
 
 # ---- main ----
 
-computeScoreForAll <- function(k, theta, cell_type) {
+computeScoreForAll <- function(k, theta, cell_type, n_pcs) {
   
   if (cell_type == 'broad') {
     # Use main neuron types as reference cell labels: 'Excitatory' or 'inhibitory'
@@ -43,14 +51,13 @@ computeScoreForAll <- function(k, theta, cell_type) {
     true_clust <- md$Neuron.type
   }
   
-  ## Nearest neighbor score computed from regional mean methyl for each method
-  nnScoreMethod <- function(method, top_n_regions = NULL) {
+  ## Nearest neighbor score computed from PC loadings for each method
+  nnScoreMethodOnPCA <- function(method, top_n_regions = NULL) {
     
     name_seg <- ifelse(top_n_regions == '', yes = '', no = paste0("_top", top_n_regions, "regions"))
-    path <- paste0(write_dir, "dissimilarity_matrix_regional_methyl_", method, name_seg, ".txt.gz")
-    if (file.exists(path)) d_mat <- fread(path, drop = 1) else stop('Dissimilarity matrix not written yet!')
-    
-    stopifnot(all(md$sample == names(d_mat)))
+    pca_loadings <- fread(here(write_dir, "..", "pca_on_all_methods", paste0("loadings_", n_pcs, "pcs_", method, name_seg, ".txt.gz")))
+    d_mat <- cluster::daisy(pca_loadings, metric = dissim_metric, stand = FALSE) %>% as.matrix()
+
     return(nnScore(d_mat, true_clust, k, theta))
   }
   
@@ -76,11 +83,12 @@ computeScoreForAll <- function(k, theta, cell_type) {
     NNScore = 0
   ) %>%
     filter(!(Method == 'scmet' & NTopRegions %in% c('10000', '30000'))) %>%
-    add_row(Method = 'vseq_cr', NTopRegions = '') 
+    add_row(Method = 'vseq_cr', NTopRegions = '') %>% 
+    add_row(Method = '100kbins', NTopRegions = '') 
 
   for (i in 1:nrow(score.df)){
-    ## Compute nn count score on region MF
-    score.df$NNScore[i] <- nnScoreMethod(
+    ## Compute nn count score on PC loadings
+    score.df$NNScore[i] <- nnScoreMethodOnPCA(
       method = score.df$Method[i], 
       top_n_regions = score.df$NTopRegions[i]
     )
@@ -102,29 +110,35 @@ computeScoreForAll <- function(k, theta, cell_type) {
   total_n_regions <- sapply(res_region, function(se) granges(se) %>% length())
   total_n_sites <- sapply(res_region, function(se) findOverlaps(GenomicRanges::reduce(granges(se)), sites.gr) %>% length())
   for (i in which(is.na(score.df$NTopRegions))){
-    score.df$NTopRegions[i] = total_n_regions[score.df$Method[i]]
-    score.df$NSites[i]      = total_n_sites  [score.df$Method[i]]
+    method <- score.df$Method[i]
+    if (method == '100kbins') {
+      score.df$NTopRegions[i] = bins_nregions
+      score.df$NSites[i]      = bins_nsites
+    } else {
+      score.df$NTopRegions[i] = total_n_regions[method]
+      score.df$NSites[i]      = total_n_sites  [method]      
+    }
   }
   score.df <- score.df %>% mutate(Method = map_chr(Method, methodName))
   
-  fwrite(score.df, here(write_dir, paste0("nearest_neighbor_score_", cell_type, "CellType_k", k, "_theta", theta, ".csv")))
+  fwrite(score.df, here(write_dir, paste0("nearest_neighbor_score_afterPCA_", n_pcs, "pcs_", cell_type, "CellType_k", k, "_theta", theta, ".csv")))
 }
 
-# computeScoreForAll(k = 100, theta = 0.7, cell_type = 'broad')
-# computeScoreForAll(k = 100, theta = 0.7, cell_type = 'sub')
-# computeScoreForAll(k = 100, theta = 0.9, cell_type = 'broad')
-# computeScoreForAll(k = 100, theta = 0.9, cell_type = 'sub')
-# computeScoreForAll(k = 50, theta = 0.7, cell_type = 'sub')
-# computeScoreForAll(k = 50, theta = 0.7, cell_type = 'broad')
-# computeScoreForAll(k = 50, theta = 0.9, cell_type = 'sub')
-# computeScoreForAll(k = 50, theta = 0.9, cell_type = 'broad')
+# computeScoreForAll(k = 100, theta = 0.7, cell_type = 'broad', n_pcs = 10)
+# computeScoreForAll(k = 100, theta = 0.7, cell_type = 'sub', n_pcs = 10)
+# computeScoreForAll(k = 100, theta = 0.9, cell_type = 'broad', n_pcs = 10)
+# computeScoreForAll(k = 100, theta = 0.9, cell_type = 'sub', n_pcs = 10)
+# computeScoreForAll(k = 50, theta = 0.7, cell_type = 'sub', n_pcs = 10)
+# computeScoreForAll(k = 50, theta = 0.7, cell_type = 'broad', n_pcs = 10)
+# computeScoreForAll(k = 50, theta = 0.9, cell_type = 'sub', n_pcs = 10)
+# computeScoreForAll(k = 50, theta = 0.9, cell_type = 'broad', n_pcs = 10)
 
 # ---- Plotting ----
 
-nnScorePlot <- function(k, theta, ylim, ybreaks) {
+nnScorePlot <- function(k, theta, ylim, ybreaks, n_pcs) {
   
-  score_broad.df <- fread(here(write_dir, paste0("nearest_neighbor_score_broadCellType_k", k, "_theta", theta, ".csv")))
-  score_sub.df   <- fread(here(write_dir, paste0("nearest_neighbor_score_subCellType_k", k, "_theta", theta, ".csv")))
+  score_broad.df <- fread(here(write_dir, paste0("nearest_neighbor_score_afterPCA_", n_pcs, "pcs_broadCellType_k", k, "_theta", theta, ".csv")))
+  score_sub.df   <- fread(here(write_dir, paste0("nearest_neighbor_score_afterPCA_", n_pcs, "pcs_subCellType_k", k, "_theta", theta, ".csv")))
   score.df <- rbind(data.frame(score_broad.df, Label = 'broad types'),
                     data.frame(score_sub.df,   Label = 'subtypes'))
   score.df %>%
@@ -138,6 +152,7 @@ nnScorePlot <- function(k, theta, ylim, ybreaks) {
     scale_color_manual(values = COLORVALUES) +
     scale_shape_manual(values = c(1, 16)) +
     scale_linetype_manual(values = c(2, 1)) +
+    # scale_x_log10(labels = scales::comma) +
     # scale_x_continuous(labels = scales::comma) +
     scale_x_log10(breaks = c(300, 1000, 3000, 10000, 30000, 100000), labels = scales::comma) +
     scale_y_continuous(breaks = ybreaks, limits = ylim) +
@@ -145,7 +160,7 @@ nnScorePlot <- function(k, theta, ylim, ybreaks) {
     guides(shape = guide_legend(title = 'Labeled by'),
            linetype = guide_legend(title = 'Labeled by')) +
     theme_classic()
-  ggsave(paste0(plot_dir, "point_nnScore_vs_nTopRgions_k",k,"_theta",theta,".png"), height = 3.5, width = 5)
+  ggsave(paste0(plot_dir, "point_nnScore_afterPCA_", n_pcs, "pcs_vs_nTopRgions_k",k,"_theta",theta,".png"), height = 3.5, width = 5)
   
   p <- score.df %>%
     filter(Method != 'vmrseq CRs') %>%
@@ -155,7 +170,7 @@ nnScorePlot <- function(k, theta, ylim, ybreaks) {
     geom_path() + 
     geom_point(data = score.df %>% filter(Method == 'vmrseq CRs'), 
                aes(x = NSites, y = NNScore, color = Method, shape = Label, size = NTopRegions)) +
-               # aes(x = NSites, y = NNScore, color = Method, shape = Label), size = 3) +
+    # aes(x = NSites, y = NNScore, color = Method, shape = Label), size = 3) +
     scale_size_continuous(
       name = "# top regions",
       breaks = c(300, 1000, 3000, 10000, 30000, 100000)
@@ -171,18 +186,18 @@ nnScorePlot <- function(k, theta, ylim, ybreaks) {
            linetype = guide_legend(title = 'Labeled by')) +
     theme_classic()
   p + theme(legend.position = "none")
-  ggsave(paste0(plot_dir, "point_nnScore_vs_nSites_k",k,"_theta",theta,".png"), height = 3.5, width = 3.5)
+  ggsave(paste0(plot_dir, "point_nnScore_afterPCA_", n_pcs, "pcs_vs_nSites_k",k,"_theta",theta,".png"), height = 3.5, width = 3.5)
   
-  png(paste0(plot_dir, "point_nnScore_vs_nSites_subtype_legend.png"), height = 1000, width = 300, res = 200)
+  png(paste0(plot_dir, "point_nnScore_vs_nSites_afterPCA_", n_pcs, "pcs_subtype_legend.png"), height = 1000, width = 300, res = 200)
   legend <- cowplot::get_legend(p)
   grid::grid.newpage()
   grid::grid.draw(legend)
   dev.off()
 }
 
-nnScorePlot(k = 100, theta = 0.7, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5))
-nnScorePlot(k = 100, theta = 0.9, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5))
-nnScorePlot(k = 50, theta = 0.7, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5))
-nnScorePlot(k = 50, theta = 0.9, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5))
+nnScorePlot(k = 100, theta = 0.7, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5), n_pcs = 10)
+nnScorePlot(k = 100, theta = 0.9, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5), n_pcs = 10)
+nnScorePlot(k = 50, theta = 0.7, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5), n_pcs = 10)
+nnScorePlot(k = 50, theta = 0.9, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5), n_pcs = 10)
 
 

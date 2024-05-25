@@ -6,7 +6,7 @@ library(SummarizedExperiment)
 library(BiocParallel)
 # register(MulticoreParam(workers = n_cores))
 
-formatDataPca <- function(read_dir, write_dir, chrs, bp_size, n_cores) {
+formatData100kbins <- function(read_dir, write_dir, chrs, bp_size, n_cores) {
   
   if (!file.exists(write_dir)) dir.create(write_dir, recursive = T)
   
@@ -42,7 +42,7 @@ formatDataPca <- function(read_dir, write_dir, chrs, bp_size, n_cores) {
     message(3)
     
     # Save input 
-    fwrite(mf.df, file = here(write_dir, "pca_input.txt.gz"), 
+    fwrite(mf.df, file = here(write_dir, "100kbins_input.txt.gz"), 
            col.names = F, quote = F, append = chr != chrs[1])
     print(4)
     

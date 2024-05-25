@@ -20,5 +20,5 @@ if (!file.exists(write_dir)) dir.create(plot_dir)
 
 # summarizeOutputRegion(read_dir, write_dir, methods = c("smallwood"))
 
-summarizeOutputRegion(read_dir, write_dir, methods = c("scmet"))
+# summarizeOutputRegion(read_dir, write_dir, methods = c("scmet"))
 

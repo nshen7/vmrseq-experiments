@@ -22,7 +22,6 @@ res_region <- list(
   smwd = loadHDF5SummarizedExperiment(paste0(read_dir, "smallwood_regionSummary_vmrs")),
   scmet = loadHDF5SummarizedExperiment(paste0(read_dir, "scmet_regionSummary_vmrs"))
 )
-input_pca <- fread(here("data/interim/case_studies/luo2017mice_full/pca/input/pca_input.txt.gz"))
 
 # res_site <- list(
 #   vseq = loadHDF5SummarizedExperiment(paste0(read_dir, "vmrseq_siteSummary_sparseRep_vmrs")),
@@ -220,29 +219,20 @@ umapRegionalMeanMethyl <- function(method,
   if (!is.null(top_n_regions) & method=="vseq_cr") stop("CRs from vmrseq does not have rank.")
   
   set.seed(seed)
+   
+  se <- res_region[[method]]
   
-  if (method == 'pca') {
-    
-    d_mat_cols <- cluster::daisy(t(input_pca), metric = dissim_metric, stand = FALSE) %>% as.matrix()
-    
-  } else {
-    
-    se <- res_region[[method]]
-    
-    if (!is.null(top_n_regions)) { # take top n regions for clustering
-      top_ind <- order(metric, decreasing = TRUE)[1:top_n_regions]
-      se <- se[top_ind]
-    }
-    
-    MF <- as.matrix(assays(se)$M/assays(se)$Cov) 
-    
-    # Get dissimilarity matrix for columns (i.e., cells)
-    d_mat_cols <- cluster::daisy(t(MF), metric = dissim_metric, stand = FALSE) %>% as.matrix()
-    
+  if (!is.null(top_n_regions)) { # take top n regions for clustering
+    top_ind <- order(metric, decreasing = TRUE)[1:top_n_regions]
+    se <- se[top_ind]
   }
   
+  MF <- as.matrix(assays(se)$M/assays(se)$Cov) 
+  
+  # Get dissimilarity matrix for columns (i.e., cells)
+  d_mat_cols <- cluster::daisy(t(MF), metric = dissim_metric, stand = FALSE) %>% as.matrix()
+  
   name_seg <- ifelse(is.null(top_n_regions), yes = "", no = paste0("_top", top_n_regions, "regions"))
-
   rownames(d_mat_cols) <- colnames(d_mat_cols) <- md$sample
   fwrite(d_mat_cols, paste0(write_dir, "dissimilarity_matrix_regional_methyl_", method, name_seg, ".txt.gz"),
          col.names = TRUE, row.names = TRUE, quote = F)
@@ -268,7 +258,6 @@ umapRegionalMeanMethyl <- function(method,
 # umapRegionalMeanMethyl("scbs")
 # umapRegionalMeanMethyl("smwd")
 # umapRegionalMeanMethyl("scmet")
-umapRegionalMeanMethyl("pca")
 # 
 # umapRegionalMeanMethyl("vseq", top_n_regions = 300)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 300)
@@ -306,7 +295,6 @@ umapRegionalMeanMethyl("pca")
 # umapRegionalMeanMethyl("vseq", top_n_regions = 10000)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 10000)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 10000)
-# umapRegionalMeanMethyl("scmet", top_n_regions = 10000)
 
 # umapRegionalMeanMethyl("vseq", top_n_regions = 30000)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 30000)

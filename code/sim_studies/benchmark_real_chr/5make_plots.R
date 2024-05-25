@@ -259,3 +259,4 @@ ind_end <- which(diff(gr$is_vml) == -1)
 vmr_width <- start(gr)[ind_end] - start(gr)[ind_start]
 quantile(vmr_width)
 
+

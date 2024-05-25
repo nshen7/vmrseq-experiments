@@ -113,16 +113,18 @@ summarizeOutputSite <- function(read_dir, write_dir, methods) {
 ### Summarize region methylation
 summarizeOutputRegion <- function(read_dir, write_dir, methods, chr_names = paste0('chr', 1:19)) {
   
+  if (!file.exists(write_dir)) dir.create(write_dir, recursive = T)
+
   se_dirs <- here(read_dir, "vmrseq", "input", chr_names)
   
   ### vmrseq
   if ("vmrseq" %in% methods) {
     dirs_vseq <- here(read_dir, "vmrseq", "output", paste0(chr_names, ".rds"))
-    
+      
     # Concatenate results from 19 chromosomes
     res_vseq <- list(
-      vmr.ranges = do.call(c, lapply(dirs_vseq, function(dir) readRDS(dir)$vmr.ranges)),
-      cr.ranges = do.call(c, lapply(dirs_vseq, function(dir) readRDS(dir)$cr.ranges))
+      vmr.ranges = do.call(c, lapply(dirs_vseq, function(dir) if (file.exists(dir)) readRDS(dir)$vmr.ranges else NULL)),
+      cr.ranges = do.call(c, lapply(dirs_vseq, function(dir) if (file.exists(dir)) readRDS(dir)$cr.ranges else NULL))
     )
     
     rs_vseq1.se <- getRegionSummary(
@@ -243,34 +245,37 @@ getRegionSummary <- function(se_dirs, regions.gr) {
   if (any(duplicated(se_dirs))) stop("Duplicates exists in `se_dirs`.")
   
   for (se_dir in se_dirs) {
-    
-    se <- loadHDF5SummarizedExperiment(dir = se_dir)
-    hits <- findOverlaps(granges(se), regions.gr)
-    idx <- unique(subjectHits(hits))
-    
-    computeRegionStats <- function(i, type) { # i th feature/window
-      mat <- assays(se)$M_mat[queryHits(hits)[subjectHits(hits)==i], ] %>% matrix(ncol = ncol(se)) %>% as("sparseMatrix")
-      if (type == "M") return(round(colSums(mat))) 
-      else if (type == "Cov") return(colSums(mat > 0))
-      else stop("Wrong 'type' value. Either 'Cov' or 'M'.")
+      
+      se <- loadHDF5SummarizedExperiment(dir = se_dir)
+      hits <- findOverlaps(granges(se), regions.gr)
+      
+      if (length(hits) > 0) {
+        idx <- unique(subjectHits(hits))
+        
+        computeRegionStats <- function(i, type) { # i th feature/window
+          mat <- assays(se)$M_mat[queryHits(hits)[subjectHits(hits)==i], ] %>% matrix(ncol = ncol(se)) %>% as("sparseMatrix")
+          if (type == "M") return(round(colSums(mat))) 
+          else if (type == "Cov") return(colSums(mat > 0))
+          else stop("Wrong 'type' value. Either 'Cov' or 'M'.")
+        }
+        M <- do.call(
+          rbind,
+          bplapply(idx, computeRegionStats, type = "M")
+        )
+        Cov <- do.call(
+          rbind,
+          bplapply(idx, computeRegionStats, type = "Cov")
+        )
+        
+        temp_regions.se <- SummarizedExperiment(
+          assays = list("M" = M, "Cov" = Cov),
+          rowRanges = regions.gr[idx]
+        )
+        
+        if (se_dir == se_dirs[1]) regions.se <- temp_regions.se else regions.se <- rbind(regions.se, temp_regions.se)
+        cat("Finished", se_dir, "\n")
+      }
     }
-    M <- do.call(
-      rbind,
-      bplapply(idx, computeRegionStats, type = "M")
-    )
-    Cov <- do.call(
-      rbind,
-      bplapply(idx, computeRegionStats, type = "Cov")
-    )
-    
-    temp_regions.se <- SummarizedExperiment(
-      assays = list("M" = M, "Cov" = Cov),
-      rowRanges = regions.gr[idx]
-    )
-    
-    if (se_dir == se_dirs[1]) regions.se <- temp_regions.se else regions.se <- rbind(regions.se, temp_regions.se)
-    cat("Finished", se_dir, "\n")
-  }
   return(regions.se)
 }
 

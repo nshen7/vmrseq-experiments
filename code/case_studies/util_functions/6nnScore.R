@@ -2,7 +2,7 @@ source("code/SETPATHS.R")
 devtools::load_all("../vmrseq-package/vmrseq/")
 
 # function for computing nearst neighbor score (reference: scbs paper)
-nnScore <- function(d_mat, true_clust, k = 20, theta = 0.9) {
+nnScore <- function(d_mat, true_clust, k, theta) {
   
   if(ncol(d_mat) != nrow(d_mat)) stop("`d_mat` is not square")
   
