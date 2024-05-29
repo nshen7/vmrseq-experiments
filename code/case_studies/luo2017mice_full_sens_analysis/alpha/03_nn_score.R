@@ -18,19 +18,19 @@ computeDissimilarityMatrix <- function(se, dissim_metric = "manhattan") {
 
 computeNNScoreFromSE <- function(alpha, k, theta) {
 
-  # vmrs.se <- loadHDF5SummarizedExperiment(here(read_dir, paste0('alpha', alpha), "vmrseq_regionSummary_vmrs"))
-  # d_mat_vmrs <- computeDissimilarityMatrix(vmrs.se)
-  # fwrite(d_mat_vmrs, here(write_dir, paste0("dissimilarity_matrix_regional_methyl_alpha", alpha, "_vseq.txt.gz")), 
-  #        col.names = F, row.names = F, quote = F)
+  vmrs.se <- loadHDF5SummarizedExperiment(here(read_dir, paste0('alpha', alpha), "vmrseq_regionSummary_vmrs"))
+  d_mat_vmrs <- computeDissimilarityMatrix(vmrs.se)
+  fwrite(d_mat_vmrs, here(write_dir, paste0("dissimilarity_matrix_regional_methyl_alpha", alpha, "_vseq.txt.gz")),
+         col.names = F, row.names = F, quote = F)
   
-  d_mat_vmrs <- fread(here(write_dir, paste0("dissimilarity_matrix_regional_methyl_alpha", alpha, "_vseq.txt.gz")))
+  # d_mat_vmrs <- fread(here(write_dir, paste0("dissimilarity_matrix_regional_methyl_alpha", alpha, "_vseq.txt.gz")))
   
-  # crs.se <- loadHDF5SummarizedExperiment(here(read_dir, paste0('alpha', alpha), "vmrseq_regionSummary_crs"))
-  # d_mat_crs <- computeDissimilarityMatrix(crs.se)
-  # fwrite(d_mat_crs, here(write_dir, paste0("dissimilarity_matrix_regional_methyl_alpha", alpha, "_vseq_cr.txt.gz")), 
-  #        col.names = F, row.names = F, quote = F)
+  crs.se <- loadHDF5SummarizedExperiment(here(read_dir, paste0('alpha', alpha), "vmrseq_regionSummary_crs"))
+  d_mat_crs <- computeDissimilarityMatrix(crs.se)
+  fwrite(d_mat_crs, here(write_dir, paste0("dissimilarity_matrix_regional_methyl_alpha", alpha, "_vseq_cr.txt.gz")),
+         col.names = F, row.names = F, quote = F)
   
-  d_mat_crs <- fread(here(write_dir, paste0("dissimilarity_matrix_regional_methyl_alpha", alpha, "_vseq_cr.txt.gz")))
+  # d_mat_crs <- fread(here(write_dir, paste0("dissimilarity_matrix_regional_methyl_alpha", alpha, "_vseq_cr.txt.gz")))
   
   NNScore_vmrs_broad <- nnScore(d_mat_vmrs, true_clust = md$Neuron_type1, k, theta)
   NNScore_crs_broad  <- nnScore(d_mat_crs, true_clust = md$Neuron_type1, k, theta)

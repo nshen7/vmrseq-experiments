@@ -21,7 +21,7 @@ sparseLevel <- args$sparseLevel
 alpha       <- as.numeric(args$alpha)
 
 cat("N =", N, "NP =", NP, "\n")
-cat("alpha = ")
+cat("alpha = ", alpha)
 
 NV <- 2000
 subtype <- "IT-L23_Cux1"
@@ -40,31 +40,39 @@ SE <- loadHDF5SummarizedExperiment(dir)
 total <- rowSums(assays(SE)[[1]]>=0, na.rm = T)
 SE <- subset(SE, total >= 3)
 
+t0 <- proc.time()
 gr <- vmrseq.smooth(SE)
-
-# run model
 t1 <- proc.time()
-fit <- vmrseq.fit(gr, alpha)
-t2 <- proc.time()
+# fit <- vmrseq.fit(gr, alpha)
+# t2 <- proc.time()
 
-# record time elapsed
-time <- round((t2 - t1)[3]/60, 2)
+time0 <- round((t1 - t0)[3]/60, 2)
 fwrite(
-  data.frame(time = time, method = "vmrseq", n_cores = n_cores),
-  paste0("data/interim/sim_studies/benchmark_real_chr/vmrseq/output/modelTime_",
+  data.frame(time = time0, method = "vmrseq CRs", n_cores = n_cores),
+  paste0("data/interim/sim_studies/benchmark_real_chr/vmrseq/output/modelTime_crs_",
          N, "cells_", NP, "subpops_",
          NV, "VMRs_sparseLevel", sparseLevel,
          "_alpha", alpha, ".txt")
 )
 
-# save model output
-saveRDS(fit, paste0(
-  "data/interim/sim_studies/benchmark_real_chr/vmrseq/output/pseudoChr_",
-  subtype, "_", chromosome, "_",
-  N, "cells_", NP, "subpops_",
-  NV, "VMRs_sparseLevel", sparseLevel,
-  "_alpha", alpha, "_seed", seed, "_vmrseqOutput.rds"
-))
+# record time elapsed in hmm fitting
+# time <- round((t2 - t1)[3]/60, 2)
+# fwrite(
+#   data.frame(time = time, method = "vmrseq", n_cores = n_cores),
+#   paste0("data/interim/sim_studies/benchmark_real_chr/vmrseq/output/modelTime_",
+#          N, "cells_", NP, "subpops_",
+#          NV, "VMRs_sparseLevel", sparseLevel,
+#          "_alpha", alpha, ".txt")
+# )
 
+# # save model output
+# saveRDS(fit, paste0(
+#   "data/interim/sim_studies/benchmark_real_chr/vmrseq/output/pseudoChr_",
+#   subtype, "_", chromosome, "_",
+#   N, "cells_", NP, "subpops_",
+#   NV, "VMRs_sparseLevel", sparseLevel,
+#   "_alpha", alpha, "_seed", seed, "_vmrseqOutput.rds"
+# ))
+# 
 cat(paste0(alpha, ", "))
 
