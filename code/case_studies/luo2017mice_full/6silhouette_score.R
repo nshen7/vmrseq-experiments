@@ -9,6 +9,7 @@ write_dir <- "data/interim/case_studies/luo2017mice_full/result_summary/"
 plot_dir <- "plots/case_studies/luo2017mice_full/comparison/"
 if (!file.exists(plot_dir)) dir.create(plot_dir)
 md <- fread("data/metadata/metadata_luo2017/sample_info_processed.csv")
+sites.gr <- readRDS(paste0(read_dir, "cpg_sites.rds"))
 
 # ---- utils ----
 
@@ -17,6 +18,7 @@ res_region <- list(
   vseq_cr = loadHDF5SummarizedExperiment(paste0(read_dir, "vmrseq_regionSummary_crs")),
   scbs = loadHDF5SummarizedExperiment(paste0(read_dir, "scbs_regionSummary_vmrs")),
   smwd = loadHDF5SummarizedExperiment(paste0(read_dir, "smallwood_regionSummary_vmrs")),
+  smwd_2kb = loadHDF5SummarizedExperiment(paste0(read_dir, "smallwood_2kb_regionSummary_vmrs")),
   scmet = loadHDF5SummarizedExperiment(paste0(read_dir, "scmet_regionSummary_vmrs"))
 )
 methodName <- function(method) switch (method,
@@ -24,10 +26,15 @@ methodName <- function(method) switch (method,
                                        'vseq_cr' = 'vmrseq CRs',
                                        'scbs' = 'scbs',
                                        'smwd' = 'Smallwood',
+                                       'smwd_2kb' = 'Smallwood 2kb',
                                        'scmet' = 'scMET')
-COLORS <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")[-3]
+COLORS <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")
 COLORVALUES <- c("vmrseq" = COLORS[1], "vmrseq CRs" = COLORS[2],
-                 "scbs" = COLORS[3], "Smallwood" = COLORS[4], "scMET" = COLORS[5])
+                 "scbs" = COLORS[3], "Smallwood" = COLORS[4], "Smallwood 2kb" = COLORS[5],
+                 "scMET" = COLORS[6], '100kb bins' = 'darkgreen')
+# COLORS <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")[-3]
+# COLORVALUES <- c("vmrseq" = COLORS[1], "vmrseq CRs" = COLORS[2],
+#                  "scbs" = COLORS[3], "Smallwood" = COLORS[4], "scMET" = COLORS[5])
 
 # ---- main ----
 
@@ -61,6 +68,7 @@ computeScoreForAll <- function(cell_type) {
                      "vseq" = granges(res_region[[method]])$loglik_diff,
                      "scbs" = granges(res_region[[method]])$mcols.var,
                      "smwd" = granges(res_region[[method]])$var_lb,
+                     "smwd_2kb" = granges(res_region[[method]])$var_lb,
                      "scmet" = granges(res_region[[method]])$tail_prob)
     top_ind <- order(metric, decreasing = TRUE)[1:top_n_regions]
     top.gr <- granges(res_region[[method]])[top_ind]
@@ -72,7 +80,7 @@ computeScoreForAll <- function(cell_type) {
   
   ## Summarize silhouette score from various top n regions
   score.df <- expand.grid(
-    Method = c('vseq', 'scbs', 'smwd', 'scmet'), 
+    Method = c('vseq', 'scbs', 'smwd', 'smwd_2kb', 'scmet'), 
     NTopRegions = c('300', '1000', '3000', '10000', '30000', ''), # '' represents all regions
     silhouetteScore = 0
   ) %>%
@@ -110,8 +118,8 @@ computeScoreForAll <- function(cell_type) {
   fwrite(score.df, here(write_dir, paste0("silhouette_score_", cell_type, "CellType.csv")))
 }
 
-# computeScoreForAll(cell_type = 'broad')
-# computeScoreForAll(cell_type = 'sub')
+computeScoreForAll(cell_type = 'broad')
+computeScoreForAll(cell_type = 'sub')
 
 # ---- Plotting ----
 
@@ -180,6 +188,6 @@ silhouetteScorePlot <- function() {
   dev.off()
 }
 
-silhouetteScorePlot()
+# silhouetteScorePlot()
 
 

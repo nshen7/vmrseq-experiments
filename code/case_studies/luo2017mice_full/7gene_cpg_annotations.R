@@ -107,7 +107,7 @@ plotGeneAnnotDist <- function(method, top_n_regions = NULL) {
     y_label = 'Count')
   seg <- ifelse(is.null(top_n_regions), yes = "", no = paste0("_top", top_n_regions, "regions"))
   ggsave(paste0(plot_dir, "barplot_annot_gene_dist_vs_random_", method, seg, ".png"),
-         width = 5, height = 4)
+         width = 3.5, height = 3)
 }
 
 plotGeneAnnotDist(method = "vseq")
@@ -211,7 +211,7 @@ plotCpgAnnotDist <- function(method, top_n_regions = NULL) {
     y_label = 'Count')
   seg <- ifelse(is.null(top_n_regions), yes = "", no = paste0("_top", top_n_regions, "regions"))
   ggsave(paste0(plot_dir, "barplot_annot_cpg_dist_vs_random_", method, seg, ".png"),
-         width = 5, height = 4)
+         width = 3.5, height = 3)
 }
 
 plotCpgAnnotDist(method = "vseq")

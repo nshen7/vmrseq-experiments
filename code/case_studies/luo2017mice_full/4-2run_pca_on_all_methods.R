@@ -3,6 +3,8 @@
 #      bioRxiv 2021.10.23.465577; doi: https://doi.org/10.1101/2021.10.23.465577
 
 source("code/SETPATHS.R")
+library(SummarizedExperiment)
+library(HDF5Array)
 read_dir <- "data/interim/case_studies/luo2017mice_full/result_summary"
 write_dir <- "data/interim/case_studies/luo2017mice_full/pca_on_all_methods"
 if (!file.exists(write_dir)) dir.create(write_dir)
@@ -34,6 +36,7 @@ res_region <- list(
   vseq_cr = loadHDF5SummarizedExperiment(here(read_dir, "vmrseq_regionSummary_crs")),
   scbs = loadHDF5SummarizedExperiment(here(read_dir, "scbs_regionSummary_vmrs")),
   smwd = loadHDF5SummarizedExperiment(here(read_dir, "smallwood_regionSummary_vmrs")),
+  smwd_2kb = loadHDF5SummarizedExperiment(here(read_dir, "smallwood_2kb_regionSummary_vmrs")),
   scmet = loadHDF5SummarizedExperiment(here(read_dir, "scmet_regionSummary_vmrs"))
 )
 
@@ -43,6 +46,7 @@ wrapper <- function(method, n_pcs, top_n_regions = NULL) {
                    "vseq" = granges(res_region[[method]])$loglik_diff,
                    "scbs" = granges(res_region[[method]])$mcols.var,
                    "smwd" = granges(res_region[[method]])$var_lb,
+                   "smwd_2kb" = granges(res_region[[method]])$var_lb,
                    "scmet" = granges(res_region[[method]])$tail_prob)
   if (!is.null(top_n_regions) & method=="vseq_cr") stop("CRs from vmrseq does not have rank.")
   if (!is.null(top_n_regions) & method=="100kbins") stop("100kb bins does not have rank.")
@@ -63,7 +67,7 @@ wrapper <- function(method, n_pcs, top_n_regions = NULL) {
     # bins_filtered.gr <- bins.gr[n_covered_cells >= 5]
     # saveRDS(bins_filtered.gr, here(read_dir, "..", "100kbins", "input", "100kbins_feature_metadata_filtered.rds"))
     
-  } else if (method %in% c('vseq', 'scbs', 'smwd', 'scmet')) {
+  } else if (method %in% c('vseq', 'scbs', 'smwd', 'smwd_2kb', 'scmet')) {
     
     se <- res_region[[method]]
     if (!is.null(top_n_regions)) se <- se[top_ind]
@@ -83,32 +87,38 @@ wrapper <- function(method, n_pcs, top_n_regions = NULL) {
   fwrite(pca_res, file = here(write_dir, paste0("loadings_", n_pcs, "pcs_", method, name_seg, ".txt.gz")))
 }
 
-wrapper(method = '100kbins', n_pcs = 10)
-wrapper(method = 'vseq', n_pcs = 10)
-wrapper(method = 'vseq_cr', n_pcs = 10)
-wrapper(method = 'scbs', n_pcs = 10)
-wrapper(method = 'smwd', n_pcs = 10)
-wrapper(method = 'scmet', n_pcs = 10)
-
-wrapper(method = 'vseq', n_pcs = 10, top_n_regions = 300)
-wrapper(method = 'scbs', n_pcs = 10, top_n_regions = 300)
-wrapper(method = 'smwd', n_pcs = 10, top_n_regions = 300)
-wrapper(method = 'scmet', n_pcs = 10, top_n_regions = 300)
-
-wrapper(method = 'vseq', n_pcs = 10, top_n_regions = 1000)
-wrapper(method = 'scbs', n_pcs = 10, top_n_regions = 1000)
-wrapper(method = 'smwd', n_pcs = 10, top_n_regions = 1000)
-wrapper(method = 'scmet', n_pcs = 10, top_n_regions = 1000)
-
-wrapper(method = 'vseq', n_pcs = 10, top_n_regions = 3000)
-wrapper(method = 'scbs', n_pcs = 10, top_n_regions = 3000)
-wrapper(method = 'smwd', n_pcs = 10, top_n_regions = 3000)
-wrapper(method = 'scmet', n_pcs = 10, top_n_regions = 3000)
-
-wrapper(method = 'vseq', n_pcs = 10, top_n_regions = 10000)
-wrapper(method = 'scbs', n_pcs = 10, top_n_regions = 10000)
-wrapper(method = 'smwd', n_pcs = 10, top_n_regions = 10000)
-
-wrapper(method = 'vseq', n_pcs = 10, top_n_regions = 30000)
-wrapper(method = 'scbs', n_pcs = 10, top_n_regions = 30000)
-wrapper(method = 'smwd', n_pcs = 10, top_n_regions = 30000)
+# wrapper(method = '100kbins', n_pcs = 10)
+# wrapper(method = 'vseq', n_pcs = 10)
+# wrapper(method = 'vseq_cr', n_pcs = 10)
+# wrapper(method = 'scbs', n_pcs = 10)
+# wrapper(method = 'smwd', n_pcs = 10)
+wrapper(method = 'smwd_2kb', n_pcs = 10)
+# wrapper(method = 'scmet', n_pcs = 10)
+# 
+# wrapper(method = 'vseq', n_pcs = 10, top_n_regions = 300)
+# wrapper(method = 'scbs', n_pcs = 10, top_n_regions = 300)
+# wrapper(method = 'smwd', n_pcs = 10, top_n_regions = 300)
+wrapper(method = 'smwd_2kb', n_pcs = 10, top_n_regions = 300)
+# wrapper(method = 'scmet', n_pcs = 10, top_n_regions = 300)
+# 
+# wrapper(method = 'vseq', n_pcs = 10, top_n_regions = 1000)
+# wrapper(method = 'scbs', n_pcs = 10, top_n_regions = 1000)
+# wrapper(method = 'smwd', n_pcs = 10, top_n_regions = 1000)
+wrapper(method = 'smwd_2kb', n_pcs = 10, top_n_regions = 1000)
+# wrapper(method = 'scmet', n_pcs = 10, top_n_regions = 1000)
+# 
+# wrapper(method = 'vseq', n_pcs = 10, top_n_regions = 3000)
+# wrapper(method = 'scbs', n_pcs = 10, top_n_regions = 3000)
+# wrapper(method = 'smwd', n_pcs = 10, top_n_regions = 3000)
+wrapper(method = 'smwd_2kb', n_pcs = 10, top_n_regions = 3000)
+# wrapper(method = 'scmet', n_pcs = 10, top_n_regions = 3000)
+# 
+# wrapper(method = 'vseq', n_pcs = 10, top_n_regions = 10000)
+# wrapper(method = 'scbs', n_pcs = 10, top_n_regions = 10000)
+# wrapper(method = 'smwd', n_pcs = 10, top_n_regions = 10000)
+wrapper(method = 'smwd_2kb', n_pcs = 10, top_n_regions = 10000)
+# 
+# wrapper(method = 'vseq', n_pcs = 10, top_n_regions = 30000)
+# wrapper(method = 'scbs', n_pcs = 10, top_n_regions = 30000)
+# wrapper(method = 'smwd', n_pcs = 10, top_n_regions = 30000)
+wrapper(method = 'smwd_2kb', n_pcs = 10, top_n_regions = 30000)

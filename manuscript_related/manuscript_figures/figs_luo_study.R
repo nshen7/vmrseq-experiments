@@ -41,6 +41,10 @@ ct <- md %>%
 CTCOLORS <- colorRampPalette(RColorBrewer::brewer.pal(8, name = 'Accent'))(length(ct))
 names(CTCOLORS) <- ct
 
+CTCOLORS_2 <- grafify:::graf_palettes$kelly[1:length(ct)]
+names(CTCOLORS_2) <- ct
+
+
 # Color for broad cell type
 BTCOLORS <- c('darkolivegreen3', 'darkgoldenrod3')
 names(BTCOLORS) <- c('Excitatory', 'Inhibitory')
@@ -49,11 +53,9 @@ names(BTCOLORS) <- c('Excitatory', 'Inhibitory')
 # ---- Get legend for cell types ----
 df_umap <- fread(here(read_dir, paste0("metadata_umap_regional_methyl_vseq_seed2010.txt.gz")))
 
-# For UMAPs
+# For UMAPs with CTCOLORS
 (p <- df_umap %>% 
     ggplot() +
-    # geom_point(aes(fill = Neuron.type, shape = Neuron_type1), size = 1.5, alpha = 0.8, stroke = 0.3, color = 'grey16') +
-    # scale_fill_manual(values = CTCOLORS, name = "") +
     geom_point(aes(umap_1, umap_2, color = Neuron.type, shape = Neuron_type1), size = 1.5, alpha = 0.8) +
     scale_color_manual(values = CTCOLORS, name = "") +
     scale_shape_manual(values = c(21,23), name = "") + 
@@ -62,6 +64,22 @@ df_umap <- fread(here(read_dir, paste0("metadata_umap_regional_methyl_vseq_seed2
   )
 legend <- cowplot::get_legend(p)
 png(here(plot_dir, "legend_subtypes_umap.png"), width = 300, height = 1800, res = 350)
+grid::grid.newpage()
+grid::grid.draw(legend)
+dev.off()
+
+
+# For UMAPs with CTCOLORS_2
+(p <- df_umap %>% 
+    ggplot() +
+    geom_point(aes(umap_1, umap_2, color = Neuron.type, shape = Neuron_type1), size = 1.5, alpha = 0.8) +
+    scale_color_manual(values = CTCOLORS_2, name = "") +
+    scale_shape_manual(values = c(21,23), name = "") + 
+    theme_void() + 
+    guides(color = guide_legend(override.aes = list(size=4)), shape = guide_legend(override.aes = list(size=4)))
+)
+legend <- cowplot::get_legend(p)
+png(here(plot_dir, "legend_subtypes_umap_2.png"), width = 300, height = 1800, res = 350)
 grid::grid.newpage()
 grid::grid.draw(legend)
 dev.off()
@@ -81,30 +99,29 @@ dev.off()
 
 
 # ---- UMAP from VMRs for all methods ----
-umapRegionalMeanMethyl <- function(method) {
+umapRegionalMeanMethyl <- function(method, ctcolors = CTCOLORS) {
   # `n_top`: number of top regions
-  # `method`: either "vseq", "vseq_cr", "scbs", "smwd" or "scmet"  ('vseq' not available since no ranking available)
+  # `method`: either "vseq", "vseq_cr", "scbs", "smwd" or "scmet"  
   df_umap <- fread(here(read_dir, paste0("metadata_umap_regional_methyl_", method, "_seed2010.txt.gz")))
   df_umap %>% 
     ggplot(aes(umap_1, umap_2)) +
-    # geom_point(aes(color = Neuron.type), size = 1.5, shape = 16, alpha = 0.5) +
-    # scale_color_manual(values = CTCOLORS) +
     geom_point(aes(fill = Neuron.type, shape = Neuron_type1), size = 1.5, alpha = 0.8, stroke = 0.3, color = 'grey16') +
-    scale_fill_manual(values = CTCOLORS) +
+    scale_fill_manual(values = ctcolors) +
     scale_shape_manual(values = c(21,23)) + 
     theme_classic() +
     theme(axis.text  = element_blank(),
           axis.ticks = element_blank(),
           axis.title = element_blank(),
-          axis.line  = element_blank())
-  ggsave(here(plot_dir, paste0("umap_regional_methyl_", method, ".png")), width = 6, height = 5)
+          axis.line  = element_blank(),
+          legend.position = 'none')
+  ggsave(here(plot_dir, paste0("umap_regional_methyl_", method, ".png")), width = 5, height = 5)
 }
 
-umapRegionalMeanMethyl(method = 'vseq')
-umapRegionalMeanMethyl(method = 'vseq_cr')
-umapRegionalMeanMethyl(method = 'scbs')
-umapRegionalMeanMethyl(method = 'smwd')
-umapRegionalMeanMethyl(method = 'scmet')
+umapRegionalMeanMethyl(method = 'vseq', ctcolors = CTCOLORS)
+umapRegionalMeanMethyl(method = 'vseq_cr', ctcolors = CTCOLORS_2)
+umapRegionalMeanMethyl(method = 'scbs', ctcolors = CTCOLORS_2)
+umapRegionalMeanMethyl(method = 'smwd', ctcolors = CTCOLORS_2)
+umapRegionalMeanMethyl(method = 'scmet', ctcolors = CTCOLORS_2)
 
 # ---- Heatmap of vmrseq top VMRs ----
 

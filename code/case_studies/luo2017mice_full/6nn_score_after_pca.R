@@ -25,6 +25,7 @@ res_region <- list(
   vseq_cr = loadHDF5SummarizedExperiment(paste0(read_dir, "vmrseq_regionSummary_crs")),
   scbs = loadHDF5SummarizedExperiment(paste0(read_dir, "scbs_regionSummary_vmrs")),
   smwd = loadHDF5SummarizedExperiment(paste0(read_dir, "smallwood_regionSummary_vmrs")),
+  smwd_2kb = loadHDF5SummarizedExperiment(paste0(read_dir, "smallwood_2kb_regionSummary_vmrs")),
   scmet = loadHDF5SummarizedExperiment(paste0(read_dir, "scmet_regionSummary_vmrs"))
 )
 methodName <- function(method) switch (method,
@@ -32,12 +33,18 @@ methodName <- function(method) switch (method,
                                        'vseq_cr' = 'vmrseq CRs',
                                        'scbs' = 'scbs',
                                        'smwd' = 'Smallwood',
+                                       'smwd_2kb' = 'Smallwood 2kb',
                                        'scmet' = 'scMET',
                                        '100kbins' = '100kb bins')
-COLORS <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")[-3]
+COLORS <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")
 COLORVALUES <- c("vmrseq" = COLORS[1], "vmrseq CRs" = COLORS[2],
-                 "scbs" = COLORS[3], "Smallwood" = COLORS[4], "scMET" = COLORS[5],
-                 '100kb bins' = 'darkgreen')
+                 "scbs" = COLORS[3], "Smallwood" = COLORS[4], "Smallwood 2kb" = COLORS[5],
+                 "scMET" = COLORS[6], '100kb bins' = 'darkgreen')
+
+# COLORS <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")[-3]
+# COLORVALUES <- c("vmrseq" = COLORS[1], "vmrseq CRs" = COLORS[2],
+#                  "scbs" = COLORS[3], "Smallwood" = COLORS[4], "scMET" = COLORS[5],
+#                  '100kb bins' = 'darkgreen')
 
 # ---- main ----
 
@@ -68,6 +75,7 @@ computeScoreForAll <- function(k, theta, cell_type, n_pcs) {
                      "vseq" = granges(res_region[[method]])$loglik_diff,
                      "scbs" = granges(res_region[[method]])$mcols.var,
                      "smwd" = granges(res_region[[method]])$var_lb,
+                     "smwd_2kb" = granges(res_region[[method]])$var_lb,
                      "scmet" = granges(res_region[[method]])$tail_prob)
     top_ind <- order(metric, decreasing = TRUE)[1:top_n_regions]
     top.gr <- granges(res_region[[method]])[top_ind]
@@ -78,7 +86,7 @@ computeScoreForAll <- function(k, theta, cell_type, n_pcs) {
   
   ## Summarize nn score from various top n regions
   score.df <- expand.grid(
-    Method = c('vseq', 'scbs', 'smwd', 'scmet'), 
+    Method = c('vseq', 'scbs', 'smwd', 'smwd_2kb', 'scmet'), 
     NTopRegions = c('300', '1000', '3000', '10000', '30000', ''), # '' represents all regions
     NNScore = 0
   ) %>%
@@ -124,14 +132,14 @@ computeScoreForAll <- function(k, theta, cell_type, n_pcs) {
   fwrite(score.df, here(write_dir, paste0("nearest_neighbor_score_afterPCA_", n_pcs, "pcs_", cell_type, "CellType_k", k, "_theta", theta, ".csv")))
 }
 
-# computeScoreForAll(k = 100, theta = 0.7, cell_type = 'broad', n_pcs = 10)
-# computeScoreForAll(k = 100, theta = 0.7, cell_type = 'sub', n_pcs = 10)
-# computeScoreForAll(k = 100, theta = 0.9, cell_type = 'broad', n_pcs = 10)
-# computeScoreForAll(k = 100, theta = 0.9, cell_type = 'sub', n_pcs = 10)
-# computeScoreForAll(k = 50, theta = 0.7, cell_type = 'sub', n_pcs = 10)
-# computeScoreForAll(k = 50, theta = 0.7, cell_type = 'broad', n_pcs = 10)
-# computeScoreForAll(k = 50, theta = 0.9, cell_type = 'sub', n_pcs = 10)
-# computeScoreForAll(k = 50, theta = 0.9, cell_type = 'broad', n_pcs = 10)
+computeScoreForAll(k = 100, theta = 0.7, cell_type = 'broad', n_pcs = 10)
+computeScoreForAll(k = 100, theta = 0.7, cell_type = 'sub', n_pcs = 10)
+computeScoreForAll(k = 100, theta = 0.9, cell_type = 'broad', n_pcs = 10)
+computeScoreForAll(k = 100, theta = 0.9, cell_type = 'sub', n_pcs = 10)
+computeScoreForAll(k = 50, theta = 0.7, cell_type = 'sub', n_pcs = 10)
+computeScoreForAll(k = 50, theta = 0.7, cell_type = 'broad', n_pcs = 10)
+computeScoreForAll(k = 50, theta = 0.9, cell_type = 'sub', n_pcs = 10)
+computeScoreForAll(k = 50, theta = 0.9, cell_type = 'broad', n_pcs = 10)
 
 # ---- Plotting ----
 
@@ -195,9 +203,9 @@ nnScorePlot <- function(k, theta, ylim, ybreaks, n_pcs) {
   dev.off()
 }
 
-nnScorePlot(k = 100, theta = 0.7, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5), n_pcs = 10)
-nnScorePlot(k = 100, theta = 0.9, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5), n_pcs = 10)
-nnScorePlot(k = 50, theta = 0.7, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5), n_pcs = 10)
-nnScorePlot(k = 50, theta = 0.9, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5), n_pcs = 10)
+# nnScorePlot(k = 100, theta = 0.7, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5), n_pcs = 10)
+# nnScorePlot(k = 100, theta = 0.9, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5), n_pcs = 10)
+# nnScorePlot(k = 50, theta = 0.7, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5), n_pcs = 10)
+# nnScorePlot(k = 50, theta = 0.9, ylim = c(0, 1), ybreaks = seq(0, 1, 0.5), n_pcs = 10)
 
 

@@ -20,6 +20,7 @@ res_region <- list(
   vseq_cr = loadHDF5SummarizedExperiment(paste0(read_dir, "vmrseq_regionSummary_crs")),
   scbs = loadHDF5SummarizedExperiment(paste0(read_dir, "scbs_regionSummary_vmrs")),
   smwd = loadHDF5SummarizedExperiment(paste0(read_dir, "smallwood_regionSummary_vmrs")),
+  smwd_2kb = loadHDF5SummarizedExperiment(paste0(read_dir, "smallwood_2kb_regionSummary_vmrs")),
   scmet = loadHDF5SummarizedExperiment(paste0(read_dir, "scmet_regionSummary_vmrs"))
 )
 
@@ -132,11 +133,13 @@ heatmapTopRegions <- function(n_top, method, dissim_metric = "manhattan", hclust
                    "vseq" = granges(res_region[[method]])$loglik_diff,
                    "scbs" = granges(res_region[[method]])$mcols.var,
                    "smwd" = granges(res_region[[method]])$var_lb,
+                   "smwd_2kb" = granges(res_region[[method]])$var_lb,
                    "scmet" = granges(res_region[[method]])$tail_prob)
   method_name <- switch(method,
                         "vseq" = "vmrseq",
                         "scbs" = "scbs",
                         "smwd" = "Smallwood",
+                        "smwd" = "Smallwood 2kb",
                         "scmet" = "scMET")
   
   top_ind <- order(metric, decreasing = TRUE)[1:n_top]
@@ -176,21 +179,25 @@ heatmapTopRegions <- function(n_top, method, dissim_metric = "manhattan", hclust
 # heatmapTopRegions(n_top = 100, method = "vseq")
 # heatmapTopRegions(n_top = 100, method = "scbs")
 # heatmapTopRegions(n_top = 100, method = "smwd")
+heatmapTopRegions(n_top = 100, method = "smwd_2kb")
 # heatmapTopRegions(n_top = 100, method = "scmet")
 # 
 # heatmapTopRegions(n_top = 300, method = "vseq")
 # heatmapTopRegions(n_top = 300, method = "scbs")
 # heatmapTopRegions(n_top = 300, method = "smwd")
+heatmapTopRegions(n_top = 300, method = "smwd_2kb")
 # heatmapTopRegions(n_top = 300, method = "scmet")
 # 
 # heatmapTopRegions(n_top = 1000, method = "vseq")
 # heatmapTopRegions(n_top = 1000, method = "scbs")
 # heatmapTopRegions(n_top = 1000, method = "smwd")
+heatmapTopRegions(n_top = 1000, method = "smwd_2kb")
 # heatmapTopRegions(n_top = 1000, method = "scmet")
 # 
 # heatmapTopRegions(n_top = 3000, method = "vseq")
 # heatmapTopRegions(n_top = 3000, method = "scbs")
 # heatmapTopRegions(n_top = 3000, method = "smwd")
+heatmapTopRegions(n_top = 3000, method = "smwd_2kb")
 # heatmapTopRegions(n_top = 3000, method = "scmet")
 
 ##################################################################
@@ -209,12 +216,14 @@ umapRegionalMeanMethyl <- function(method,
                         "vseq_cr" = "vmrseq CRs",
                         "scbs" = "scbs",
                         "smwd" = "Smallwood",
+                        "smwd_2kb" = "Smallwood 2kb",
                         "scmet" = "scMET",
                         "pca" = "PCA")
   metric <- switch(method,
                    "vseq" = granges(res_region[[method]])$loglik_diff,
                    "scbs" = granges(res_region[[method]])$mcols.var,
                    "smwd" = granges(res_region[[method]])$var_lb,
+                   "smwd_2kb" = granges(res_region[[method]])$var_lb,
                    "scmet" = granges(res_region[[method]])$tail_prob)
   if (!is.null(top_n_regions) & method=="vseq_cr") stop("CRs from vmrseq does not have rank.")
   
@@ -257,90 +266,99 @@ umapRegionalMeanMethyl <- function(method,
 # umapRegionalMeanMethyl("vseq_cr")
 # umapRegionalMeanMethyl("scbs")
 # umapRegionalMeanMethyl("smwd")
+umapRegionalMeanMethyl("smwd_2kb")
 # umapRegionalMeanMethyl("scmet")
 # 
 # umapRegionalMeanMethyl("vseq", top_n_regions = 300)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 300)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 300)
+umapRegionalMeanMethyl("smwd_2kb", top_n_regions = 300)
 # umapRegionalMeanMethyl("scmet", top_n_regions = 300)
 # 
 # umapRegionalMeanMethyl("vseq", top_n_regions = 300, seed = 2022)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 300, seed = 2022)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 300, seed = 2022)
+umapRegionalMeanMethyl("smwd_2kb", top_n_regions = 300, seed = 2022)
 # umapRegionalMeanMethyl("scmet", top_n_regions = 300, seed = 2022)
 # 
 # 
 # umapRegionalMeanMethyl("vseq", top_n_regions = 1000)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 1000)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 1000)
+umapRegionalMeanMethyl("smwd_2kb", top_n_regions = 1000)
 # umapRegionalMeanMethyl("scmet", top_n_regions = 1000)
 # 
 # umapRegionalMeanMethyl("vseq", top_n_regions = 1000, seed = 2022)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 1000, seed = 2022)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 1000, seed = 2022)
+umapRegionalMeanMethyl("smwd_2kb", top_n_regions = 1000, seed = 2022)
 # umapRegionalMeanMethyl("scmet", top_n_regions = 1000, seed = 2022)
 # 
 # 
 # umapRegionalMeanMethyl("vseq", top_n_regions = 3000)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 3000)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 3000)
+umapRegionalMeanMethyl("smwd_2kb", top_n_regions = 3000)
 # umapRegionalMeanMethyl("scmet", top_n_regions = 3000)
 # 
 # umapRegionalMeanMethyl("vseq", top_n_regions = 3000, seed = 2022)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 3000, seed = 2022)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 3000, seed = 2022)
+umapRegionalMeanMethyl("smwd_2kb", top_n_regions = 3000, seed = 2022)
 # umapRegionalMeanMethyl("scmet", top_n_regions = 3000, seed = 2022)
 # 
 # 
 # umapRegionalMeanMethyl("vseq", top_n_regions = 10000)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 10000)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 10000)
+umapRegionalMeanMethyl("smwd_2kb", top_n_regions = 10000)
 
 # umapRegionalMeanMethyl("vseq", top_n_regions = 30000)
 # umapRegionalMeanMethyl("scbs", top_n_regions = 30000)
 # umapRegionalMeanMethyl("smwd", top_n_regions = 30000)
+umapRegionalMeanMethyl("smwd_2kb", top_n_regions = 30000)
 
 
 #################################################################
 ###### Clustering analysis based on single-site methylation #####
 #################################################################
 
-umapSiteMethyl <- function(method, dissim_metric = "manhattan", umap_metric = "euclidean", seed = 2010) {
-  # `n_top`: number of top regions
-  # `method`: either "vseq", "scbs", "smwd" or "scmet"  ('vseq' not available since no ranking available)
-  method_name <- switch(method,
-                        "vseq" = "vmrseq",
-                        "vseq_cr" = "vmrseq CRs",
-                        "scbs" = "scbs",
-                        "smwd" = "Smallwood",
-                        "scmet" = "scMET")
-  set.seed(seed)
-  
-  M_mat <- assays(res_site[[method]])$M_mat %>% as("sparseMatrix") %>% recommenderlab::dropNA2matrix()
-  print("1")
-  
-  # compute dissimilarity matrix
-  d_mat_cols <- cluster::daisy(t(M_mat), metric = dissim_metric, stand = FALSE)%>% as.matrix()
-  print("2")
-  rownames(d_mat_cols) <- colnames(d_mat_cols) <- md$sample
-  fwrite(d_mat_cols, paste0(write_dir, "dissimilarity_matrix_site_methyl_", method, ".txt.gz"),
-         col.names = TRUE, row.names = TRUE, quote = F)
-  
-  # Get UMAP embedding for columns (i.e., cells)
-  umap <- uwot::umap(d_mat_cols %>% as("sparseMatrix"), n_neighbors = 15, n_components = 2, metric = umap_metric)
-  print("3")
-  df_umap <- data.frame(md, umap_1 = umap[,1], umap_2 = umap[,2])
-  fwrite(df_umap, paste0(write_dir, "metadata_umap_site_methyl_", method, "_seed", seed, ".txt.gz"),
-         col.names = TRUE, row.names = FALSE, quote = F)
-  
-  df_umap %>% 
-    ggplot(aes(umap_1, umap_2, color = Neuron.type, shape = Neuron_type1)) +
-    geom_point(alpha = 0.5, size = 0.5) +
-    # scale_color_brewer(palette="Set2") + 
-    theme_classic() +
-    ggtitle(paste0("Method: ", method_name))
-  ggsave(paste0(plot_dir, "umap_site_methyl_", method, "_seed", seed, ".png"), width = 7, height = 5.5)
-}
+# umapSiteMethyl <- function(method, dissim_metric = "manhattan", umap_metric = "euclidean", seed = 2010) {
+#   # `n_top`: number of top regions
+#   # `method`: either "vseq", "scbs", "smwd" or "scmet"  ('vseq' not available since no ranking available)
+#   method_name <- switch(method,
+#                         "vseq" = "vmrseq",
+#                         "vseq_cr" = "vmrseq CRs",
+#                         "scbs" = "scbs",
+#                         "smwd" = "Smallwood",
+#                         "scmet" = "scMET")
+#   set.seed(seed)
+#   
+#   M_mat <- assays(res_site[[method]])$M_mat %>% as("sparseMatrix") %>% recommenderlab::dropNA2matrix()
+#   print("1")
+#   
+#   # compute dissimilarity matrix
+#   d_mat_cols <- cluster::daisy(t(M_mat), metric = dissim_metric, stand = FALSE)%>% as.matrix()
+#   print("2")
+#   rownames(d_mat_cols) <- colnames(d_mat_cols) <- md$sample
+#   fwrite(d_mat_cols, paste0(write_dir, "dissimilarity_matrix_site_methyl_", method, ".txt.gz"),
+#          col.names = TRUE, row.names = TRUE, quote = F)
+#   
+#   # Get UMAP embedding for columns (i.e., cells)
+#   umap <- uwot::umap(d_mat_cols %>% as("sparseMatrix"), n_neighbors = 15, n_components = 2, metric = umap_metric)
+#   print("3")
+#   df_umap <- data.frame(md, umap_1 = umap[,1], umap_2 = umap[,2])
+#   fwrite(df_umap, paste0(write_dir, "metadata_umap_site_methyl_", method, "_seed", seed, ".txt.gz"),
+#          col.names = TRUE, row.names = FALSE, quote = F)
+#   
+#   df_umap %>% 
+#     ggplot(aes(umap_1, umap_2, color = Neuron.type, shape = Neuron_type1)) +
+#     geom_point(alpha = 0.5, size = 0.5) +
+#     # scale_color_brewer(palette="Set2") + 
+#     theme_classic() +
+#     ggtitle(paste0("Method: ", method_name))
+#   ggsave(paste0(plot_dir, "umap_site_methyl_", method, "_seed", seed, ".png"), width = 7, height = 5.5)
+# }
 
 # umapSiteMethyl("vseq")
 # umapSiteMethyl("vseq_cr")

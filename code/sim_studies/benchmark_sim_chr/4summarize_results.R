@@ -211,6 +211,56 @@ summarizeResSmwd <- function(NV, sparseLevel) {
   return(smr_smwd)
 }
 
+
+# === smallwood 2kb ====
+
+summarizeResSmwd2kb <- function(NV, sparseLevel) {
+  gr <- loadHDF5SummarizedExperiment(paste0(
+    "data/interim/sim_studies/benchmark_sim_chr/simulated/simChr_",
+    subtype, "_", chromosome, "_", N, "cells_", NP, "subpops_", 
+    NV, "VMRs_sparseLevel", sparseLevel,            
+    "_seed", seed)) %>% granges()
+  res_smwd.gr <- readRDS(paste0(
+    "data/interim/sim_studies/benchmark_sim_chr/smallwood_2kb/output/simChr_",
+    subtype, "_", chromosome, "_",
+    N, "cells_", NP, "subpops_",
+    NV, "VMRs_sparseLevel", sparseLevel,            
+    "_seed", seed, "_varLowerBound.rds")) 
+  
+  smr_smwd <- data.frame(method = "smallwood_2kb",
+                         NV = NV,
+                         threshold = c(1e-4, 5e-4, 1e-3, 5e-3, seq(0.01, 0.025, 0.005), seq(.03, .09, .01), seq(0.1,0.3,0.1)),
+                         total_n_site = NA,
+                         power_site = NA,
+                         fdr_site = NA,
+                         power_region = NA,
+                         fdr_region = NA)
+  
+  for (i in 1:nrow(smr_smwd)) {
+    top_n <- round(length(res_smwd.gr)*smr_smwd$threshold[i])
+    top_idx <- order(res_smwd.gr$var_lb, decreasing = TRUE)[1:top_n] %>% sort
+    hvf.gr <- res_smwd.gr[top_idx]
+    hits <- findOverlaps(gr, hvf.gr)
+    gr$vmr_index <- NA 
+    gr$vmr_index[queryHits(hits)] <- subjectHits(hits) 
+    smr_smwd$power_site[i] <- with(gr, sum(is_vml&!is.na(vmr_index)) / sum(is_vml))
+    smr_smwd$fdr_site[i] <- with(gr, sum(!is_vml&!is.na(vmr_index)) / sum(!is.na(vmr_index)))
+    smr_smwd$total_n_site[i] <- with(gr, sum(!is.na(vmr_index)))
+    
+    true_olap <- gr %>% as.data.frame %>% group_by(vmr_name) %>%  
+      summarise(n_olap = sum(!is.na(vmr_index))) %>% dplyr::select(n_olap) %>% unlist
+    smr_smwd$power_region[i] <- sum(true_olap >= min_olap)/length(true_olap)
+    
+    detected_olap <- gr %>% as.data.frame %>% group_by(vmr_index) %>%  
+      summarise(n_olap = sum(!is.na(vmr_name))) %>% dplyr::select(n_olap) %>% unlist
+    smr_smwd$fdr_region[i] <- sum(detected_olap < min_olap)/length(detected_olap)
+    
+    # cat(i, " ")
+  }
+  return(smr_smwd)
+}
+
+
 # === scbs ====
 
 summarizeResScbs <- function(NV, sparseLevel) {
@@ -271,66 +321,135 @@ summarizeResScbs <- function(NV, sparseLevel) {
   return(smr_scbs)
 }
 
-# ==== Compare methods ====
-for (NP in c(2,3,4,5,8,12,20)){
-  for (sparseLevel in 1:3) {
-    smr_vseq <- summarizeResVseq(NV, sparseLevel)
-    smr_vseq_cr <- summarizeResVseqCr(NV, sparseLevel) 
-    smr_scbs <- summarizeResScbs(NV, sparseLevel)
-    smr_smwd <- summarizeResSmwd(NV, sparseLevel)
-    # smr_scmet <- summarizeResScmet(NV, sparseLevel)
-    smr <- rbind(smr_vseq, smr_vseq_cr, smr_scbs, smr_smwd)
-    
-    fwrite(smr, paste0(
-      "data/interim/sim_studies/benchmark_sim_chr/summary/simChr_fdr&power_siteLevel_",
-      N , "cells_", NP, "subpops_",
-      NV, "VMRs_sparseLevel", sparseLevel,
-      "_seed", seed, ".csv.gz"
-    ))
-    
-    colors <- RColorBrewer::brewer.pal(n = 6, name = "RdYlBu")[-4]
-    
-    # site-level fdr and power
-    smr %>%  
-      ggplot(aes(fdr_site, power_site, color = method)) + 
-      geom_vline(xintercept = 0.05, linetype = "dotted") +
-      geom_path() + geom_point() +
-      scale_color_manual(values = c("vmrseq" = colors[1], 
-                                    "vmrseq_CR" = colors[2], 
-                                    "smallwood" = colors[3],
-                                    "scbs" = colors[4])) +
-      xlab("Site-level FDR") + ylab("Site-level power") +
-      ggtitle(paste0("Modified real chromosome (",N," cells, ",NP," subpops, sparse level ",sparseLevel,")")) +
-      scale_y_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
-      scale_x_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
-      theme_classic()
-    ggsave(paste0(
-      "plots/sim_studies/benchmark_sim_chr/comparison/simChr_fdr&power_siteLevel_",
-      N , "cells_", NP, "subpops_",
-      NV, "VMRs_sparseLevel", sparseLevel,
-      "_seed", seed, ".png"
-    ), width = 8, height = 7.5)
-    
-    # region-level fdr and power
-    smr %>%  
-      ggplot(aes(fdr_region, power_region, color = method)) + 
-      geom_vline(xintercept = 0.05, linetype = "dotted") +
-      geom_path() + geom_point() +
-      scale_color_manual(values = c("vmrseq" = colors[1], 
-                                    "vmrseq_CR" = colors[2], 
-                                    "smallwood" = colors[3],
-                                    "scbs" = colors[4])) +
-      xlab("Region-level FDR") + ylab("Region-level power") +
-      ggtitle(paste0("Modified real chromosome (",N," cells, ",NP," subpops, sparse level ",sparseLevel,")")) +
-      scale_y_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
-      scale_x_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
-      theme_classic()
-    ggsave(paste0(
-      "plots/sim_studies/benchmark_sim_chr/comparison/simChr_fdr&power_regionLevel_",
-      N , "cells_", NP, "subpops_",
-      NV, "VMRs_sparseLevel", sparseLevel,
-      "_seed", seed, ".png"
-    ), width = 8, height = 7.5)
-    print(paste0("NP = ", NP, ", sparseLevel = ", sparseLevel))
+# ##########################################
+# ###### Compare all methods ###############
+# ##########################################
+# for (NP in c(2,3,4,5,8,12,20)){
+#   for (sparseLevel in 1:3) {
+#     smr_vseq <- summarizeResVseq(NV, sparseLevel)
+#     smr_vseq_cr <- summarizeResVseqCr(NV, sparseLevel) 
+#     smr_scbs <- summarizeResScbs(NV, sparseLevel)
+#     smr_smwd <- summarizeResSmwd(NV, sparseLevel)
+#     # smr_scmet <- summarizeResScmet(NV, sparseLevel)
+#     smr <- rbind(smr_vseq, smr_vseq_cr, smr_scbs, smr_smwd)
+#     
+#     fwrite(smr, paste0(
+#       "data/interim/sim_studies/benchmark_sim_chr/summary/simChr_fdr&power_siteLevel_",
+#       N , "cells_", NP, "subpops_",
+#       NV, "VMRs_sparseLevel", sparseLevel,
+#       "_seed", seed, ".csv.gz"
+#     ))
+#     
+#     colors <- RColorBrewer::brewer.pal(n = 6, name = "RdYlBu")[-4]
+#     
+#     # site-level fdr and power
+#     smr %>%  
+#       ggplot(aes(fdr_site, power_site, color = method)) + 
+#       geom_vline(xintercept = 0.05, linetype = "dotted") +
+#       geom_path() + geom_point() +
+#       scale_color_manual(values = c("vmrseq" = colors[1], 
+#                                     "vmrseq_CR" = colors[2], 
+#                                     "smallwood" = colors[3],
+#                                     "scbs" = colors[4])) +
+#       xlab("Site-level FDR") + ylab("Site-level power") +
+#       ggtitle(paste0("Modified real chromosome (",N," cells, ",NP," subpops, sparse level ",sparseLevel,")")) +
+#       scale_y_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
+#       scale_x_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
+#       theme_classic()
+#     ggsave(paste0(
+#       "plots/sim_studies/benchmark_sim_chr/comparison/simChr_fdr&power_siteLevel_",
+#       N , "cells_", NP, "subpops_",
+#       NV, "VMRs_sparseLevel", sparseLevel,
+#       "_seed", seed, ".png"
+#     ), width = 8, height = 7.5)
+#     
+#     # region-level fdr and power
+#     smr %>%  
+#       ggplot(aes(fdr_region, power_region, color = method)) + 
+#       geom_vline(xintercept = 0.05, linetype = "dotted") +
+#       geom_path() + geom_point() +
+#       scale_color_manual(values = c("vmrseq" = colors[1], 
+#                                     "vmrseq_CR" = colors[2], 
+#                                     "smallwood" = colors[3],
+#                                     "scbs" = colors[4])) +
+#       xlab("Region-level FDR") + ylab("Region-level power") +
+#       ggtitle(paste0("Modified real chromosome (",N," cells, ",NP," subpops, sparse level ",sparseLevel,")")) +
+#       scale_y_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
+#       scale_x_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
+#       theme_classic()
+#     ggsave(paste0(
+#       "plots/sim_studies/benchmark_sim_chr/comparison/simChr_fdr&power_regionLevel_",
+#       N , "cells_", NP, "subpops_",
+#       NV, "VMRs_sparseLevel", sparseLevel,
+#       "_seed", seed, ".png"
+#     ), width = 8, height = 7.5)
+#     print(paste0("NP = ", NP, ", sparseLevel = ", sparseLevel))
+#   }
+# }
+
+
+##########################################
+###### Compare smallwood 2kb and 3kb #####
+##########################################
+
+write_dir <- 'data/interim/sim_studies/benchmark_sim_chr/smallwood_2kb_vs_3kb'
+if (!file.exists(write_dir)) dir.create(write_dir)
+
+for (N in c(200, 500, 1000, 2000)) {
+  for (NP in c(2,3,4,5,8,12,20)){
+    for (sparseLevel in 1:3) {
+      smr_smwd <- summarizeResSmwd(NV, sparseLevel)
+      smr_smwd_2kb <- summarizeResSmwd2kb(NV, sparseLevel)
+      smr <- rbind(smr_smwd, smr_smwd_2kb)
+      fwrite(smr, here(write_dir, paste0(
+        "simChr_fdr&power_siteLevel_",
+        N , "cells_", NP, "subpops_",
+        NV, "VMRs_sparseLevel", sparseLevel,
+        "_seed", seed, ".csv.gz"
+      )))
+      print(paste(NP, sparseLevel))
+      
+      COLORS <- RColorBrewer::brewer.pal(n = 6, name = "PuOr")
+
+      # site-level fdr and power
+      # smr %>%
+      #   ggplot(aes(fdr_site, power_site, color = method)) +
+      #   geom_vline(xintercept = 0.05, linetype = "dotted") +
+      #   geom_path() + geom_point() +
+      #   scale_color_manual(values = c("smallwood" = colors[4],
+      #                                 "smallwood_2kb" = colors[5])) +
+      #   xlab("Site-level FDR") + ylab("Site-level power") +
+      #   ggtitle(paste0("Modified real chromosome (",N," cells, ",NP," subpops, sparse level ",sparseLevel,")")) +
+      #   scale_y_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
+      #   scale_x_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
+      #   theme_classic()
+      # ggsave(paste0(
+      #   "plots/sim_studies/benchmark_real_chr/comparison/pseudoChr_fdr&power_siteLevel_",
+      #   N , "cells_", NP, "subpops_",
+      #   NV, "VMRs_sparseLevel", sparseLevel,
+      #   "_seed", seed, ".png"
+      # ), width = 8, height = 7.5)
+      # 
+      # # region-level fdr and power
+      # smr %>%
+      #   ggplot(aes(fdr_region, power_region, color = method)) +
+      #   geom_vline(xintercept = 0.05, linetype = "dotted") +
+      #   geom_path() + geom_point() +
+      #   scale_color_manual(values = c("smallwood" = colors[4],
+      #                                 "smallwood_2kb" = colors[5])) +
+      #   xlab("Region-level FDR") + ylab("Region-level power") +
+      #   ggtitle(paste0("Modified real chromosome (",N," cells, ",NP," subpops, sparse level ",sparseLevel,")")) +
+      #   scale_y_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
+      #   scale_x_continuous(breaks = seq(0, 1, by = 0.1), limits = c(0,1)) +
+      #   theme_classic()
+      # ggsave(paste0(
+      #   "plots/sim_studies/benchmark_real_chr/comparison/pseudoChr_fdr&power_regionLevel_",
+      #   N , "cells_", NP, "subpops_",
+      #   NV, "VMRs_sparseLevel", sparseLevel,
+      #   "_seed", seed, ".png"
+      # ), width = 8, height = 7.5)
+      # print(paste0("NP = ", NP, ", sparseLevel = ", sparseLevel))
+    }
   }
 }
+
